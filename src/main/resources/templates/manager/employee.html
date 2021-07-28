@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>직원 관리</title>
+    
+    <script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/css/manager/attendance.css">
+    <link rel="stylesheet" href="/css/manager/employee.css">
+</head>
+
+<body>
+    <header>
+        <div class="header-container" style="width: 100%;">
+            <i class="fas fa-arrow-left" onclick="'/'"></i>
+        </div>
+    </header>
+
+
+
+
+    <section>
+        
+        <nav class="nav flex-column" style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
+            <a class="nav-link disabled" href="#">시스템</a>
+            <hr>
+            <a class="nav-link active" href="/commoncode/list">공통 코드 관리</a>
+            <hr>
+            <a class="nav-link disabled" href="#">근태</a>
+            <hr>
+            <a class="nav-link active " href="/attendance/list">근태 목록</a>
+            <hr>
+            <a class="nav-link disabled" href="#">직원</a>
+            <hr>
+            <a class="nav-link active" href="/employee/list">직원 목록</a>
+            <hr>
+        </nav>
+
+
+        <div class="card-div">
+            <div style="width: 90%; padding:20px; margin-left: 20px; position: relative; bottom: 20px;">
+                <h3>
+                    <i class="fas fa-users-cog"></i>
+                    직원 목록
+                </h3>
+                <hr style="color: black; border: solid 1px black;">
+            </div>
+            <div class="card">
+                <div class="card-body" >
+                    <ul class="card-ul" style="display: flex;">
+                        <li><i class="fas fa-user-circle"></i></li>
+                        <li>aaa123@naver.com</li>
+                        <li>김사원</li>
+                        <li>개발팀</li>
+                        <li>사원</li> 
+                        <li>정회원</li>
+                        <li><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#update-member-modal">수정</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card-body" >
+                    <ul class="card-ul" style="display: flex;">
+                        <li><i class="fas fa-user-circle"></i></li>
+                        <li>aaa123@naver.com</li>
+                        <li>김사원</li>
+                        <li>개발팀</li>
+                        <li>사원</li> 
+                        <li>탈퇴</li>
+                        <li><a href="#" class="btn btn-primary">수정</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body" >
+                    <ul class="card-ul" style="display: flex;">
+                        <li><i class="fas fa-user-circle"></i></li>
+                        <li>aaa123@naver.com</li>
+                        <li>김사원</li>
+                        <li>개발팀</li>
+                        <li>사원</li> 
+                        <li>탈퇴</li>
+                        <li><a href="#" class="btn btn-primary">수정</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body" >
+                    <ul class="card-ul" style="display: flex;">
+                        <li><i class="fas fa-user-circle"></i></li>
+                        <li>aaa123@naver.com</li>
+                        <li>김사원</li>
+                        <li>개발팀</li>
+                        <li>사원</li> 
+                        <li>탈퇴</li>
+                        <li><a href="#" class="btn btn-primary">수정</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-body" >
+                    <ul class="card-ul" style="display: flex;">
+                        <li><i class="fas fa-user-circle"></i></li>
+                        <li>aaa123@naver.com</li>
+                        <li>김사원</li>
+                        <li>개발팀</li>
+                        <li>사원</li> 
+                        <li>탈퇴</li>
+                        <li><a href="#" class="btn btn-primary">수정</a></li>
+                    </ul>
+                </div>
+            </div>
+
+                <div class="card">
+                <div class="card-body" >
+                    <ul class="card-ul" style="display: flex;">
+                        <li><i class="fas fa-user-circle"></i></li>
+                        <li>aaa123@naver.com</li>
+                        <li>김사원</li>
+                        <li>개발팀</li>
+                        <li>사원</li> 
+                        <li>탈퇴</li>
+                        <li><a href="#" class="btn btn-primary">수정</a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <nav aria-label="Page navigation example" class="pagebar" style="margin-bottom: 50px;">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    <li class="page-item"><a class="page-link" href="#">1</a></li>
+                    <li class="page-item"><a class="page-link" href="#">2</a></li>
+                    <li class="page-item"><a class="page-link" href="#">3</a></li>
+                    <li class="page-item"><a class="page-link" href="#">4</a></li>
+                    <li class="page-item"><a class="page-link" href="#">5</a></li>
+                    <li class="page-item">
+                        <a class="page-link" href="#" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </section>
+    
+    <!-- 수정 Modal -->
+    <div class="modal fade" id="update-member-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+        aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+    
+                <div class="modal-header">
+                    <h5 class="modal-title" id="add-modal-label">직원 정보 수정</h5>
+    
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+    
+                </div>
+    
+                <div class="modal-body member-modal-body ">
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">이메일</label>
+                        <input type="email" class="form-control" value="aaa@naver.com">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputEmail1" class="form-label">이름</label>
+                        <input type="text" class="form-control" value="김사원" >
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">부서</label>
+                        <input type="text" class="form-control" value="개발팀">
+                    </div>
+                    <div class="mb-3">
+                        <label for="exampleInputPassword1" class="form-label">직급</label>
+                        <input type="text" class="form-control" value="사원">
+                    </div>
+                      
+                </div>
+    
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-primary">수정</button>
+                    <button type="button" class="btn btn-warning">직원 탈퇴</button>
+                </div>
+    
+            </div>
+        </div>
+    </div>
+  
+</body>
+</html>

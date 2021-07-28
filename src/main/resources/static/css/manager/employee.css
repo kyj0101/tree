@@ -1,0 +1,35 @@
+@charset "UTF-8";
+ul{
+    list-style: none;
+}
+
+.card-div{
+    width: 100%; 
+    display: flex; 
+    flex-direction: column; 
+    margin: 0 auto; 
+    justify-content: center;
+}
+
+.card{
+    width: 1200px; 
+    height: 80px;
+    margin: 0 auto; 
+    margin-bottom: 20px;
+    border: 1.5px solid rgb(218, 218, 218);
+}
+
+.card-body{
+    margin: 0 auto; 
+    width: 1200px; 
+    height: 80px;
+}
+
+.card-ul{
+    display: flex;
+    justify-content: space-around;
+}
+
+.card-ul li{
+    font-size: 20px;
+}
