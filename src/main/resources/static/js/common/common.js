@@ -8,6 +8,25 @@ function nullCheck(obj){
 	}
 }
 
+function helpDisplayCheck(){
+	
+	var helps = $(".help");
+	
+	for(var key in helps){
+		
+		if(isNaN(key)){
+			break;
+		}
+		if($(helps[key]).attr("class") != "form-text help hide"){
+			console.log($(helps[key]).attr("class"));
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+
 function emailDuplicationCheck(email){
 
 	$.ajax({
@@ -26,3 +45,4 @@ function emailDuplicationCheck(email){
 		},
 	});
 }
+

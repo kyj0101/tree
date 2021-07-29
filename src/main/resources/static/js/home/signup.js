@@ -67,24 +67,6 @@ function passwordCheckCheck(){
 	}
 }
 
-function helpDisplayCheck(){
-	
-	var helps = $(".help");
-	
-	for(var key in helps){
-		
-		if(isNaN(key)){
-			break;
-		}
-		if($(helps[key]).attr("class") != "form-text help hide"){
-			console.log($(helps[key]).attr("class"));
-			return true;
-		}
-	}
-	
-	return false;
-}
-
 $(function(){
 	
 	$("#email").on("change", emailCheck);

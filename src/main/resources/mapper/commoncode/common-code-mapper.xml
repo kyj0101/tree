@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="commonCode">
+
+	<insert id="insertCommonCode">
+		INSERT INTO
+			TB_COMMON_CODE
+				(
+					CODE,
+					CODE_NAME,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					USE_AT		
+				)
+			VALUES
+				(
+					#{code},
+					#{codeName},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'Y'
+				);
+	</insert>
+	
+	<select id="codeDuplicationCheck" resultType="int">
+		SELECT
+			COUNT(*)
+		FROM
+			TB_COMMON_CODE
+		WHERE
+			CODE  = #{code}
+	</select>
+
+</mapper>

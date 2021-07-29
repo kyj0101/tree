@@ -104,3 +104,13 @@ figcaption p{
     font-size: 18px;
     font-weight: 700;
 }
+
+.help{
+	color:red;
+	display:inline-block;
+	padding-left: 10px;
+}
+
+.hide{
+	display: none;
+}
