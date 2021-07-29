@@ -5,6 +5,8 @@
 <mapper namespace="commonCode">
 
 	<insert id="insertCommonCode">
+		/* commonCode.insertCommonCode */
+		
 		INSERT INTO
 			TB_COMMON_CODE
 				(
@@ -29,6 +31,7 @@
 	</insert>
 	
 	<select id="codeDuplicationCheck" resultType="int">
+		/* commonCode.codeDuplicationCheck */
 		SELECT
 			COUNT(*)
 		FROM
@@ -36,5 +39,32 @@
 		WHERE
 			CODE  = #{code}
 	</select>
+	
+	<select id="getTotalCommonCode" resultType="int">
+		/* commonCode.getTotalCommonCode */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_COMMON_CODE
+	</select>
+	
+	<select id="selectCommonCodeList" resultMap="commonCode">
+		/* commonCode.selectCommonCodeList */
+		
+		SELECT
+			CODE,
+			CODE_NAME,
+			USE_AT
+		FROM
+			TB_COMMON_CODE
+	</select>
+	
+	<resultMap type="map" id="commonCode">
+		<id column="CODE" property="code" />
+		
+		<result column="USE_AT" property="useAt" />
+		<result column="CODE_NAME" property="codeName" />
+	</resultMap>
 
 </mapper>

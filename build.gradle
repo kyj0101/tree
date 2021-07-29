@@ -13,9 +13,6 @@ configurations {
 		extendsFrom annotationProcessor
 	}
 	
-	all {
-        exclude  group: "org.springframework.boot", module : "spring-boot-starter-logging"
-    }
 }
 
 repositories {
@@ -23,10 +20,9 @@ repositories {
 }
 
 dependencies {
-	
-	//complie 쓰면 에러나고 implementation 쓰면 에러안남 이유는 모름 ㅎ 
+
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
-	
+	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	//thymeleaf 

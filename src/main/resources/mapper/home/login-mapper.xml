@@ -5,6 +5,8 @@
 <mapper namespace="login">
 
 	<select id="selecOneMember" resultType="memberVO">
+		/* login.selecOneMember */
+		
 		SELECT
 			*
 		FROM

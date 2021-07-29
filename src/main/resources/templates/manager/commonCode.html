@@ -80,46 +80,19 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
+								<tr th:each="map : ${commonCodeListMap}">
+									<td th:text="${map.code}"></td>
+									<td th:text="${map.codeName}"></td>
+									<td th:text="${map.useAt}"></td>
 								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
+
 							</tbody>
 						</table>
 						<nav aria-label="Page navigation example"
-							style="margin-top: 35px;">
-							<ul class="pagination justify-content-center">
-								<li class="page-item"><a class="page-link" href="#"
-									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-								</a></li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#"
-									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-								</a></li>
-							</ul>
+							style="margin-top: 35px;"
+							th:utext="${pageBar}">
+
+
 						</nav>
 					</li>
 					<li><i class="fas fa-chevron-right"></i></li>
@@ -146,8 +119,9 @@
 									</tr>
 									<tr>
 										<th scope="row" class="table-secondary">사용여부</th>
-										<td class="table-light"><input type="text" name="useAt"
-											id="useAt"></td>
+										<td class="table-light">
+											<input type="text" name="useAt" id="useAt">
+										</td>
 									</tr>
 								</tbody>
 							</table>

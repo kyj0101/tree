@@ -1,5 +1,6 @@
 package com.vtex.tree.commoncode.service.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,16 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	@Override
 	public boolean codeDuplicationCheck(String code) {
 		return commonCodeMapper.codeDuplicationCheck(code);
+	}
+
+	@Override
+	public int getTotalCommonCode() {
+		return commonCodeMapper.getTotalCommonCode();
+	}
+
+	@Override
+	public List<Map<String, String>> selectCommonCodeList(Map<String, Object> param) {
+		return commonCodeMapper.selectCommonCodeList(param);
 	}
 	
 }

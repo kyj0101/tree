@@ -114,3 +114,11 @@ figcaption p{
 .hide{
 	display: none;
 }
+
+.disabled{
+	margin-top: 0 !important;
+	height: 43px !important;
+}
+.disabled a{
+    height: 43px;
+}

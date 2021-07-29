@@ -5,6 +5,8 @@
 <mapper namespace="signup">
 	
 	<insert id="insertMember">
+		/* signup.insertMember */
+		
 		INSERT INTO 
 			TB_MEMBER
 				(
@@ -45,6 +47,8 @@
 	</insert>
 	
 	<select id="emailCheck" resultType="int">
+		/* signup.emailCheck */
+		
 		SELECT
 			COUNT(*)
 		FROM
@@ -54,6 +58,8 @@
 	</select>
 	
 	<update id="updateEmailVerify">
+		/* signup.updateEmailVerify */
+		
 		UPDATE 
 			TB_MEMBER
 		SET
