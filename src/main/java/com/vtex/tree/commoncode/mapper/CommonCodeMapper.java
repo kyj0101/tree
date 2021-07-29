@@ -13,4 +13,6 @@ public interface CommonCodeMapper {
 
 	List<Map<String, String>> selectCommonCodeList(Map<String, Object> param);
 
+	void updateCommonCode(Map<String, String> param);
+
 }

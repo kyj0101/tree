@@ -62,7 +62,7 @@ public class CommonCodeContorller {
 	 * @param request
 	 * @return
 	 */
-	@RequestMapping("/list/insert")
+	@RequestMapping("/code/insert")
 	public String insertCommonCode(String codeName, 
 									String code, 
 									String useAt,
@@ -100,6 +100,32 @@ public class CommonCodeContorller {
 		boolean isDuplicate = commonCodeService.codeDuplicationCheck(code);
 		
 		return isDuplicate ? "true" : "false";
+	}
+	
+	@RequestMapping("/code/update")
+	public String updateCommonCode(String codeName, 
+									String code, 
+									String useAt,
+									HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		System.out.println(member.toString());
+		Map<String, String> param = new HashMap<>();
+		
+		param.put("codeName", codeName);
+		param.put("code", code);
+		param.put("useAt", useAt);
+		param.put("email", member.getEmail());
+		
+		
+		try {
+			commonCodeService.updateCommonCode(param);
+			return "redirect:/commoncode/list";
+			
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
 	}
 	
 }

@@ -80,7 +80,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr th:each="map : ${commonCodeListMap}">
+								<tr class="firstCode" th:each="map : ${commonCodeListMap}">
 									<td th:text="${map.code}"></td>
 									<td th:text="${map.codeName}"></td>
 									<td th:text="${map.useAt}"></td>
@@ -91,8 +91,6 @@
 						<nav aria-label="Page navigation example"
 							style="margin-top: 35px;"
 							th:utext="${pageBar}">
-
-
 						</nav>
 					</li>
 					<li><i class="fas fa-chevron-right"></i></li>
@@ -107,8 +105,9 @@
 								<tbody>
 									<tr>
 										<th scope="row" class="table-secondary">코드명</th>
-										<td class="table-light"><input type="text"
-											name="codeName" id="codeName" class="codeName"></td>
+										<td class="table-light">
+											<input type="text" name="codeName" id="codeName" class="codeName">
+										</td>
 									</tr>
 									<tr>
 										<th scope="row" class="table-secondary">코드</th>

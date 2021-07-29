@@ -45,4 +45,9 @@ public class CommonCodeMapperImpl implements CommonCodeMapper{
 		
 		return session.selectList("commonCode.selectCommonCodeList", param, rowBounds);
 	}
+
+	@Override
+	public void updateCommonCode(Map<String, String> param) {
+		session.update("commonCode.updateCommonCode", param);
+	}
 }

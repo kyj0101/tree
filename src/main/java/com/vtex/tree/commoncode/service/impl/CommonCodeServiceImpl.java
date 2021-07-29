@@ -35,5 +35,10 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	public List<Map<String, String>> selectCommonCodeList(Map<String, Object> param) {
 		return commonCodeMapper.selectCommonCodeList(param);
 	}
+
+	@Override
+	public void updateCommonCode(Map<String, String> param) {
+		commonCodeMapper.updateCommonCode(param);
+	}
 	
 }

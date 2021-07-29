@@ -60,6 +60,19 @@
 			TB_COMMON_CODE
 	</select>
 	
+	<update id="updateCommonCode">
+		/* commonCode.updateCommonCode */
+		UPDATE 
+			TB_COMMON_CODE
+		SET
+			CODE_NAME = #{codeName},
+			USE_AT = #{useAt},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
+		WHERE
+			CODE = #{code}
+	</update>
+	
 	<resultMap type="map" id="commonCode">
 		<id column="CODE" property="code" />
 		
