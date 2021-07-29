@@ -21,7 +21,8 @@
 				FRST_REGISTER_ID,
 				LAST_UPDT_PNTTM,
 				LAST_UPDUSR_ID,
-				QUIT_AT
+				QUIT_AT,
+				ROLE_CODE
 			)
 		VALUES
 			(
@@ -38,7 +39,8 @@
 				#{frstRegisterId},
 				sysdate,
 				#{lastUpdusrId},
-				default
+				default,
+				'MANAGER'
 			)
 	</insert>
 	

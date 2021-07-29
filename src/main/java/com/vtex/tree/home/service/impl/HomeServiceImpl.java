@@ -35,5 +35,10 @@ public class HomeServiceImpl implements HomeService {
 	public int updateEmailVerify(Map<String, String> param) {
 		return homeMapper.updateEmailVerify(param);
 	}
+
+	@Override
+	public MemberVO selectOneMember(String email) {
+		return homeMapper.selectOneMember(email);
+	}
 	
 }

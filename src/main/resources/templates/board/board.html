@@ -92,19 +92,19 @@
         </div>
 
         <div id="user-profile" class="user-profile-hidden">
-          <h5>김개발</h5>
+          <h5 th:text='${session.loginMember.name}'></h5>
           <ul>
             <li>
               <label for="email" class="visually-hidden">이메일</label>
-              <input class="form-control" id="email" type="email" value="abc123@gmail.com" readonly>
+              <input class="form-control" id="email" type="email" th:value='${session.loginMember.email}' readonly>
             </li>
             <li>
               <label for="position" class="visually-hidden">부서</label>
-              <input class="form-control" id="position" type="text" value="개발팀"readonly>
+              <input class="form-control" id="position" type="text" th:value='${session.loginMember.department}' readonly>
             </li>
             <li>
               <label for="department" class="visually-hidden">직급</label>
-              <input class="form-control" id="department" type="text" value="사원"  readonly>
+              <input class="form-control" id="department" type="text" th:value='${session.loginMember.position}'  readonly>
             </li>
           </ul>
           <ul class="btn-ul">
@@ -115,11 +115,9 @@
               <button type="button" class="btn btn-success disabled">퇴근</button>    
             </li>
           </ul>
-          <button type="button" class="btn btn-warning">로그아웃</button>
+          <button type="button" class="btn btn-warning btnLogout">로그아웃</button>
+          <form id="logoutForm"></form>
         </div>
-
-
-
       </div>
     </aside>
 

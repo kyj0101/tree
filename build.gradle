@@ -27,8 +27,6 @@ dependencies {
 	//complie 쓰면 에러나고 implementation 쓰면 에러안남 이유는 모름 ㅎ 
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	
-	implementation 'org.springframework.boot:spring-boot-starter-security'
-
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	
 	//thymeleaf 

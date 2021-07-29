@@ -70,6 +70,14 @@ $(function(){
         }
     });
 
+	$(".btnLogout").click(function(){
+		
+		var $logoutForm = $("#logoutForm");
+		
+		$logoutForm.attr("method", "POST");
+		$logoutForm.attr("action", "/logout");
+		$logoutForm.submit();
+	})
 
 });
 

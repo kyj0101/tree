@@ -51,11 +51,11 @@
 </body>
 </html>
 <script th:inline="javascript">
-/*<![CDATA[*/ 
-var msg = /*[[ ${msg} ]]*/; 
-/*]]*/
 
-if(msg != null){
+var msg = '[[ ${msg} ]]'; 
+
+if(msg != "" && msg != "null" ){
 	alert(msg);
 }
+
 </script>

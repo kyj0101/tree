@@ -1,5 +1,7 @@
 package com.vtex.tree.home.controller;
 
+import static com.vtex.tree.common.util.EncryptedPassword.getEncryptedPassword;
+
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
@@ -8,16 +10,16 @@ import java.util.UUID;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,11 +37,12 @@ public class HomeController {
 	private HomeService homeService;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder; 
-	
-	@Autowired
 	private JavaMailSenderImpl mailSender;
 	
+	/**
+	 * 홈페이지
+	 * @return
+	 */
 	@RequestMapping("/")
 	public String home() {
 		List<String> memberList = homeService.getMemberList();
@@ -47,17 +50,29 @@ public class HomeController {
 		return "/home/home";	
 	}
 	
-	@GetMapping("/login")
+	/**
+	 * 로그인 페이지
+	 * @return
+	 */
+	@RequestMapping("/login")
 	public String login() {
 		return "home/login";
 	}
 	
+	/**
+	 * 회원가입 페이지
+	 * @return
+	 */
 	@RequestMapping("/signup")
 	public String signUp() {
 		return "home/signup";
 	}
 	
-
+	/**
+	 * 이메일 중복검사
+	 * @param email
+	 * @return
+	 */
 	@ResponseBody
 	@RequestMapping("/email/duplication/check")
 	public String emailDuplicationCheck(String email) {
@@ -66,6 +81,13 @@ public class HomeController {
 		return isDuplicate ? "true" : "false";
 	}
 	
+	/**
+	 * 이메일 인증 페이지
+	 * @param model
+	 * @param key 이메일 인증키
+	 * @param email 이메일 주소
+	 * @return
+	 */
 	@RequestMapping("/email/verify")
 	public String emailVerify(Model model, String key, String email) {
 		
@@ -75,10 +97,18 @@ public class HomeController {
 		return "home/emailVerify";
 	}
 	
+	/**
+	 * 회원 가입 처리
+	 * @param member
+	 * @param domain
+	 * @return
+	 * @throws MessagingException
+	 * @throws UnsupportedEncodingException
+	 */
 	@PostMapping("/signup")
 	public String signUp(MemberVO member, String domain) throws MessagingException, UnsupportedEncodingException {
 		
-		String password = passwordEncoder.encode(member.getPassword());
+		String password = getEncryptedPassword(member.getPassword());
 		String key = UUID.randomUUID().toString();
 		
 		member.setBirth(member.getBirth().replaceAll("-", ""));
@@ -114,9 +144,16 @@ public class HomeController {
 			throw e;
 		}
 		
-		return "home/login";
+		return "redirect:/";
 	}
 	
+	/**
+	 * 이메일 인증 처리
+	 * @param email
+	 * @param key
+	 * @param redirectAttribute
+	 * @return
+	 */
 	@PostMapping("/email/verify")
 	public String emailVerify(String email, String key, RedirectAttributes redirectAttribute) {
 		Map<String, String> param = new HashMap<>();
@@ -137,6 +174,43 @@ public class HomeController {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+	
+	/**
+	 * 로그인 처리
+	 * @param email
+	 * @param password
+	 * @param request
+	 * @return
+	 */
+	@ResponseBody
+	@RequestMapping("/login/check")
+	public String loginCheck(String email, String password, HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = homeService.selectOneMember(email);
+		String inputPassword = getEncryptedPassword(password);
+
+		if(member != null && member.getPassword().equals(inputPassword)) {
+			session.setAttribute("loginMember", member);
+			return "OK";
+		}
+		
+		return "FAIL";
+	} 
+	
+	/**
+	 * 로그아웃 처리
+	 */
+	@RequestMapping("/logout")
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		
+		if(session != null) {
+			session.invalidate();			
+		}
+		
+		return "redirect:/";
 	}
 	
 	

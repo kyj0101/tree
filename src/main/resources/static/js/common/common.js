@@ -12,7 +12,7 @@ function emailDuplicationCheck(email){
 
 	$.ajax({
 		type:"get",
-		url:"http://localhost:9090/email/duplication/check",
+		url:"http://localhost:9090/login/success",
 		data:{"email":email},
 		
 		success(val){

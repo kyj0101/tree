@@ -40,7 +40,7 @@ public class HomeMapperImpl implements HomeMapper {
 	}
 
 	@Override
-	public MemberVO selectOneMember(String userName) {
-		return session.selectOne("security.selectOneMember", userName);
+	public MemberVO selectOneMember(String email) {
+		return session.selectOne("login.selecOneMember", email);
 	}
 }

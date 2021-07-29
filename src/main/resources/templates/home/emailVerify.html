@@ -41,7 +41,6 @@
     </p>
     <p class="small-p">*아래 버튼을 누르면 로그인 페이지로 이동됩니다.</p>
     <form method="POST" action="/email/verify">
-    	<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
     	<input type="hidden" th:name="key" th:value="${key}" />
     	<input type="hidden" th:name="email" th:value="${email}" />
 	    <button type="submit" class="btn btn-light">인증</button>

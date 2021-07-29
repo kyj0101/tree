@@ -15,4 +15,6 @@ public interface HomeService {
 
 	int updateEmailVerify(Map<String, String> param);
 
+	MemberVO selectOneMember(String email);
+
 }
