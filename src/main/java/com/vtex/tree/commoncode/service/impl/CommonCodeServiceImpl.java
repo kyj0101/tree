@@ -40,5 +40,27 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	public void updateCommonCode(Map<String, String> param) {
 		commonCodeMapper.updateCommonCode(param);
 	}
+
+	@Override
+	public void insertDetailCode(Map<String, String> param) {
+		commonCodeMapper.insertDetailCode(param);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDetailCodeList(Map<String, Object> param) {
+		return commonCodeMapper.selectDetailCodeList(param);
+	}
+
+	@Override
+	public void deleteCommonCode(Map<String, String> param) {
+		commonCodeMapper.deleteCommonCode(param);
+	}
+
+	@Override
+	public int getTotalDetailCode(String code) {
+		return commonCodeMapper.getTotalDetailCode(code);
+	}
+
+	
 	
 }

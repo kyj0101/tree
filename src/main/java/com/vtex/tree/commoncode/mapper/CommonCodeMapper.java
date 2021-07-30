@@ -15,4 +15,12 @@ public interface CommonCodeMapper {
 
 	void updateCommonCode(Map<String, String> param);
 
+	void insertDetailCode(Map<String, String> param);
+
+	List<Map<String, Object>> selectDetailCodeList(Map<String, Object> param);
+
+	void deleteCommonCode(Map<String, String> param);
+
+	int getTotalDetailCode(String code);
+
 }

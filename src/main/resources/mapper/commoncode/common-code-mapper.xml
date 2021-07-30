@@ -4,6 +4,21 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="commonCode">
 
+	<resultMap type="map" id="commonCode">
+		<id column="CODE" property="code" />
+
+		<result column="USE_AT" property="useAt" />
+		<result column="CODE_NAME" property="codeName" />
+	</resultMap>
+
+	<resultMap type="map" id="detailCode">
+		<id column="DETAIL_CODE" property="detailCode" />
+
+		<result column="CODE" property="code" />
+		<result column="USE_AT" property="useAt" />
+		<result column="DETAIL_CODE_NAME" property="detailCodeName" />
+	</resultMap>
+	
 	<insert id="insertCommonCode">
 		/* commonCode.insertCommonCode */
 		
@@ -30,8 +45,14 @@
 				);
 	</insert>
 	
+	<insert id="insertDetailCode">
+		/* commonCode.insertDetailCode */
+		
+	</insert>
+	
 	<select id="codeDuplicationCheck" resultType="int">
 		/* commonCode.codeDuplicationCheck */
+		
 		SELECT
 			COUNT(*)
 		FROM
@@ -58,10 +79,39 @@
 			USE_AT
 		FROM
 			TB_COMMON_CODE
+		ORDER BY CODE
+	</select>
+	
+	<select id="selectDetailCode" resultMap="detailCode">
+		/* commonCode.selectDetailCode */
+
+		SELECT
+			DETAIL_CODE,
+			CODE,
+			DETAIL_CODE_NAME,
+			USE_AT,
+			SORT_ORDR
+		FROM
+			TB_COMMON_CODE_DETAIL
+		WHERE
+			CODE = #{code}
+		ORDER BY SORT_ORDR, DETAIL_CODE	
+	</select>
+	
+	<select id="getTotalDetailCode" resultType="int">
+		/* commonCode.getTotalDetailCode */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_COMMON_CODE_DETAIL
+		WHERE
+			CODE  = #{code}
 	</select>
 	
 	<update id="updateCommonCode">
 		/* commonCode.updateCommonCode */
+		
 		UPDATE 
 			TB_COMMON_CODE
 		SET
@@ -73,11 +123,18 @@
 			CODE = #{code}
 	</update>
 	
-	<resultMap type="map" id="commonCode">
-		<id column="CODE" property="code" />
+	<update id="deleteCommonCode">
+		/* commonCode.deleteCommonCode */
 		
-		<result column="USE_AT" property="useAt" />
-		<result column="CODE_NAME" property="codeName" />
-	</resultMap>
+		UPDATE
+			TB_COMMON_CODE
+		SET
+			USE_AT = 'N',
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
+		WHERE
+			CODE = #{code}
+	</update>
+	
 
 </mapper>

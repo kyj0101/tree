@@ -50,4 +50,31 @@ public class CommonCodeMapperImpl implements CommonCodeMapper{
 	public void updateCommonCode(Map<String, String> param) {
 		session.update("commonCode.updateCommonCode", param);
 	}
+
+	@Override
+	public void insertDetailCode(Map<String, String> param) {
+		session.insert("commonCode.insertDetailCode", param);
+	}
+
+	@Override
+	public void deleteCommonCode(Map<String, String> param) {
+		session.update("commonCode.deleteCommonCode", param);
+	}
+
+	@Override
+	public List<Map<String, Object>> selectDetailCodeList(Map<String, Object> param) {
+
+		int cPage = (int)param.get("cPage");
+		int limit = (int)param.get("numPerPage");
+		int offset = (cPage - 1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		return session.selectList("commonCode.selectDetailCode", param, rowBounds);
+	}
+
+	@Override
+	public int getTotalDetailCode(String code) {
+		return session.selectOne("commonCode.getTotalDetailCode", code);
+	}
 }

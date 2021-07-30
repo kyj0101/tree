@@ -97,18 +97,11 @@
 					<li>
 						<button type="button" class="btn btn-success firstCodeAddBtn"
 							style="margin-left: 350px;">저장</button>
-						<button type="button" class="btn btn-secondary">삭제</button>
-
-						<form class="firstCodeAddForm">
+						<button type="button" class="btn btn-secondary deleteCommonCode">삭제</button>
+						<form class="commonCodeForm">
 							<table class="table table-bordered"
 								style="width: 500px; margin-top: 100px; margin-right: 100px;">
 								<tbody>
-									<tr>
-										<th scope="row" class="table-secondary">코드명</th>
-										<td class="table-light">
-											<input type="text" name="codeName" id="codeName" class="codeName">
-										</td>
-									</tr>
 									<tr>
 										<th scope="row" class="table-secondary">코드</th>
 										<td class="table-light">
@@ -117,15 +110,33 @@
 										</td>
 									</tr>
 									<tr>
-										<th scope="row" class="table-secondary">사용여부</th>
+										<th scope="row" class="table-secondary">코드명</th>
 										<td class="table-light">
-											<input type="text" name="useAt" id="useAt">
+											<input type="text" name="codeName" id="codeName" class="codeName">
+										</td>
+									</tr>
+									<tr>
+										<th scope="row" class="table-secondary">사용여부</th>
+										<td class="table-light" style="display: flex;">
+
+											<div class="form-check" >
+											  <input class="form-check-input useAt" type="radio" value="Y" name="useAt" id="useAtY">
+											  <label class="form-check-label" for="flexRadioDefault1">
+											    예
+											  </label>
+											</div>
+											<div class="form-check" style="padding-left: 50px;">
+											  <input class="form-check-input useAt" type="radio" value="N" name="useAt" id="useAtN">
+											  <label class="form-check-label" for="flexRadioDefault2">
+											    아니요
+											  </label>
+											</div>
 										</td>
 									</tr>
 								</tbody>
 							</table>
 						</form>
-
+				
 					</li>
 				</ul>
 			</div>
@@ -135,86 +146,80 @@
 					<li>
 						<figure>
 							<figcaption>
-								<p>2차 코드</p>
-								<button type="button" class="add-btn btn btn-primary">추가</button>
+								<p>공통 상세 코드</p>
+								<button type="button" class="addDetailCode btn btn-primary">추가</button>
 							</figcaption>
 						</figure>
 						<table
 							class="code-table table table-striped table-bordered table-hover">
 							<thead>
 								<tr>
-									<th scope="col">코드</th>
-									<th scope="col">코드명</th>
-									<th scope="col">사용여부</th>
+									<th scope="col">상세 코드</th>
+									<th scope="col">상세 코드명</th>
+									<th scope="col">사용여부</th>									
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
-								<tr>
-									<td>PTOOOO05</td>
-									<td>출고구분</td>
-									<td>Y</td>
-								</tr>
+							<tbody class="detailCodeTbody">
 							</tbody>
 						</table>
 						<nav aria-label="Page navigation example"
-							style="margin-top: 25px;">
-							<ul class="pagination justify-content-center">
-								<li class="page-item"><a class="page-link" href="#"
-									aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
-								</a></li>
-								<li class="page-item"><a class="page-link" href="#">1</a></li>
-								<li class="page-item"><a class="page-link" href="#">2</a></li>
-								<li class="page-item"><a class="page-link" href="#">3</a></li>
-								<li class="page-item"><a class="page-link" href="#"
-									aria-label="Next"> <span aria-hidden="true">&raquo;</span>
-								</a></li>
-							</ul>
+							style="margin-top: 25px;"
+							class="detailCodePageBar">
 						</nav>
 					</li>
 					<li><i class="fas fa-chevron-right"></i></li>
 					<li>
-						<button type="button" class="btn btn-success"
-							style="margin-left: 350px;">저장</button>
+						<button type="button" class="btn btn-success detailCodeAdd" style="margin-left: 350px;">
+							저장
+						</button>
 						<button type="button" class="btn btn-secondary">삭제</button>
 						<table class="table table-bordered"
 							style="width: 500px; margin-top: 100px; margin-right: 100px;">
+							<form class="detailCodeAddForm">
 							<tbody>
 								<tr>
-									<th scope="row" class="table-secondary">코드명</th>
-									<td class="table-light"><input type="text" value="색상코드">
+									<th scope="row" class="table-secondary">코드</th>
+									<td class="table-light">
+										<input type="text" class="commonCode" readonly="readonly">
 									</td>
 								</tr>
 								<tr>
-									<th scope="row" class="table-secondary">코드</th>
-									<td class="table-light"><input type="text"
-										value="PTOOOO01"></td>
+									<th scope="row" class="table-secondary">상세 코드</th>
+									<td class="table-light">
+										<input type="text" id="detailCode" name="detailCode">
+										<p class="form-text help hide"> 중복된 코드입니다.</p>
+									</td>
+								</tr>
+								<tr>
+									<th scope="row" class="table-secondary">상세 코드명</th>
+									<td class="table-light" id="detailCodeName" name="detailCodeName">
+										<input type="text">
+									</td>
+								</tr>
+								<tr>
+								<th scope="row" class="table-secondary">순서</th>
+									<td class="table-light" id="detailCodeName" name="detailCodeName">
+										<input type="number">
+									</td>
 								</tr>
 								<tr>
 									<th scope="row" class="table-secondary">사용여부</th>
-									<td class="table-light"><input type="text" value="Y">
+									<td class="table-light" style="display: flex;">
+										<!-- <input type="text" name="useAt" id="useAt"> -->
+										<div class="form-check">
+											<input class="form-check-input" type="radio"
+													name="flexRadioDefault" id="flexRadioDefault1">
+											<label class="form-check-label" for="flexRadioDefault1"> 예 </label>
+										</div>
+										<div class="form-check" style="padding-left: 50px;">
+											<input class="form-check-input" type="radio"
+													name="flexRadioDefault" id="flexRadioDefault2" checked>
+											<label class="form-check-label" for="flexRadioDefault2"> 아니요 </label>
+										</div>
 									</td>
 								</tr>
 							</tbody>
+							</form>
 						</table>
 					</li>
 				</ul>

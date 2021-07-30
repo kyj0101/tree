@@ -18,18 +18,19 @@ public class PageBar {
 		
 		//증감변수
 		int pageNo = pageStart;
-		
+		System.out.println("====================================="+pageNo);
+		System.out.println(((2 - 1) / pageBarSize) * pageBarSize + 1);
 		pageBar.append("<nav><ul class=\"pagination justify-content-center\">\n");
 		
 		//이전 영역
-		if(pageNo == 1) {
+		if(cPage == 1) {
 			pageBar.append("<li class=\"page-item disabled\">\r\n" + 
 					"      <a class=\"page-link\" href=\"#\" tabindex=\"-1\">&laquo;</a>\r\n" + 
 					"    </li>\n");
 		}
 		else {
 			pageBar.append("<li class=\"page-item\">\r\n" + 
-					"      <a class=\"page-link\" href=\"javascript:paging(" + (pageNo - 1) + ")\" tabindex=\"-1\">&laquo;</a>\r\n" + 
+					"      <a class=\"page-link\" href=\"javascript:paging(" + (cPage - 1) + ")\" tabindex=\"-1\">&laquo;</a>\r\n" + 
 					"    </li>\n");
 		}
 		
@@ -45,14 +46,14 @@ public class PageBar {
 			pageNo++;
 		}
 		//다음 영역
-		if(pageNo > totalPage) {
+		if(cPage > totalPage) {
 			pageBar.append("<li class=\"page-item\">\r\n" + 
 					"      <a class=\"page-link\" href=\"#\">&raquo;</a>\r\n" + 
 					"    </li>\n");
 		}
 		else {
 			pageBar.append("<li class=\"page-item\">\r\n" + 
-					"      <a class=\"page-link\" href=\"javascript:paging(" + pageNo + ")\">&raquo;</a>\r\n" + 
+					"      <a class=\"page-link\" href=\"javascript:paging(" + (cPage + 1) + ")\">&raquo;</a>\r\n" + 
 					"    </li>\n");
 		}
 		

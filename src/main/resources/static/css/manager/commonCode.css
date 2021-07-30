@@ -126,3 +126,7 @@ figcaption p{
 .disabled a{
     height: 43px;
 }
+
+.commonCode{
+	background-color: #c0c0c0;
+}
