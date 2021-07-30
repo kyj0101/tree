@@ -61,6 +61,11 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 		return commonCodeMapper.getTotalDetailCode(code);
 	}
 
+	@Override
+	public Map<String, Object> selectOneDetailCode(String detailCode) {
+		return commonCodeMapper.selectOneDetailCode(detailCode);
+	}
+
 	
 	
 }

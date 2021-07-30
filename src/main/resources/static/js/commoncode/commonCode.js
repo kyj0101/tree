@@ -2,6 +2,7 @@ var cPage = 1; //페이지바 현재 페이지
 var pageCode = ""; //페이지바 이동시 코드 저장할 변수
 var total = 0;
 var commonCodeClickNum = 0; //연속으로 공통코드 테이블 누르면 pageCode 공백대입
+
 $(function() {
 	
 	$(".add-btn").click(function() {
@@ -18,7 +19,7 @@ $(function() {
 		
 		$.ajax({
 			type: 'get',
-			url: 'http://localhost:9090/commoncode/code/duplication/check',
+			url: '/commoncode/code/duplication/check',
 			data: {'code': code},
 
 			success(val) {
@@ -39,7 +40,7 @@ $(function() {
 		
 		firstCode.code = $("#code").val();
 		firstCode.codeName = $("#codeName").val();
-		firstCode.useAt = $("input[name='flexRadioDefault']:checked").val();
+		firstCode.useAt = $("input[name='useAt']:checked").val();
 
 		var isNull = nullCheck(firstCode);
 		var isHelpDisplay = helpDisplayCheck();
@@ -95,7 +96,7 @@ $(function() {
 	});
 	
 	
-	$(".firstCode").click(function(){
+	$(".commonCodeTr").click(function(){
 		commonCodeClickNum += 1;
 		
 		if(commonCodeClickNum >= 6){
@@ -138,7 +139,7 @@ $(function() {
 			data:{"code":code, "cPage":cPage},
 			dataType:"json",
 			success(result){
-				console.log(result);
+
 				$(".detailCodeTbody").empty();
 				$(".detailCodePageBar").empty();
 
@@ -151,7 +152,7 @@ $(function() {
 											
 						var html = "";
 						
-						html += "<tr>";
+						html += "<tr class='detailCodeTr'>";
 						html += '<td>' + item.detailCode + '</td>';
 						html += '<td>' + item.detailCodeName + '</td>';
 						html += '<td>' + item.useAt + '</td>';
@@ -212,6 +213,7 @@ $(function() {
 				
 				$(".detailCodePageBar").html(pageBar);
 				$(".page-item").on("click", clickPageBar);
+				$(".detailCodeTr").on("click", clickDetailCode);
 			},
 			
 			error(xhr, status, err){
@@ -228,10 +230,6 @@ $(function() {
 		$commonCodeForm.submit();
 		
 	});
-	
-
-	
-
 
 })
 
@@ -254,6 +252,36 @@ function clickPageBar(){
 		return;
 	}
 	
+	$(".commonCodeTr").click();
+}
+
+function clickDetailCode(){
+	var detailCode = $($(this).children()[0]).text();
 	
-	$(".firstCode").click();
+	$.ajax({
+		type: "get",
+		url: "/commoncode/detail/code/detail",
+		data: { "detailCode": detailCode,},
+		dataType: "json",
+		
+		success(result) {
+			console.log(result);
+			$(".commonCode").val(result.code);
+			$("#detailCode").val(result.detailCode);
+			$("#detailCodeName").val(result.detailCodeName);
+			$("#sortOrdr").val(result.sortOrdr);
+			
+			if(result.useAt == 'Y'){
+				$("#detailCodeUseAtY").prop("checked", true);
+		
+			}else{
+				$("#detailCodeUseAtN").prop("checked", true);
+			}
+	
+		},
+
+		error(xhr, status, err) {
+			console.log(xhr, status, err);
+		}
+	});
 }

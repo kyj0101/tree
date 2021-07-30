@@ -77,4 +77,9 @@ public class CommonCodeMapperImpl implements CommonCodeMapper{
 	public int getTotalDetailCode(String code) {
 		return session.selectOne("commonCode.getTotalDetailCode", code);
 	}
+
+	@Override
+	public Map<String, Object> selectOneDetailCode(String detailCode) {
+		return session.selectOne("commonCode.selectOneDetailCode", detailCode);
+	}
 }

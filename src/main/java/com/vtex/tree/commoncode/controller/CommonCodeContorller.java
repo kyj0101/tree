@@ -204,6 +204,13 @@ public class CommonCodeContorller {
 		}
 	}
 	
+	/**
+	 * 상세 공통 코드 리스트
+	 * @param code
+	 * @param cPage
+	 * @param response
+	 * @throws IOException
+	 */
 	@ResponseBody
 	@RequestMapping(value="/detail/code/list")
 	public void getDetailCodeList(String code,
@@ -224,7 +231,7 @@ public class CommonCodeContorller {
 			totalMap.put("total", totalNum);
 			detailCodeMapList.add(totalMap);
  			
-			System.out.println("===============" + detailCodeMapList.toString());
+
 			response.setContentType("text/html;charset=UTF-8");
 			new Gson().toJson(detailCodeMapList,response.getWriter());
 		
@@ -236,6 +243,22 @@ public class CommonCodeContorller {
 		}
 	}
 	
+	@ResponseBody
+	@RequestMapping("/detail/code/detail")
+	public void selectOneDetailCode(String detailCode, HttpServletResponse response) {
+		
+		try {
+			
+			Map<String, Object> detailCodeMap = commonCodeService.selectOneDetailCode(detailCode);
+
+			response.setContentType("text/html;charset=UTF-8");
+			new Gson().toJson(detailCodeMap,response.getWriter());
+			
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+
+	}
 
 	
 }

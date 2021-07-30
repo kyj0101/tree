@@ -80,7 +80,7 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr class="firstCode" th:each="map : ${commonCodeListMap}">
+								<tr class="commonCodeTr" th:each="map : ${commonCodeListMap}">
 									<td th:text="${map.code}"></td>
 									<td th:text="${map.codeName}"></td>
 									<td th:text="${map.useAt}"></td>
@@ -156,7 +156,8 @@
 								<tr>
 									<th scope="col">상세 코드</th>
 									<th scope="col">상세 코드명</th>
-									<th scope="col">사용여부</th>									
+									<th scope="col">사용여부</th>
+									
 								</tr>
 							</thead>
 							<tbody class="detailCodeTbody">
@@ -192,14 +193,14 @@
 								</tr>
 								<tr>
 									<th scope="row" class="table-secondary">상세 코드명</th>
-									<td class="table-light" id="detailCodeName" name="detailCodeName">
-										<input type="text">
+									<td class="table-light">
+										<input type="text" id="detailCodeName" name="detailCodeName">
 									</td>
 								</tr>
 								<tr>
 								<th scope="row" class="table-secondary">순서</th>
-									<td class="table-light" id="detailCodeName" name="detailCodeName">
-										<input type="number">
+									<td class="table-light" >
+										<input type="number" id="sortOrdr" name="sortOrdr">
 									</td>
 								</tr>
 								<tr>
@@ -208,12 +209,12 @@
 										<!-- <input type="text" name="useAt" id="useAt"> -->
 										<div class="form-check">
 											<input class="form-check-input" type="radio"
-													name="flexRadioDefault" id="flexRadioDefault1">
+													name="flexRadioDefault" id="detailCodeUseAtY">
 											<label class="form-check-label" for="flexRadioDefault1"> 예 </label>
 										</div>
 										<div class="form-check" style="padding-left: 50px;">
 											<input class="form-check-input" type="radio"
-													name="flexRadioDefault" id="flexRadioDefault2" checked>
+													name="flexRadioDefault" id="detailCodeUseAtN" checked>
 											<label class="form-check-label" for="flexRadioDefault2"> 아니요 </label>
 										</div>
 									</td>

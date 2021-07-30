@@ -23,4 +23,6 @@ public interface CommonCodeMapper {
 
 	int getTotalDetailCode(String code);
 
+	Map<String, Object> selectOneDetailCode(String detailCode);
+
 }

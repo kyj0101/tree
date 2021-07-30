@@ -27,7 +27,7 @@ section{
     height: 100vh; 
 }
 
-.firstCode{
+.commonCodeTr , .detailCodeTr{
 	cursor: pointer;
 }
   

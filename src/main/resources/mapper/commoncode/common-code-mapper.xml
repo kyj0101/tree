@@ -17,6 +17,7 @@
 		<result column="CODE" property="code" />
 		<result column="USE_AT" property="useAt" />
 		<result column="DETAIL_CODE_NAME" property="detailCodeName" />
+		<result column="SORT_ORDR" property="sortOrdr"/>
 	</resultMap>
 	
 	<insert id="insertCommonCode">
@@ -107,6 +108,21 @@
 			TB_COMMON_CODE_DETAIL
 		WHERE
 			CODE  = #{code}
+	</select>
+	
+	<select id="selectOneDetailCode" resultMap="detailCode">
+		/* commonCode.selectOneDetailCode */
+		
+		SELECT
+			CODE,
+			DETAIL_CODE,
+			DETAIL_CODE_NAME,
+			SORT_ORDR,
+			USE_AT
+		FROM
+			TB_COMMON_CODE_DETAIL
+		WHERE
+			DETAIL_CODE = #{detailCode}
 	</select>
 	
 	<update id="updateCommonCode">

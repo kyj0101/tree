@@ -26,9 +26,14 @@ function loginAction(){
 					form.attr('method', 'POST');
 					form.attr('action', '/board/list');
 					form.submit();
+				
+				}else if(val == "EMAIL"){
+					alert("이메일 인증을 완료하세요.");
+				
 				}else{
 					alert("로그인에 실패했습니다.");
 				}
+				
 			},
 			error(xhr, status, err){
 				console.log(xhr, status, err);

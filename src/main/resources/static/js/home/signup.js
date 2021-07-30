@@ -102,6 +102,7 @@ $(function(){
 			return;
 		
 		}else{
+			alert("인증 이메일이 발송되었습니다. 인증 완료 후 로그인해주세요.");
 			$("#signup-form").submit();		
 		}
 		

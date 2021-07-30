@@ -190,8 +190,16 @@ public class HomeController {
 		HttpSession session = request.getSession();
 		MemberVO member = homeService.selectOneMember(email);
 		String inputPassword = getEncryptedPassword(password);
-
-		if(member != null && member.getPassword().equals(inputPassword)) {
+		
+		if(member == null) {
+			return "FAIL";
+		}
+		
+		if(member.getEmailVerifyPnttm() == null) {
+			return "EMAIL";
+		}
+		
+		if(member.getPassword().equals(inputPassword)) {
 			session.setAttribute("loginMember", member);
 			return "OK";
 		}

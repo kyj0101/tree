@@ -23,5 +23,7 @@ public interface CommonCodeService {
 
 	int getTotalDetailCode(String code);
 
+	Map<String, Object> selectOneDetailCode(String detailCode);
+
 
 }
