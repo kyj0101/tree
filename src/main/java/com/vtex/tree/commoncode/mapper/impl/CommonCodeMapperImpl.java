@@ -15,7 +15,8 @@ public class CommonCodeMapperImpl implements CommonCodeMapper{
 	
 	@Autowired
 	private SqlSession session;
-
+	
+	// ========================== 공통 코드 ================================= 
 	@Override
 	public void insertCommonCode(Map<String, String> param) {
 		session.insert("commonCode.insertCommonCode", param);
@@ -45,22 +46,29 @@ public class CommonCodeMapperImpl implements CommonCodeMapper{
 		
 		return session.selectList("commonCode.selectCommonCodeList", param, rowBounds);
 	}
+	
+	@Override
+	public Map<String, String> selectOneCommonCode(String code) {
+		return session.selectOne("commonCode.selectOneCommonCode", code);
+	}
 
 	@Override
 	public void updateCommonCode(Map<String, String> param) {
 		session.update("commonCode.updateCommonCode", param);
 	}
-
-	@Override
-	public void insertDetailCode(Map<String, String> param) {
-		session.insert("commonCode.insertDetailCode", param);
-	}
-
+	
 	@Override
 	public void deleteCommonCode(Map<String, String> param) {
 		session.update("commonCode.deleteCommonCode", param);
 	}
-
+	
+	// ========================== 공통 상세 코드 =================================
+	
+	@Override
+	public void insertDetailCode(Map<String, String> param) {
+		session.insert("commonCode.insertDetailCode", param);
+	}
+	
 	@Override
 	public List<Map<String, Object>> selectDetailCodeList(Map<String, Object> param) {
 
@@ -74,12 +82,31 @@ public class CommonCodeMapperImpl implements CommonCodeMapper{
 	}
 
 	@Override
+	public Map<String, Object> selectOneDetailCode(String detailCode) {
+		return session.selectOne("commonCode.selectOneDetailCode", detailCode);
+	}
+	
+	@Override
 	public int getTotalDetailCode(String code) {
 		return session.selectOne("commonCode.getTotalDetailCode", code);
 	}
 
 	@Override
-	public Map<String, Object> selectOneDetailCode(String detailCode) {
-		return session.selectOne("commonCode.selectOneDetailCode", detailCode);
+	public void updateDetaiLCode(Map<String, String> param) {
+		session.update("commonCode.updateDetailCode", param);
 	}
+
+	@Override
+	public boolean detailCodeDuplicatioCheck(String code) {
+		int result = session.selectOne("commonCode.detailCodeDuplicatioCheck", code); 
+		
+		return result > 0;
+	}
+
+	@Override
+	public void deleteDetailCode(Map<String, String> param) {
+		session.delete("commonCode.deleteDetailCode", param);
+	}
+
+	
 }

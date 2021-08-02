@@ -25,4 +25,12 @@ public interface CommonCodeMapper {
 
 	Map<String, Object> selectOneDetailCode(String detailCode);
 
+	void updateDetaiLCode(Map<String, String> param);
+
+	Map<String, String> selectOneCommonCode(String code);
+
+	boolean detailCodeDuplicatioCheck(String code);
+
+	void deleteDetailCode(Map<String, String> param);
+
 }

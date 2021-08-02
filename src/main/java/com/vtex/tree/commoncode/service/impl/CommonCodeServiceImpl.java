@@ -66,6 +66,26 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 		return commonCodeMapper.selectOneDetailCode(detailCode);
 	}
 
+	@Override
+	public void updateDetailCode(Map<String, String> param) {
+		commonCodeMapper.updateDetaiLCode(param);
+	}
+
+	@Override
+	public Map<String, String> selectOneCommonCode(String code) {
+		return commonCodeMapper.selectOneCommonCode(code);
+	}
+
+	@Override
+	public boolean detailCodeDuplicationCheck(String code) {
+		return commonCodeMapper.detailCodeDuplicatioCheck(code);
+	}
+
+	@Override
+	public void deleteDetailCode(Map<String, String> param) {
+		commonCodeMapper.deleteDetailCode(param);
+	}
+
 	
 	
 }

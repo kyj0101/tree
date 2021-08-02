@@ -1,7 +1,9 @@
 function nullCheck(obj){
+
 	for(var key in obj){
-		var prop = obj[key];
 		
+		var prop = obj[key];
+
 		if(prop == null || prop.length < 1){
 			return true;
 		}
@@ -17,7 +19,7 @@ function helpDisplayCheck(){
 		if(isNaN(key)){
 			break;
 		}
-		if($(helps[key]).attr("class") != "form-text help hide"){
+		if(!$(helps[key]).attr("class").includes("hide")){
 			console.log($(helps[key]).attr("class"));
 			return true;
 		}

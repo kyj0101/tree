@@ -6,48 +6,44 @@ var commonCodeClickNum = 0; //연속으로 공통코드 테이블 누르면 page
 $(function() {
 	
 	$(".add-btn").click(function() {
-		$(".firstCodeAddBtn").text("저장");
+		
+		$(".commonCodeAddBtn").text("저장");
+		
 		$("#code").removeAttr("readonly");
 		$("#code").css("background","none");
-		$("input").val("")
+		
+		commonCodeEmpty();
+		detailCodeEmpty();
+		
+		$(".detailCodeTbody").empty();
+		$(".detailCodePageBar").empty();
 	});
 	
 	$("#code").change(function(){
 		
-		$(".help").addClass("hide");
+		var url = '/commoncode/code/duplication/check';
 		var code = $('#code').val();
 		
-		$.ajax({
-			type: 'get',
-			url: '/commoncode/code/duplication/check',
-			data: {'code': code},
+		codeDuplicationCheck(url, $(".commonCodeHelp"), code)
 
-			success(val) {
-				if (val == "true") {
-					$(".help").removeClass("hide");
-				}
-			},
-			error(xhr, status, err) {
-				console.log(xhr, status, err);
-			},
-		});
 	});
 
-	$(".firstCodeAddBtn").click(function() {
+	$(".commonCodeAddBtn").click(function() {
 		
 		var $commonCodeForm = $(".commonCodeForm");
-		var firstCode = new Object();
+		var isUpdate = $(".commonCodeAddBtn").text() == "수정" ? true : false;
 		
-		firstCode.code = $("#code").val();
-		firstCode.codeName = $("#codeName").val();
-		firstCode.useAt = $("input[name='useAt']:checked").val();
-
-		var isNull = nullCheck(firstCode);
-		var isHelpDisplay = helpDisplayCheck();
-		var isUpdate = $(".firstCodeAddBtn").text() == "수정" ? true : false;
+		var commonCode = new Object();
 		
-		if(confirm($(".firstCodeAddBtn").text() + "하시겠습니까?")){
+		commonCode.code = $("#code").val();
+		commonCode.codeName = $("#codeName").val();
+		commonCode.useAt = $('input[name="useAt"]:checked').val();
 			
+		if(confirm($(".commonCodeAddBtn").text() + "하시겠습니까?")){
+
+			var isNull = nullCheck(commonCode);
+			var isHelpDisplay = helpDisplayCheck();
+		
 			if(isNull){
 				alert("입력되지 않은 칸이 있습니다.");
 				return;
@@ -69,70 +65,134 @@ $(function() {
 				$commonCodeForm.submit();
 			}
 		}
-		
-
 	});
 	
 	$(".detailCodeAdd").click(function(){
+	
+		var detailCode = new Object();
 		
-		var detailCodeObj = new Object();
-		var $detailCodeAddForm = $(".detailCodeAddForm");
-		
-		detailCodeObj.detailCode = $("#detailCode").val();
-		detailCodeObj.detailCodeName = $("#detailCodeName").val();
-		detailCodeObj.detailCodeUseAt = $("#detailCodeUseAt").val();
-		
-		var isNull = nullCheck(detailCodeObj);
-		
-		if(isNull){
-			alert("입력되지 않은 칸이 있습니다.");
-			return;
+		detailCode.code = $(".commonCode").val();
+		detailCode.detailCode = $("#detailCode").val();
+		detailCode.detailCodeName = $("#detailCodeName").val();
+		detailCode.sortOrdr = $("#sortOrdr").val();
+		detailCode.detailCodeUseAt = $('input[name="detailCodeUseAt"]:checked').val();
+
+		if(confirm($(".detailCodeAdd").text() + "하시겠습니까?")){
 			
-		}else{
-			$detailCodeAddForm.attr("method", "POST");
-			$detailCodeAddForm.attr("action", "/commoncode/detail/code/insert");
-			$detailCodeAddForm.submit();
+			var isUpdate = $(".detailCodeAdd").text() == "수정" ? true : false;
+			var isNull = nullCheck(detailCode);
+			var isHelpDisplay = helpDisplayCheck();
+			
+			if(isNull){
+				alert("입력되지 않은 칸이 있습니다.");
+				return;
+				
+			}else if(isUpdate){
+				
+				$.ajax({
+					type: "get",
+					url: "/commoncode/detail/code/update",
+					data: {
+						"commonCode":detailCode.code,
+						"detailCode":detailCode.detailCode,
+						"detailCodeName":detailCode.detailCodeName,
+						"sortOrdr":detailCode.sortOrdr,
+						"detailCodeUseAt":detailCode.detailCodeUseAt
+					},
+	
+					success(result) {
+						
+						pageCode = commonCode;
+						commonCodeClickNum = 0;
+						
+						$(".commonCodeTr").click();
+					},
+			
+					error(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
+				});
+			
+			}else if(isHelpDisplay){
+				alert("중복된 값을 저장할 수 없습니다.");
+				return;
+				
+			}else{
+				$.ajax({
+					type: "get",
+					url: "/commoncode/detail/code/insert",
+					data: {
+						"commonCode":detailCode.code,
+						"detailCode":detailCode.detailCode,
+						"detailCodeName":detailCode.detailCodeName,
+						"sortOrdr":detailCode.sortOrdr,
+						"detailCodeUseAt":detailCode.detailCodeUseAt
+					},
+	
+					success(result) {
+						
+						pageCode = commonCode;
+						commonCodeClickNum = 0;
+						
+						$(".commonCodeTr").click();
+					},
+			
+					error(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
+				});
+			}
 		}
-	});
+	}); //end of $(".detailCodeAdd").click()
+
 	
 	
 	$(".commonCodeTr").click(function(){
-		commonCodeClickNum += 1;
 		
+		commonCodeClickNum += 1;
+
 		if(commonCodeClickNum >= 6){
 			cPage = 1;
 			pageCode = "";
 		}
 		
 		$(".help").addClass("hide");
-		$(".firstCodeAddBtn").text("수정");
-		
-		var $code = $($(this).children()[0]);
-		var $codeName = $($(this).children()[1]);
-		var $useAt = $($(this).children()[2]);
-		
-		code = $code.text();
-		
+		$(".commonCodeAddBtn").text("수정");
+
+		code = $($(this).children()[0]).text();
+
 		if(pageCode != ""){
 			code = pageCode;
 		}
-
-		var codeName = $codeName.text();
-		var useAt = $useAt.text();
 		
+		$.ajax({
+			type: "get",
+			url: "/commoncode/code/detail",
+			data: { "code": code,},
+			dataType: "json",
+			
+			success(result) {
+
+				$("#codeName").val(result.codeName);
+
+				if(result.useAt == 'Y'){
+					$(".useAtY").prop("checked", true);
+				
+				}else{
+					$(".useAtN").prop("checked", true);
+				}
+			},
+	
+			error(xhr, status, err) {
+				console.log(xhr, status, err);
+			}
+		});
+
 		$("#code").val(code);
 		$("#code").attr("readonly", "readonly");
 		$("#code").css("background","#c0c0c0");
-		$("#codeName").val(codeName);
 		$(".commonCode").val(code);
-		
-		if(useAt == 'Y'){
-			$("#useAtY").prop("checked", true);
-		
-		}else{
-			$("#useAtN").prop("checked", true);
-		}
-	
+
 		$.ajax({
 			type:"get",
 			url:"/commoncode/detail/code/list",
@@ -220,8 +280,8 @@ $(function() {
 				console.log(xhr, status, err);
 			}
 		});
-	});
-	
+	}); //end of $(".commonCodeTr").click()
+	 
 	$(".deleteCommonCode").click(function(){
 		var $commonCodeForm = $(".commonCodeForm");
 
@@ -230,6 +290,64 @@ $(function() {
 		$commonCodeForm.submit();
 		
 	});
+	
+	$(".addDetailCode").click(function(){
+		$(".detailCodeAdd").text("저장");
+		$("#detailCode").removeAttr("readonly");
+		$("#detailCode").css("background","none");
+		
+		detailCodeEmpty();
+		
+	});
+	
+	$("#detailCode").change(function(){
+		
+		url = "/commoncode/detail/code/duplication/check";
+		var code = $('#detailCode').val();
+		
+		codeDuplicationCheck(url, $(".detailCodeHelp"), code)
+	});
+	
+	$(".deleteDetailCode").click(function(){
+		if(confirm("삭제하시겠습니까?")){
+			
+			var detailCode = new Object();
+
+			detailCode.code = $(".commonCode").val();
+			detailCode.detailCode = $("#detailCode").val();
+			detailCode.detailCodeName = $("#detailCodeName").val();
+			detailCode.sortOrdr = $("#sortOrdr").val();
+			detailCode.detailCodeUseAt = $('input[name="detailCodeUseAt"]:checked').val();
+			
+			var isNull = nullCheck(detailCode);
+			
+			if(isNull){
+				
+				alert("빈칸은 삭제할 수 없습니다.");
+				return;
+				
+			}else{
+				$.ajax({
+					type: "get",
+					url: "/commoncode/detail/code/delete",
+					data: { "detailCode": detailCode.detailCode},
+
+					success(result) {
+
+						pageCode = detailCode.code;
+						commonCodeClickNum = 0;
+
+						$(".commonCodeTr").click();
+					},
+
+					error(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
+				});
+			}
+		}
+	});
+	
 
 })
 
@@ -256,6 +374,7 @@ function clickPageBar(){
 }
 
 function clickDetailCode(){
+	$(".detailCodeAdd").text("수정");
 	var detailCode = $($(this).children()[0]).text();
 	
 	$.ajax({
@@ -265,17 +384,19 @@ function clickDetailCode(){
 		dataType: "json",
 		
 		success(result) {
-			console.log(result);
+
 			$(".commonCode").val(result.code);
 			$("#detailCode").val(result.detailCode);
 			$("#detailCodeName").val(result.detailCodeName);
 			$("#sortOrdr").val(result.sortOrdr);
+			$("#detailCode").attr("readonly", "readonly");
+			$("#detailCode").css("background","#c0c0c0");
 			
 			if(result.useAt == 'Y'){
-				$("#detailCodeUseAtY").prop("checked", true);
+				$(".detailUseAtY").prop("checked", true);
 		
 			}else{
-				$("#detailCodeUseAtN").prop("checked", true);
+				$(".detailUseAtN").prop("checked", true);
 			}
 	
 		},
@@ -284,4 +405,41 @@ function clickDetailCode(){
 			console.log(xhr, status, err);
 		}
 	});
+}
+
+function codeDuplicationCheck(url, help, code){
+	var $help = $(help);
+	$help.addClass("hide");
+	
+	$.ajax({
+			type:'get',
+			url: url,
+			data: {'code': code},
+
+			success(val) {
+				if (val == "true") {
+					$help.removeClass("hide");
+				}
+			},
+			error(xhr, status, err) {
+				console.log(xhr, status, err);
+			},
+	});
+}
+
+function commonCodeEmpty(){
+
+	$("#code").val("");
+	$("#codeName").val("");
+	$('input[name="useAt"]:checked').prop("checked",false);
+	
+	$(".commonCode").val("");
+}
+
+function detailCodeEmpty(){
+	
+	$("#detailCode").val("");
+	$("#detailCodeName").val("");
+	$("#sortOrdr").val("");
+	$('input[name="detailCodeUseAt"]:checked').prop("checked",false);
 }

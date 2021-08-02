@@ -43,12 +43,36 @@
 					SYSDATE,
 					#{email},
 					'Y'
-				);
+				)
 	</insert>
 	
 	<insert id="insertDetailCode">
 		/* commonCode.insertDetailCode */
-		
+		INSERT INTO
+			TB_COMMON_CODE_DETAIL
+				(
+					DETAIL_CODE,
+					CODE,
+					DETAIL_CODE_NAME,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					USE_AT,
+					SORT_ORDR
+				)
+			VALUES
+				(
+					#{detailCode},
+					#{commonCode},
+					#{detailCodeName},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					#{detailCodeUseAt},
+					#{sortOrdr}
+				)
 	</insert>
 	
 	<select id="codeDuplicationCheck" resultType="int">
@@ -125,6 +149,29 @@
 			DETAIL_CODE = #{detailCode}
 	</select>
 	
+	<select id="selectOneCommonCode" resultMap="commonCode">
+		/* commonCode.selectOneCommonCode */
+		
+		SELECT
+			CODE_NAME,
+			USE_AT
+		FROM
+			TB_COMMON_CODE
+		WHERE
+			CODE = #{code}
+	</select>
+	
+	<select id="detailCodeDuplicatioCheck" resultType="int">
+		/* commonCode.detailCodeDuplicatioCheck */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_COMMON_CODE_DETAIL
+		WHERE
+			DETAIL_CODE = #{code}
+	</select>
+	
 	<update id="updateCommonCode">
 		/* commonCode.updateCommonCode */
 		
@@ -150,6 +197,34 @@
 			LAST_UPDUSR_ID = #{email}
 		WHERE
 			CODE = #{code}
+	</update>
+	
+	<update id="updateDetailCode">
+		/* commonCode.updateDetailCode */
+		
+		UPDATE 
+			TB_COMMON_CODE_DETAIL
+		SET
+			DETAIL_CODE_NAME = #{detailCodeName},
+			SORT_ORDR = #{sortOrdr},
+			USE_AT = #{detailCodeUseAt},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
+		WHERE
+			DETAIL_CODE = #{detailCode}
+	</update>
+	
+	<update id="deleteDetailCode">
+		/* commonCode.deleteDetailCode */
+		
+		UPDATE
+			TB_COMMON_CODE_DETAIL
+		SET
+			USE_AT = 'N',
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
+		WHERE
+			DETAIL_CODE = #{detailCode}		
 	</update>
 	
 

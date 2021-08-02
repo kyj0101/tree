@@ -25,5 +25,13 @@ public interface CommonCodeService {
 
 	Map<String, Object> selectOneDetailCode(String detailCode);
 
+	void updateDetailCode(Map<String, String> param);
+
+	Map<String, String> selectOneCommonCode(String code);
+
+	boolean detailCodeDuplicationCheck(String code);
+
+	void deleteDetailCode(Map<String, String> param);
+
 
 }

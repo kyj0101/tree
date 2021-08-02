@@ -127,6 +127,6 @@ figcaption p{
     height: 43px;
 }
 
-.commonCode{
+.commonCode, #detailCode{
 	background-color: #c0c0c0;
 }
