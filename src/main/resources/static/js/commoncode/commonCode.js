@@ -102,7 +102,7 @@ $(function() {
 	
 					success(result) {
 						
-						pageCode = commonCode;
+						pageCode = detailCode.code;
 						commonCodeClickNum = 0;
 						
 						$(".commonCodeTr").click();
@@ -131,7 +131,7 @@ $(function() {
 	
 					success(result) {
 						
-						pageCode = commonCode;
+						pageCode = detailCode.code;
 						commonCodeClickNum = 0;
 						
 						$(".commonCodeTr").click();

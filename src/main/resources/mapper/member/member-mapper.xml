@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="member">
+
+	<select id="getDepartmentList" resultType="string">
+		/* member.getDepartmentList */
+		
+		SELECT
+			DETAIL_CODE_NAME
+		FROM
+			TB_COMMON_CODE_DETAIL
+		WHERE
+			CODE = 'DT0000'
+				AND
+			USE_AT = 'Y'
+		ORDER BY SORT_ORDR, DETAIL_CODE
+	</select>
+	
+	<select id="getPositionList" resultType="string">
+		/* member.getPositionList */
+		
+		SELECT
+			DETAIL_CODE_NAME
+		FROM
+			TB_COMMON_CODE_DETAIL
+		WHERE
+			CODE = 'PT0000'
+				AND
+			USE_AT = 'Y'
+		ORDER BY SORT_ORDR, DETAIL_CODE
+	</select>
+	
+	<update id="updateMember">
+		/* member.updateMember */
+
+		UPDATE
+			TB_MEMBER
+		SET
+			NAME = #{name},
+			PHONE = #{phone},
+			DEPARTMENT= #{department},
+			POSITION= #{position},
+			BIRTH = #{birth},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
+		WHERE
+			EMAIL = #{email}
+	</update>
+
+</mapper>

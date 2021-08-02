@@ -1,6 +1,9 @@
 
 package com.vtex.tree.member.service.impl;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,4 +15,19 @@ public class MemberServiceImpl implements MemberService {
 	
 	@Autowired
 	private MemberMapper memberMapper;
+
+	@Override
+	public List<String> getDepartmentList() {
+		return memberMapper.getDepartmentList();
+	}
+
+	@Override
+	public List<String> getPositionList() {
+		return memberMapper.getPositionList();
+	}
+
+	@Override
+	public void updateMember(Map<String, Object> param) {
+		memberMapper.updateMember(param);
+	}
 }

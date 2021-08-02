@@ -18,22 +18,28 @@
 
     <link rel="stylesheet" href="/css/manager/attendance.css">
     <link rel="stylesheet" href="/css/mypage/mypage.css">
+
+    <script type="text/javascript" src="/js/common/regExp.js"></script>    
+    <script type="text/javascript" src="/js/common/common.js"></script>
+    <script type="text/javascript" src="/js/mypage/update.js"></script>
+
 </head>
 
 <body>
     <header>
         <div class="header-container" style="width: 100%;">
-            <i class="fas fa-arrow-left" onclick="location.href='/'"></i>
+            <i class="fas fa-arrow-left" onclick="history.back()"></i>
         </div>
     </header>
 
     <section>
         <nav class="nav flex-column" style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
-            <a class="nav-link active" href="/member/mypage/update">개인정보수정</a>
+            <a class="nav-link active" href="/member/mypage/update/view">개인정보수정</a>
             <hr>
             <a class="nav-link active" href="/member/mypage/update/password">비밀번호수정</a>
             <hr>
         </nav>
+        <form action="" id="updateForm" style="margin: 0 auto">
         <div class="content-div">
             <table class="table">
                 <tbody>
@@ -41,7 +47,7 @@
                     <th scope="row">이메일</th>
                     <td>
                       <div class="mb-3">
-                        <input type="text" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp"  value="abc123@gmail.com" readonly>
+                        <input type="text" class="form-control " id="email" name="email" aria-describedby="emailHelp"  th:value="${member.email}" readonly>
                       </div>
                     </td>
                   </tr>
@@ -50,7 +56,8 @@
                     <th scope="row">이름</th>
                     <td>
                       <div class="mb-3">
-                        <input type="text" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp" value="김사원">
+                        <input type="text" class="form-control " id="name" name="name" aria-describedby="emailHelp" th:value="${member.name}">
+                        <div id="nameHelp" class="form-text help hide">올바른 이름이 아닙니다.</div>
                       </div>
                     </td>
                   </tr>
@@ -59,45 +66,47 @@
                     <th scope="row">휴대번호</th>
                     <td>
                       <div class="mb-3">
-                        <input type="text" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp"  value="01012341234">
+                        <input type="text" class="form-control " id="phone" name="phone" aria-describedby="emailHelp"  th:value="${member.phone}">
+                        <div id="phoneHelp" class="form-text help hide">올바른 휴대번호가 아닙니다.</div>
                       </div>
                     </td>
                   </tr>
                   <tr>
                     <th scope="row">생년월일</th>
                     <td colspan="2">
-                      <div class="form-row" style="display: flex;">
-                          <div class="col-md-10 mb-3" style="display: flex;">
-                              <select class="custom-select" name="hashtag${vs.count}"></select>
-                              <select class="custom-select" name="hashtag${vs.count}"></select>
-                              <select class="custom-select" name="hashtag${vs.count}"></select>
-                          </div>
-                        </div>
+						<div class="mb-3">
+                        	<input type="date" class="form-control " id="birth" name="birth" aria-describedby="emailHelp"  th:value="${member.birth}">
+                      	</div>
                     </td>
                   </tr>
                   <tr>
                     <th scope="row">부서</th>
                     <td>
-                      <div class="mb-3">
-                        <input type="text" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp"  value="개발팀">
-                      </div>
+                    	<div class="mb-3">
+                     		<select class="custom-select" id="department" name="department">
+                     			<option th:each="department: ${departmentList}" th:value="${department}" th:utext="${department}" th:selected="${department==member.department}"></option>
+                     		</select>                           
+                    	</div>
                     </td>
                   </tr>
                   <tr>
                   <th scope="row">직급</th>
                     <td>
-                      <div class="mb-3">
-                        <input type="text" class="form-control " id="exampleInputEmail1" aria-describedby="emailHelp"  value="사원">
-                      </div>
+						<div class="mb-3">
+                     		<select class="custom-select" id="position" name="position">
+                     			<option  th:each="position: ${positionList}" th:value="${position}" th:utext="${position}" th:selected="${position==member.position}"></option>
+                     		</select>                           
+                    	</div>
                     </td>
                   </tr>
                 </tbody>
               </table>
-              <div class="button-div">
+              <div class="button-div" style="display: flex; justify-content: center;">
                 <button type="button" class="btn btn-secondary">취소</button>
-                <button type="button" class="btn btn-primary justify-content-center">수정</button>
+                <button type="button" class="btn btn-primary justify-content-center btnUpdate">수정</button>
               </div>
         </div>
+        </form>
     </section>
 
 </body>

@@ -1,10 +1,11 @@
 function nullCheck(obj){
-
+	console.log(obj);
 	for(var key in obj){
 		
 		var prop = obj[key];
 
 		if(prop == null || prop.length < 1){
+			
 			return true;
 		}
 	}
