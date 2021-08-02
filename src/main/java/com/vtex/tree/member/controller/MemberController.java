@@ -12,11 +12,13 @@ import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vtex.tree.member.service.MemberService;
 import com.vtex.tree.member.vo.MemberVO;
-
+import static com.vtex.tree.common.util.EncryptedPassword.*;
 @RequestMapping("/member")
 @Controller
 public class MemberController {
@@ -49,12 +51,7 @@ public class MemberController {
 
 		return "mypage/update";
 	}
-	
-	@RequestMapping("/mypage/update/password")
-	public String myPageUpdatePassword() {
-		return "mypage/updatePassword"; 
-	}
-	
+		
 	@RequestMapping("/mypage/update/update")
 	public String myPageUpdate(String email,
 								String name,
@@ -93,5 +90,44 @@ public class MemberController {
 		}
 		
 		return "redirect:/member/mypage/update/view";
+	}
+	
+	@RequestMapping("/mypage/update/password/view")
+	public String myPageUpdatePasswordView() {
+		return "mypage/updatePassword"; 
+	}
+	
+	@RequestMapping("/mypage/update/password")
+	public String myPageUpdatePassword(String password, 
+										String newPassword, 
+										HttpServletRequest request, 
+										RedirectAttributes redirectAttribute) {
+		try {
+			HttpSession session = request.getSession();
+			MemberVO member = (MemberVO)session.getAttribute("loginMember");
+			
+			if(!member.getPassword().equals(getEncryptedPassword(password))) {
+				
+				redirectAttribute.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
+				return "redirect:/member/mypage/update/password/view";
+			}
+			
+			Map<String, String> param = new HashMap<>();
+			String encryptedPassword = getEncryptedPassword(newPassword);
+			
+			param.put("password", encryptedPassword);
+			param.put("email", member.getEmail());
+			
+			memberService.updatePassword(param); 
+			member.setPassword(encryptedPassword);
+			session.setAttribute("loginMember", member);
+			redirectAttribute.addFlashAttribute("msg", "비밀번호가 변경되었습니다.");
+					
+			return "redirect:/member/mypage/update/password/view";
+			
+		} catch (Exception e) {
+			throw new RuntimeException();
+		}
+
 	}
 }

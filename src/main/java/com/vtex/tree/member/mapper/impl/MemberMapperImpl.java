@@ -29,4 +29,9 @@ public class MemberMapperImpl implements MemberMapper {
 	public void updateMember(Map<String, Object> param) {
 		session.update("member.updateMember", param);
 	}
+
+	@Override
+	public void updatePassword(Map<String, String> param) {
+		session.update("member.updatePassword", param);
+	}
 }

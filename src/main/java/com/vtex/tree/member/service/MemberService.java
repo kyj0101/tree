@@ -11,4 +11,6 @@ public interface MemberService {
 
 	void updateMember(Map<String, Object> param);
 
+	void updatePassword(Map<String, String> param);
+
 }

@@ -48,5 +48,15 @@
 		WHERE
 			EMAIL = #{email}
 	</update>
+	
+	<update id="updatePassword">
+		/* member.updatePassword */
+		UPDATE
+			TB_MEMBER
+		SET
+			PASSWORD = #{password}
+		WHERE
+			EMAIL = #{email}
+	</update>
 
 </mapper>
