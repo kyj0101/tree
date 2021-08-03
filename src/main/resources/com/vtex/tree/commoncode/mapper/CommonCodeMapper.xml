@@ -2,7 +2,7 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="commonCode">
+<mapper namespace="com.vtex.tree.commoncode.mapper.CommonCodeMapper">
 
 	<resultMap type="map" id="commonCode">
 		<id column="CODE" property="code" />
@@ -21,7 +21,7 @@
 	</resultMap>
 	
 	<insert id="insertCommonCode">
-		/* commonCode.insertCommonCode */
+		/* CommonCodeMapper.insertCommonCode */
 		
 		INSERT INTO
 			TB_COMMON_CODE
@@ -47,7 +47,8 @@
 	</insert>
 	
 	<insert id="insertDetailCode">
-		/* commonCode.insertDetailCode */
+		/* CommonCodeMapper.insertDetailCode */
+		
 		INSERT INTO
 			TB_COMMON_CODE_DETAIL
 				(
@@ -76,7 +77,7 @@
 	</insert>
 	
 	<select id="codeDuplicationCheck" resultType="int">
-		/* commonCode.codeDuplicationCheck */
+		/* CommonCodeMapper.codeDuplicationCheck */
 		
 		SELECT
 			COUNT(*)
@@ -87,7 +88,7 @@
 	</select>
 	
 	<select id="getTotalCommonCode" resultType="int">
-		/* commonCode.getTotalCommonCode */
+		/* CommonCodeMapper.getTotalCommonCode */
 		
 		SELECT
 			COUNT(*)
@@ -96,7 +97,7 @@
 	</select>
 	
 	<select id="selectCommonCodeList" resultMap="commonCode">
-		/* commonCode.selectCommonCodeList */
+		/* CommonCodeMapper.selectCommonCodeList */
 		
 		SELECT
 			CODE,
@@ -108,7 +109,7 @@
 	</select>
 	
 	<select id="selectDetailCode" resultMap="detailCode">
-		/* commonCode.selectDetailCode */
+		/* CommonCodeMapper.selectDetailCode */
 
 		SELECT
 			DETAIL_CODE,
@@ -124,7 +125,7 @@
 	</select>
 	
 	<select id="getTotalDetailCode" resultType="int">
-		/* commonCode.getTotalDetailCode */
+		/* CommonCodeMapper.getTotalDetailCode */
 		
 		SELECT
 			COUNT(*)
@@ -135,7 +136,7 @@
 	</select>
 	
 	<select id="selectOneDetailCode" resultMap="detailCode">
-		/* commonCode.selectOneDetailCode */
+		/* CommonCodeMapper.selectOneDetailCode */
 		
 		SELECT
 			CODE,
@@ -150,7 +151,7 @@
 	</select>
 	
 	<select id="selectOneCommonCode" resultMap="commonCode">
-		/* commonCode.selectOneCommonCode */
+		/* CommonCodeMappers.selectOneCommonCode */
 		
 		SELECT
 			CODE_NAME,
@@ -162,7 +163,7 @@
 	</select>
 	
 	<select id="detailCodeDuplicatioCheck" resultType="int">
-		/* commonCode.detailCodeDuplicatioCheck */
+		/* CommonCodeMapper.detailCodeDuplicatioCheck */
 		
 		SELECT
 			COUNT(*)
@@ -173,7 +174,7 @@
 	</select>
 	
 	<update id="updateCommonCode">
-		/* commonCode.updateCommonCode */
+		/* CommonCodeMapper.updateCommonCode */
 		
 		UPDATE 
 			TB_COMMON_CODE
@@ -187,7 +188,7 @@
 	</update>
 	
 	<update id="deleteCommonCode">
-		/* commonCode.deleteCommonCode */
+		/* CommonCodeMapper.deleteCommonCode */
 		
 		UPDATE
 			TB_COMMON_CODE
@@ -200,7 +201,7 @@
 	</update>
 	
 	<update id="updateDetailCode">
-		/* commonCode.updateDetailCode */
+		/* CommonCodeMapper.updateDetailCode */
 		
 		UPDATE 
 			TB_COMMON_CODE_DETAIL
@@ -215,7 +216,7 @@
 	</update>
 	
 	<update id="deleteDetailCode">
-		/* commonCode.deleteDetailCode */
+		/* CommonCodeMapper.deleteDetailCode */
 		
 		UPDATE
 			TB_COMMON_CODE_DETAIL

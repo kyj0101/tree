@@ -3,35 +3,37 @@ package com.vtex.tree.commoncode.service;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
+
 public interface CommonCodeService {
 
-	void insertCommonCode(Map<String, String> param);
+	int insertCommonCode(Map<String, String> param) throws Exception;
 
-	boolean codeDuplicationCheck(String code);
+	int codeDuplicationCheck(String code);
 
 	int getTotalCommonCode();
 
-	List<Map<String, String>> selectCommonCodeList(Map<String, Object> param);
+	List<Map<String, String>> selectCommonCodeList(Map<String, Object> param, RowBounds rowBounds);
 
-	void updateCommonCode(Map<String, String> param);
+	int updateCommonCode(Map<String, String> param) throws Exception;
 
-	void insertDetailCode(Map<String, String> param);
+	int insertDetailCode(Map<String, String> param) throws Exception;
 
-	List<Map<String, Object>> selectDetailCodeList(Map<String, Object> param);
+	List<Map<String, Object>> selectDetailCode(Map<String, Object> param, RowBounds rowBounds);
 
-	void deleteCommonCode(Map<String, String> param);
+	int deleteCommonCode(Map<String, String> param) throws Exception;
 
 	int getTotalDetailCode(String code);
 
 	Map<String, Object> selectOneDetailCode(String detailCode);
 
-	void updateDetailCode(Map<String, String> param);
+	int updateDetailCode(Map<String, String> param) throws Exception;
 
 	Map<String, String> selectOneCommonCode(String code);
 
-	boolean detailCodeDuplicationCheck(String code);
+	int detailCodeDuplicationCheck(String code);
 
-	void deleteDetailCode(Map<String, String> param);
+	int deleteDetailCode(Map<String, String> param) throws Exception;
 
 
 }

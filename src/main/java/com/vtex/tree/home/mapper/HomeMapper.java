@@ -3,11 +3,12 @@ package com.vtex.tree.home.mapper;
 import java.util.List;
 import java.util.Map;
 
-import com.vtex.tree.member.vo.MemberVO;
+import org.apache.ibatis.annotations.Mapper;
 
+import com.vtex.tree.member.vo.MemberVO;
+@Mapper
 public interface HomeMapper {
-	List<String> getMemberList();
-	
+
 	boolean emailDuplicationCheck(String email);
 
 	void insertMember(MemberVO member);

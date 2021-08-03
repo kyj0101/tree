@@ -339,3 +339,32 @@ nav ul {
 .custom-file-label {
 	padding-left: 120px;
 }
+
+
+.modal-footer{
+	justify-content: center !important;
+	width: 100%;
+}
+
+.boardBtnDiv {
+	width:100%;
+	padding: 10px;
+	display: flex;
+	justify-content: flex-end;
+}
+
+.boardBtnDiv > Button{
+	margin-left: 15px;
+}
+
+.titleDiv{
+	display: flex;
+}
+
+#titleInput{
+	margin-right: 50px;
+}
+
+.form-check-input{
+	margin-top: 8px;
+}

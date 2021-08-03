@@ -3,6 +3,7 @@ package com.vtex.tree.commoncode.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,12 +18,12 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	private CommonCodeMapper commonCodeMapper;
 
 	@Override
-	public void insertCommonCode(Map<String, String> param) {
-		commonCodeMapper.insertCommonCode(param);
+	public int insertCommonCode(Map<String, String> param) throws Exception {
+		return commonCodeMapper.insertCommonCode(param);
 	}
 
 	@Override
-	public boolean codeDuplicationCheck(String code) {
+	public int codeDuplicationCheck(String code) {
 		return commonCodeMapper.codeDuplicationCheck(code);
 	}
 
@@ -32,28 +33,28 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	}
 
 	@Override
-	public List<Map<String, String>> selectCommonCodeList(Map<String, Object> param) {
-		return commonCodeMapper.selectCommonCodeList(param);
+	public List<Map<String, String>> selectCommonCodeList(Map<String, Object> param, RowBounds rowBounds) {		
+		return commonCodeMapper.selectCommonCodeList(param, rowBounds);
 	}
 
 	@Override
-	public void updateCommonCode(Map<String, String> param) {
-		commonCodeMapper.updateCommonCode(param);
+	public int updateCommonCode(Map<String, String> param) throws Exception{
+		return commonCodeMapper.updateCommonCode(param);
 	}
 
 	@Override
-	public void insertDetailCode(Map<String, String> param) {
-		commonCodeMapper.insertDetailCode(param);
+	public int insertDetailCode(Map<String, String> param) throws Exception {
+		return commonCodeMapper.insertDetailCode(param);
 	}
 
 	@Override
-	public List<Map<String, Object>> selectDetailCodeList(Map<String, Object> param) {
-		return commonCodeMapper.selectDetailCodeList(param);
+	public List<Map<String, Object>> selectDetailCode(Map<String, Object> param , RowBounds rowBounds) {
+		return commonCodeMapper.selectDetailCode(param, rowBounds);
 	}
 
 	@Override
-	public void deleteCommonCode(Map<String, String> param) {
-		commonCodeMapper.deleteCommonCode(param);
+	public int deleteCommonCode(Map<String, String> param) throws Exception{
+		return commonCodeMapper.deleteCommonCode(param);
 	}
 
 	@Override
@@ -67,8 +68,8 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	}
 
 	@Override
-	public void updateDetailCode(Map<String, String> param) {
-		commonCodeMapper.updateDetaiLCode(param);
+	public int updateDetailCode(Map<String, String> param) {
+		return commonCodeMapper.updateDetailCode(param);
 	}
 
 	@Override
@@ -77,13 +78,13 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	}
 
 	@Override
-	public boolean detailCodeDuplicationCheck(String code) {
+	public int detailCodeDuplicationCheck(String code) {
 		return commonCodeMapper.detailCodeDuplicatioCheck(code);
 	}
 
 	@Override
-	public void deleteDetailCode(Map<String, String> param) {
-		commonCodeMapper.deleteDetailCode(param);
+	public int deleteDetailCode(Map<String, String> param) throws Exception {
+		return commonCodeMapper.deleteDetailCode(param);
 	}
 
 	

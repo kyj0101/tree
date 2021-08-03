@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="member">
+<mapper namespace="com.vtex.tree.member.mapper.MemberMapper">
 
 	<select id="getDepartmentList" resultType="string">
-		/* member.getDepartmentList */
+		/* MemberMapper.getDepartmentList */
 		
 		SELECT
 			DETAIL_CODE_NAME
@@ -19,7 +19,7 @@
 	</select>
 	
 	<select id="getPositionList" resultType="string">
-		/* member.getPositionList */
+		/* MemberMapper.getPositionList */
 		
 		SELECT
 			DETAIL_CODE_NAME
@@ -33,7 +33,7 @@
 	</select>
 	
 	<update id="updateMember">
-		/* member.updateMember */
+		/* MemberMapper.updateMember */
 
 		UPDATE
 			TB_MEMBER
@@ -50,7 +50,8 @@
 	</update>
 	
 	<update id="updatePassword">
-		/* member.updatePassword */
+		/* MemberMapper.updatePassword */
+		
 		UPDATE
 			TB_MEMBER
 		SET

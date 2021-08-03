@@ -7,8 +7,6 @@ import com.vtex.tree.member.vo.MemberVO;
 
 public interface HomeService {
 
-	List<String> getMemberList();
-	
 	boolean emailDuplicationCheck(String email);
 
 	void insertMember(MemberVO member);

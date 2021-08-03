@@ -2,10 +2,10 @@
 <!DOCTYPE mapper
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="signup">
-	
+<mapper namespace="com.vtex.tree.home.mapper.HomeMapper">
+
 	<insert id="insertMember">
-		/* signup.insertMember */
+		/* HomeMapper.insertMember */
 		
 		INSERT INTO 
 			TB_MEMBER
@@ -47,7 +47,7 @@
 	</insert>
 	
 	<select id="emailCheck" resultType="int">
-		/* signup.emailCheck */
+		/* HomeMapper.emailCheck */
 		
 		SELECT
 			COUNT(*)
@@ -57,8 +57,19 @@
 			EMAIL = #{email}
 	</select>
 	
+	<select id="selectOneMember" resultType="memberVO">
+		/* HomeMapper.selecOneMember */
+		
+		SELECT
+			*
+		FROM
+			TB_MEMBER
+		WHERE
+			EMAIL = #{email}
+	</select>
+	
 	<update id="updateEmailVerify">
-		/* signup.updateEmailVerify */
+		/* HomeMapper.updateEmailVerify */
 		
 		UPDATE 
 			TB_MEMBER
@@ -67,5 +78,5 @@
 		WHERE
 			EMAIL = #{email}
 	</update>
-	
+
 </mapper>

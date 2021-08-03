@@ -30,7 +30,7 @@ $(function() {
 
 	$(".commonCodeAddBtn").click(function() {
 		
-		var $commonCodeForm = $(".commonCodeForm");
+
 		var isUpdate = $(".commonCodeAddBtn").text() == "수정" ? true : false;
 		
 		var commonCode = new Object();
@@ -50,19 +50,63 @@ $(function() {
 				
 			}else if(isUpdate){
 				
-				$commonCodeForm.attr("method", "POST");
-				$commonCodeForm.attr("action", "/commoncode/code/update");
-				$commonCodeForm.submit();
+				$.ajax({
+					type: "POST",
+					url: "/commoncode/code/update",
+					data: {
+						"code":commonCode.code,
+						"codeName":commonCode.codeName,
+						"useAt":commonCode.useAt
+					},
+					dataType:"json",
+					success(result) {
+
+						if(result.resultCode == 0){
+							alert("수정하였습니다.");
+							location.href="/commoncode/list";
+
+						}else{
+							alert("수정에 실패하였습니다.");
+							return;	
+						}
+					},
 			
+					error(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
+				});
+				
 			}else if(isHelpDisplay){
 				alert("중복된 값을 저장할 수 없습니다.");
 				return;
 			
 			}else{
+
+				$.ajax({
+					type: "POST",
+					url: "/commoncode/code/insert",
+					data: {
+						"code":commonCode.code,
+						"codeName":commonCode.codeName,
+						"useAt":commonCode.useAt
+					},
+					dataType:"json",
+					success(result) {
+
+						if(result.resultCode == 0){
+							alert("저장하였습니다.");
+							location.href="/commoncode/list";
+						
+						}else{
+							alert("저장에 실패하였습니다.");
+							return;	
+						}
+					},
 			
-				$commonCodeForm.attr("method", "POST");
-				$commonCodeForm.attr("action", "/commoncode/code/insert");
-				$commonCodeForm.submit();
+					error(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
+				});
 			}
 		}
 	});
@@ -106,6 +150,13 @@ $(function() {
 						commonCodeClickNum = 0;
 						
 						$(".commonCodeTr").click();
+						
+						if(result == 'ok'){
+							alert("수정했습니다.");
+						
+						}else{
+							alert("수정에 실패했습니다.")
+						}
 					},
 			
 					error(xhr, status, err) {
@@ -135,6 +186,13 @@ $(function() {
 						commonCodeClickNum = 0;
 						
 						$(".commonCodeTr").click();
+						
+						if(result == 'ok'){
+							alert("저장했습니다.");
+						
+						}else{
+							alert("저장에 실패했습니다.")
+						}
 					},
 			
 					error(xhr, status, err) {
@@ -283,11 +341,45 @@ $(function() {
 	}); //end of $(".commonCodeTr").click()
 	 
 	$(".deleteCommonCode").click(function(){
-		var $commonCodeForm = $(".commonCodeForm");
 
-		$commonCodeForm.attr("method", "POST");
-		$commonCodeForm.attr("action", "/commoncode/code/delete");
-		$commonCodeForm.submit();
+		var commonCode = new Object();
+		
+		commonCode.code = $("#code").val();
+		commonCode.codeName = $("#codeName").val();
+		commonCode.useAt = $('input[name="useAt"]:checked').val();
+		
+		if(confirm("삭제하시겠습니까?")){
+			var isNull = nullCheck(commonCode);
+			
+			if(isNull){
+				alert("삭제할 코드를 선택하세요.");
+				return;
+			}else{
+				$.ajax({
+					type: "POST",
+					url: "/commoncode/code/delete",
+					data: {
+						"code": commonCode.code,
+					},
+					dataType: "json",
+					success(result) {
+
+						if (result.resultCode == 0) {
+							alert("삭제하였습니다.");
+							location.href = "/commoncode/list";
+
+						} else {
+							alert("삭제를 실패하였습니다.");
+							return;
+						}
+					},
+
+					error(xhr, status, err) {
+						console.log(xhr, status, err);
+					}
+				});
+			}
+		}
 		
 	});
 	
@@ -333,11 +425,17 @@ $(function() {
 					data: { "detailCode": detailCode.detailCode},
 
 					success(result) {
-
 						pageCode = detailCode.code;
 						commonCodeClickNum = 0;
-
+						
 						$(".commonCodeTr").click();
+						
+						if(result == 'ok'){
+							alert("삭제했습니다.");
+						
+						}else{
+							alert("삭제에 실패했습니다.")
+						}
 					},
 
 					error(xhr, status, err) {

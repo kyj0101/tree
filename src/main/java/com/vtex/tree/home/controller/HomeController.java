@@ -45,8 +45,6 @@ public class HomeController {
 	 */
 	@RequestMapping("/")
 	public String home() {
-		List<String> memberList = homeService.getMemberList();
-	
 		return "/home/home";	
 	}
 	

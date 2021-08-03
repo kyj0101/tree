@@ -15,12 +15,7 @@ public class HomeServiceImpl implements HomeService {
 	
 	@Autowired
 	private HomeMapper homeMapper;
-
-	@Override
-	public List<String> getMemberList() {
-		return homeMapper.getMemberList();
-	}
-
+	
 	@Override
 	public boolean emailDuplicationCheck(String email) {
 		return homeMapper.emailDuplicationCheck(email);

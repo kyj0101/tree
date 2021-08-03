@@ -11,12 +11,16 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
@@ -48,11 +52,14 @@ public class CommonCodeContorller {
 		param.put("numPerPage", NUMPERPAGE);
 		param.put("cPage", cPage);
 
+		int offset = (cPage - 1) * NUMPERPAGE;		
+		RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
+		
 		int totalContents = commonCodeService.getTotalCommonCode();
 		String url = request.getRequestURI();
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
-
-		List<Map<String, String>> commonCodeListMap = commonCodeService.selectCommonCodeList(param);
+		
+		List<Map<String, String>> commonCodeListMap = commonCodeService.selectCommonCodeList(param, rowBounds);
 
 		model.addAttribute("commonCodeListMap", commonCodeListMap);
 		model.addAttribute("pageBar", pageBar);
@@ -70,8 +77,10 @@ public class CommonCodeContorller {
 	 * @return
 	 */
 	@RequestMapping("/code/insert")
-	public String insertCommonCode(String codeName, String code, String useAt, HttpServletRequest request) {
-
+	public ModelAndView insertCommonCode(String codeName, String code, String useAt
+			, HttpServletRequest request, Model model) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 
@@ -79,16 +88,26 @@ public class CommonCodeContorller {
 
 		param.put("codeName", codeName);
 		param.put("code", code);
-		param.put("useAt", useAt);
 		param.put("email", member.getEmail());
-
-		try {
-			commonCodeService.insertCommonCode(param);
-			return "redirect:/commoncode/list";
-
-		} catch (Exception e) {
-			throw new RuntimeException();
+		param.put("useAt", useAt);
+		
+		String resultMsg = "";
+		int resultCnt = commonCodeService.insertCommonCode(param);
+		
+		if(resultCnt > 0) {
+			
+			resultMsg = "ok";
+			mav.addObject("resultCode", 0);
+			mav.addObject("resultMsg", resultMsg);
+		
+		}else {
+			resultMsg = "fail";
+			mav.addObject("resultCode", -1);
+			mav.addObject("resultMsg", resultMsg);
 		}
+		
+		mav.setViewName("jsonView");
+		return mav;
 	}
 
 	/**
@@ -101,9 +120,9 @@ public class CommonCodeContorller {
 	@RequestMapping("/code/duplication/check")
 	public String codeDuplicationCheck(String code) {
 
-		boolean isDuplicate = commonCodeService.codeDuplicationCheck(code);
+		int isDuplicate = commonCodeService.codeDuplicationCheck(code);
 
-		return isDuplicate ? "true" : "false";
+		return isDuplicate > 0 ? "true" : "false";
 	}
 
 	/**
@@ -116,11 +135,15 @@ public class CommonCodeContorller {
 	 * @return
 	 */
 	@RequestMapping("/code/update")
-	public String updateCommonCode(String codeName, String code, String useAt, HttpServletRequest request) {
-
+	public ModelAndView updateCommonCode(String codeName, 
+											String code, 
+											String useAt, 
+											HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		System.out.println(member.toString());
+
 		Map<String, String> param = new HashMap<>();
 
 		param.put("codeName", codeName);
@@ -128,13 +151,22 @@ public class CommonCodeContorller {
 		param.put("useAt", useAt);
 		param.put("email", member.getEmail());
 
-		try {
-			commonCodeService.updateCommonCode(param);
-			return "redirect:/commoncode/list";
-
-		} catch (Exception e) {
-			throw new RuntimeException();
+		int resultCnt = commonCodeService.updateCommonCode(param);
+		String resultMsg = "ok";
+		
+		if(resultCnt > 0) {
+			
+			mav.addObject("resultCode", 0);
+			mav.addObject("resultMsg", resultMsg);
+		
+		}else {
+			resultMsg = "fail";
+			mav.addObject("resultCode", -1);
+			mav.addObject("resultMsg", resultMsg);
 		}
+		
+		mav.setViewName("jsonView");
+		return mav;
 	}
 
 	/**
@@ -143,25 +175,35 @@ public class CommonCodeContorller {
 	 * @param code
 	 * @param request
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("/code/delete")
-	public String deleteCommonCode(String code, HttpServletRequest request) {
+	public ModelAndView deleteCommonCode(String code, HttpServletRequest request) throws Exception {
+		
+		ModelAndView mav = new ModelAndView();
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		Map<String, String> param = new HashMap<>();
 
-		try {
-			HttpSession session = request.getSession();
-			MemberVO member = (MemberVO) session.getAttribute("loginMember");
-			Map<String, String> param = new HashMap<>();
+		param.put("email", member.getEmail());
+		param.put("code", code);
 
-			param.put("email", member.getEmail());
-			param.put("code", code);
-
-			commonCodeService.deleteCommonCode(param);
-
-			return "redirect:/commoncode/list";
-
-		} catch (Exception e) {
-			throw new RuntimeException();
+		int resultCnt = commonCodeService.deleteCommonCode(param);
+		String resultMsg = "ok";
+		
+		if(resultCnt > 0) {
+			
+			mav.addObject("resultCode", 0);
+			mav.addObject("resultMsg", resultMsg);
+		
+		}else {
+			resultMsg = "fail";
+			mav.addObject("resultCode", -1);
+			mav.addObject("resultMsg", resultMsg);
 		}
+		
+		mav.setViewName("jsonView");
+		return mav;
 	}
 	
 	/**
@@ -209,8 +251,11 @@ public class CommonCodeContorller {
 			param.put("numPerPage", NUMPERPAGE);
 			param.put("cPage", cPage);
 			param.put("code", code);
-
-			List<Map<String, Object>> detailCodeMapList = commonCodeService.selectDetailCodeList(param);
+			
+			int offset = (cPage - 1) * NUMPERPAGE;		
+			RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
+			
+			List<Map<String, Object>> detailCodeMapList = commonCodeService.selectDetailCode(param,rowBounds);
 			Integer totalNum = commonCodeService.getTotalDetailCode(code);
 			Map<String, Object> totalMap = new HashMap<>();
 
@@ -257,33 +302,34 @@ public class CommonCodeContorller {
 	 * @param sortOrdr
 	 * @param detailCodeUseAt
 	 * @param request
+	 * @throws Exception 
 	 */
-	@ResponseBody
 	@RequestMapping("/detail/code/update")
-	public void updateDetailCode(String commonCode, 
-									String detailCode, 
-									String detailCodeName, 
-									String sortOrdr,
-									String detailCodeUseAt,
-									HttpServletRequest request) {
+	public ResponseEntity<String> updateDetailCode(String commonCode, 
+													String detailCode, 
+													String detailCodeName, 
+													String sortOrdr,
+													String detailCodeUseAt,
+													HttpServletRequest request) throws Exception {
 		
-		try {
-			HttpSession session = request.getSession();
-			MemberVO member = (MemberVO) session.getAttribute("loginMember");
-			
-			Map<String, String> param = new HashMap<>();
-			
-			param.put("email", member.getEmail());
-			param.put("commonCode", commonCode);
-			param.put("detailCode", detailCode);
-			param.put("detailCodeName", detailCodeName);
-			param.put("sortOrdr", sortOrdr);
-			param.put("detailCodeUseAt", detailCodeUseAt);
-			
-			commonCodeService.updateDetailCode(param);
-			
-		} catch (Exception e) {
-			throw new RuntimeException();
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		Map<String, String> param = new HashMap<>();
+
+		param.put("email", member.getEmail());
+		param.put("commonCode", commonCode);
+		param.put("detailCode", detailCode);
+		param.put("detailCodeName", detailCodeName);
+		param.put("sortOrdr", sortOrdr);
+		param.put("detailCodeUseAt", detailCodeUseAt);
+
+		int resultCnt = commonCodeService.updateDetailCode(param);
+		
+		if(resultCnt > 0) {
+			return new ResponseEntity<>("ok",HttpStatus.OK);
+		
+		}else {
+			return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
 		}
 	}
 	
@@ -296,9 +342,9 @@ public class CommonCodeContorller {
 	@RequestMapping("/detail/code/duplication/check")
 	public String detailCodeDuplicationCheck(String code) {
 
-		boolean isDuplicate = commonCodeService.detailCodeDuplicationCheck(code);
+		int isDuplicate = commonCodeService.detailCodeDuplicationCheck(code);
 
-		return isDuplicate ? "true" : "false";
+		return isDuplicate > 0 ? "true" : "false";
 	}
 	
 	/**
@@ -309,53 +355,56 @@ public class CommonCodeContorller {
 	 * @param sortOrdr
 	 * @param detailCodeUseAt
 	 * @param request
+	 * @throws Exception 
 	 */
-	@ResponseBody
 	@RequestMapping("/detail/code/insert")
-	public void insertDetailCode(String commonCode, 
-									String detailCode, 
-									String detailCodeName, 
-									String sortOrdr,
-									String detailCodeUseAt,
-									HttpServletRequest request) {
+	public ResponseEntity<String> insertDetailCode(String commonCode, 
+													String detailCode, 
+													String detailCodeName, 
+													String sortOrdr,
+													String detailCodeUseAt,
+													HttpServletRequest request) throws Exception {
 		
-		try {
-			HttpSession session = request.getSession();
-			MemberVO member = (MemberVO) session.getAttribute("loginMember");
-			
-			Map<String, String> param = new HashMap<>();
-			
-			param.put("email", member.getEmail());
-			param.put("commonCode", commonCode);
-			param.put("detailCode", detailCode);
-			param.put("detailCodeName", detailCodeName);
-			param.put("sortOrdr", sortOrdr);
-			param.put("detailCodeUseAt", detailCodeUseAt);
-			
-			commonCodeService.insertDetailCode(param);
-			
-		} catch (Exception e) {
-			throw new RuntimeException();
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
+		Map<String, String> param = new HashMap<>();
+		
+		param.put("email", member.getEmail());
+		param.put("commonCode", commonCode);
+		param.put("detailCode", detailCode);
+		param.put("detailCodeName", detailCodeName);
+		param.put("sortOrdr", sortOrdr);
+		param.put("detailCodeUseAt", detailCodeUseAt);
+		
+		int resultCnt = commonCodeService.insertDetailCode(param);
+		
+		if(resultCnt > 0) {
+			return new ResponseEntity<>("ok",HttpStatus.OK);
+		
+		}else {
+			return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
 		}
 	}
 	
-	@ResponseBody
-	@RequestMapping("/detail/code/delete")
-	public void deleteDetailCode(String detailCode, HttpServletRequest request) {
-		
-		try {
-			
-			HttpSession session = request.getSession();
-			MemberVO member = (MemberVO) session.getAttribute("loginMember");
-			Map<String, String> param = new HashMap<>();
 
-			param.put("email", member.getEmail());
-			param.put("detailCode", detailCode);
-			
-			commonCodeService.deleteDetailCode(param);
-			
-		} catch (Exception e) {
-			throw new RuntimeException();
+	@RequestMapping("/detail/code/delete")
+	public ResponseEntity<String> deleteDetailCode(String detailCode, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		Map<String, String> param = new HashMap<>();
+
+		param.put("email", member.getEmail());
+		param.put("detailCode", detailCode);
+		
+		int resultCnt = commonCodeService.deleteDetailCode(param);
+		
+		if(resultCnt > 0) {
+			return new ResponseEntity<>("ok",HttpStatus.OK);
+		
+		}else {
+			return new ResponseEntity<>("fail",HttpStatus.BAD_REQUEST);
 		}
 	}
 
