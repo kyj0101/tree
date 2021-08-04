@@ -3,7 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.board.mapper.BoardMapper">
+	
+	<resultMap type="boardVO" id="board">
+		<id column="board_no" property="boardNo"/>
 
+	</resultMap>
+	
 	<insert id="insertFile">
 		/* BoardMapper.insertFile */
 		
@@ -62,13 +67,14 @@
 					EMAIL,
 					BOARD_VIEW,
 					BOARD_DATE,
-					BOARD_CONTENT,
+					BOARD_TITLE,
+					BOARD_CONTENT,					
 					FRST_REGIST_PNTTM,
 					FRST_REGISTER_ID,
 					LAST_UPDT_PNTTM,
 					LAST_UPDUSR_ID,
 					DELETE_AT,
-					ATTACHMENT_NO
+					FILE_ID
 				)
 			VALUES
 				(
@@ -77,7 +83,8 @@
 					#{noticeAt},
 					#{email},
 					0,
-					SYSDATE,	
+					SYSDATE,
+					#{title},	
 					#{content},
 					SYSDATE,
 					#{email},
@@ -87,5 +94,150 @@
 					#{fileId}
 				)
 	</insert>
+	
+	<select id="getBoardList" resultType="boardVO">
+		/* BoardMapper.getBoardList */
+
+		SELECT
+			A.TOP_AT,
+			A.BOARD_NO,
+			A.BOARD_VIEW,
+			A.BOARD_TITLE,
+			B.NAME,
+			A.RANK,
+			A.TOTCNT
+		FROM
+			(
+
+				SELECT
+					'TOP'  AS TOP_AT,
+					ROW_NUMBER () OVER(ORDER BY A.FRST_REGIST_PNTTM DESC)  AS RANK,
+					A.BOARD_NO,
+					A.BOARD_VIEW,
+					A.BOARD_TITLE,
+					A.NOTICE_AT,
+					A.CATEGORY_NO,
+					A.DELETE_AT,
+					A.EMAIL,
+					(
+						SELECT
+							COUNT(*)
+						FROM
+							TB_BOARD A
+						WHERE
+							A.NOTICE_AT = 'Y'
+							AND A.CATEGORY_NO = 1
+							AND A.DELETE_AT = 'N'
+					) AS TOTCNT
+				FROM
+					TB_BOARD A
+				WHERE
+					A.NOTICE_AT = 'Y'
+					AND A.CATEGORY_NO = 1
+					AND A.DELETE_AT = 'N'
+					
+				UNION ALL
+				
+				SELECT
+					'BOTTOM'  AS TOP_AT,
+					ROW_NUMBER () OVER(ORDER BY A.FRST_REGIST_PNTTM DESC)  AS RANK,
+					A.BOARD_NO,
+					A.BOARD_VIEW,
+					A.BOARD_TITLE,
+					A.NOTICE_AT,
+					A.CATEGORY_NO,
+					A.DELETE_AT,
+					A.EMAIL,
+					(
+						SELECT
+							COUNT(*)
+						FROM
+							TB_BOARD A
+						WHERE
+							A.NOTICE_AT = 'N'
+							AND A.CATEGORY_NO = 1
+							AND A.DELETE_AT = 'N'
+					) AS TOTCNT
+				FROM
+					TB_BOARD A
+				WHERE
+					A.NOTICE_AT = 'N'
+					AND A.CATEGORY_NO = 1
+					AND A.DELETE_AT = 'N'
+				) A
+			LEFT OUTER JOIN TB_MEMBER B ON A.EMAIL = B.EMAIL
+		WHERE
+			A.RANK <![CDATA[<=]]> A.TOTCNT
+	</select>
+	
+	
+	<select id="getBoardListCnt" resultType="int">
+		/* BoardMapper.getBoardListCnt */
+
+		SELECT
+			COUNT(*)
+		FROM
+			(
+
+				SELECT
+					'TOP'  AS TOP_AT,
+					ROW_NUMBER () OVER(ORDER BY A.FRST_REGIST_PNTTM DESC)  AS RANK,
+					A.BOARD_NO,
+					A.BOARD_VIEW,
+					A.BOARD_TITLE,
+					A.NOTICE_AT,
+					A.CATEGORY_NO,
+					A.DELETE_AT,
+					A.EMAIL,
+					(
+						SELECT
+							COUNT(*)
+						FROM
+							TB_BOARD A
+						WHERE
+							A.NOTICE_AT = 'Y'
+							AND A.CATEGORY_NO = 1
+							AND A.DELETE_AT = 'N'
+					) AS TOTCNT
+				FROM
+					TB_BOARD A
+				WHERE
+					A.NOTICE_AT = 'Y'
+					AND A.CATEGORY_NO = 1
+					AND A.DELETE_AT = 'N'
+					
+				UNION ALL
+				
+				SELECT
+					'BOTTOM'  AS TOP_AT,
+					ROW_NUMBER () OVER(ORDER BY A.FRST_REGIST_PNTTM DESC)  AS RANK,
+					A.BOARD_NO,
+					A.BOARD_VIEW,
+					A.BOARD_TITLE,
+					A.NOTICE_AT,
+					A.CATEGORY_NO,
+					A.DELETE_AT,
+					A.EMAIL,
+					(
+						SELECT
+							COUNT(*)
+						FROM
+							TB_BOARD A
+						WHERE
+							A.NOTICE_AT = 'N'
+							AND A.CATEGORY_NO = 1
+							AND A.DELETE_AT = 'N'
+					) AS TOTCNT
+				FROM
+					TB_BOARD A
+				WHERE
+					A.NOTICE_AT = 'N'
+					AND A.CATEGORY_NO = 1
+					AND A.DELETE_AT = 'N'
+				) A
+			LEFT OUTER JOIN TB_MEMBER B ON A.EMAIL = B.EMAIL
+		WHERE
+			A.RANK <![CDATA[<=]]> A.TOTCNT
+	</select>
 
 </mapper>

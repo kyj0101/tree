@@ -1,22 +1,19 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>게시판</title>
-  
+  <title>Document</title>
   <script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-  <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-  
-  <link rel="stylesheet" href="/css/common/main.css">
-  <script src="/js/common/main.js"></script>
-  <script src="/js/board/board.js"></script>
-  
+  <link rel="stylesheet" href="main.css">
+  <script src="main.js"></script>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
@@ -27,7 +24,7 @@
   <header>
     <aside class="menu-container">
       <div class="logo">
-        <i class="fas fa-tree" onclick="history.back()"></i>
+        <i class="fas fa-tree" onclick="location.href='home.html'"></i>
         <p>VTEX</p>
       </div>
       <hr>
@@ -37,7 +34,7 @@
       </div>
       <hr class="plus-hr" >
       <ul class="board-list-ul">
-        <li><a href="/board/list">공지사항</a></li>
+        <li><a href="main.html">공지사항</a></li>
       </ul>
       <hr>
       <div class="plus-board" data-toggle="modal" data-target="#addModal">
@@ -46,7 +43,7 @@
       </div>
       <hr class="plus-hr">
       <ul class="chat-list-ul">
-        <li><a href="/chat/room">회의실</a></li>
+        <li><a href="chat.html">회의실</a></li>
       </ul>
     </aside>
 
@@ -84,28 +81,28 @@
         <div id="manager-menu" class="manager-menu-hidden">
           <ul class="list-group">
             <li class="list-group-item">
-              <a href="/commoncode/list">관리자 메뉴</a>
+              <a href="manager-attendance.html">관리자 메뉴</a>
             </li>
             <li class="list-group-item">
-              <a href="/member/mypage/update/view">마이페이지</a>
+              <a href="mypage-update.html">마이페이지</a>
             </li>
           </ul>
         </div>
 
         <div id="user-profile" class="user-profile-hidden">
-          <h5 th:text='${session.loginMember.name}'></h5>
+          <h5>김개발</h5>
           <ul>
             <li>
               <label for="email" class="visually-hidden">이메일</label>
-              <input class="form-control" id="email" type="email" th:value='${session.loginMember.email}' readonly>
+              <input class="form-control" id="email" type="email" value="abc123@gmail.com" readonly>
             </li>
             <li>
               <label for="position" class="visually-hidden">부서</label>
-              <input class="form-control" id="position" type="text" th:value='${session.loginMember.departmentName}' readonly> 
+              <input class="form-control" id="position" type="text" value="개발팀"readonly>
             </li>
             <li>
               <label for="department" class="visually-hidden">직급</label>
-       <input class="form-control" id="department" type="text" th:value='${session.loginMember.positionName}'  readonly> 
+              <input class="form-control" id="department" type="text" value="사원"  readonly>
             </li>
           </ul>
           <ul class="btn-ul">
@@ -116,9 +113,11 @@
               <button type="button" class="btn btn-success disabled">퇴근</button>    
             </li>
           </ul>
-          <button type="button" class="btn btn-warning btnLogout">로그아웃</button>
-          <form id="logoutForm"></form>
+          <button type="button" class="btn btn-warning">로그아웃</button>
         </div>
+
+
+
       </div>
     </aside>
 
@@ -136,7 +135,7 @@
 
         <thead>
           <tr>
-            <th scope="col">게시글 번호</th>
+            <th scope="col">번호</th>
             <th scope="col">작성자</th>
             <th scope="co1">제목</th>
             <th scope="col">조회수</th>
@@ -144,20 +143,116 @@
         </thead>
 
         <tbody>
-           <tr th:each="board : ${boardList}">
-            <th scope="row" th:if="${board.topAt == 'TOP'}">공지</th>
-            <input type="hidden"  th:if="${board.topAt == 'TOP'}" th:value="${board.boardNo}" />
-            <th scope="row" th:if="${board.topAt == 'BOTTOM'}" th:text="${board.boardNo}" </th>
-            <td th:text="${board.name}"></td>
-            <td th:text="${board.boardTitle}" class="boardTitle"></td>
-            <td th:text="${board.boardView}"></td>
+          <tr>
+            <th scope="row">
+              <strong>공지</strong>
+            </th>
+            <td>
+              <strong>
+                개발자
+              </strong>
+            </td>
+            <td data-toggle="modal" data-target="#view-board-modal">
+              <strong>
+                공지사항입니다.
+              </strong>
+            </td>
+            <td>
+              <strong>
+                0
+              </strong>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>궤발자</td>
+            <td>노트북 추천해주세요</td>
+            <td>30</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>기발자</td>
+            <td>Node.js 입문용 책 뭐가 좋을까요?</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>가발자</td>
+            <td>자바스크립트 어려워요</td>
+            <td>120</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>구발자</td>
+            <td>안녕하세요..................................</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+
+          <tr>
+            <th scope="row">7</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <th scope="row">8</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <th scope="row">9</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">11</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
           </tr>
         </tbody>
 
       </table>
 
     </div>
-    <nav aria-label="Page navigation example" th:utext="${pageBar}">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
     </nav>
 
     <div class="d-md-flex justify-content-md-end" style="margin-right: 170px;">
@@ -363,57 +458,53 @@
 </div>
 
 <!-- 게시글 작성 Modal -->
-<div class="modal fade" id="write-board-modal" data-backdrop="static"
-	data-keyboard="false" tabindex="-1"
-	aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	<div class="modal-dialog modal-dialog-scrollable modal-lg">
-		<div class="modal-content">
+<div class="modal fade" id="write-board-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
 
-			<div class="modal-header">
-				<h5 class="modal-title" id="add-modal-label">게시글 작성</h5>
-				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-modal-label">게시글 제목</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
 
-				<div class="modal-body member-modal-body ">
-					<div class="input-group titleDiv">
-						<input type="input"
-							class="form-control bg-light border-0 small title-input"
-							id="title"
-							list="datalistOptions" placeholder="제목을 입력하세요."
-							aria-label="Search" aria-describedby="basic-addon2">
-						<div>
-							<input class="form-check-input" type="checkbox" value="Y" id="noticeAt" name="noticeAt">
-							<label class="form-check-label" for="defaultCheck1"> 공지사항 </label>
-						</div>
-					</div>
+      <div class="modal-body member-modal-body ">
+        <div class="input-group">
+          <input type="input" class="form-control bg-light border-0 small title-input" list="datalistOptions" 
+            placeholder="제목을 입력하세요." aria-label="Search" aria-describedby="basic-addon2">
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+          <label class="form-check-label" for="defaultCheck1">
+            공지사항
+          </label>
+        </div>
+        <textarea class="board-content-textarea" name="" id="" cols="25" rows="10" ></textarea>
+      </div>
 
-					<textarea class="board-content-textarea" name="content" id="content" cols="25"
-						rows="10"></textarea>
-					<div class="modal-footer">
-						<div class="boardBtnDiv" role="group" aria-label="Basic example">
-							<button type="button" class="btn btn-info add-file-input">파일첨부추가</button>
-							<button type="button" class="btn btn-primary boardBtn">글쓰기</button>
-						</div>
+      <div class="modal-footer">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-info add-file-input">파일첨부 추가</button>
+        </div>
+        <div class='input-group input-file'>
+          <div class='custom-file'>
+            <label class='custom-file-label file1'>
+              파일을 첨부하세요.
+            </label> 
+            <input type='file' class='custom-file-input file-input'name='uploadFile'>
+            <hr />
+          </div>
+          <div class='input-group-append'>
+            <button class='btn btn-outline-secondary' type='button' id='inputGroupFileAddon04'>파일삭제</button>
+          </div>
+        </div>
 
-						<div class='input-group input-file'>
+      </div>
 
-							<div class='custom-file'>
-								<label class='custom-file-label file1'> 파일을 첨부하세요. </label>
-								<input	type='file' class='custom-file-input file-input' name='uploadFile'>
-								<hr />
-							</div>
-							<div class='input-group-append'>
-								<button class='btn btn-outline-secondary' type='button'
-									id='inputGroupFileAddon04'>파일삭제</button>
-							</div>
-						</div>
-					</div>
-				</div>
-		</div>
-	</div>
+    </div>
+  </div>
 </div>
 
 </div>

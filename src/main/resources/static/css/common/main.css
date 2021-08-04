@@ -20,6 +20,14 @@ ul {
 	list-style: none;
 }
 
+.boardTitle{
+	cursor: pointer;
+}
+
+.boardTitle:hover{
+	text-decoration: underline;
+}
+
 /* ----------------------------- header ----------------------------- */
 header {
 	display: flex;
