@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.vtex.tree.commoncode.mapper.CommonCodeMapper;
+import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.member.service.MemberService;
 import com.vtex.tree.member.vo.MemberVO;
 import static com.vtex.tree.common.util.EncryptedPassword.*;
@@ -26,8 +28,11 @@ public class MemberController {
 	@Autowired
 	private MemberService memberService;
 	
+	@Autowired
+	private CommonCodeService commonCodeService;
+	
 	@RequestMapping("/mypage/update/view")
-	public String myPageUpdateView(Model model, HttpServletRequest request) {
+	public String myPageUpdateView(Model model, HttpServletRequest request) throws Exception {
 		
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
@@ -41,9 +46,14 @@ public class MemberController {
 			
 			member.setBirth(year + month + day);
 		}
+		
+		Map<String, String> param = new HashMap<String, String>();
+		param.put("searchCode", "COM001");
+		List<Map<String, String>> departmentList = commonCodeService.selectCmmnCodeList(param);
+		
 
-		List<String> departmentList = memberService.getDepartmentList();
-		List<String> positionList = memberService.getPositionList();
+		param.put("searchCode", "COM002");
+		List<Map<String, String>> positionList = commonCodeService.selectCmmnCodeList(param);
 		
 		model.addAttribute("member", member);
 		model.addAttribute("departmentList", departmentList);

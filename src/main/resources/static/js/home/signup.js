@@ -87,9 +87,9 @@ $(function(){
 		member.phoen = $("#phone").val();
 		member.birth = $("#birth").val();
 		member.password = $("#password").val();
-		member.department = $("#department").val();
-		member.position = $("#position").val();
-	
+		member.department = $("#department option:selected").val();
+		member.position = $("#position option:selected").val();
+
 		var isNull = nullCheck(member);
 		var isHelpDisplay = helpDisplayCheck();
 		

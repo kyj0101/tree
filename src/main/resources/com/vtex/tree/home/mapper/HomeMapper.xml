@@ -59,13 +59,41 @@
 	
 	<select id="selectOneMember" resultType="memberVO">
 		/* HomeMapper.selecOneMember */
-		
+
 		SELECT
-			*
+			A.EMAIL,
+			A.NAME,
+			A.PHONE,
+			A.BIRTH,
+			A.PASSWORD,
+			A.DEPARTMENT,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.DEPARTMENT
+					
+			 ) AS DEPARTMENT_NAME,
+			A.POSITION,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.POSITION
+					
+			 ) AS POSITION_NAME,
+			A.EMAIL_KEY,
+			A.EMAIL_VERIFY_PNTTM,
+			A.QUIT_AT,
+			A.ROLE_CODE
 		FROM
-			TB_MEMBER
+			TB_MEMBER A
 		WHERE
-			EMAIL = #{email}
+			A.EMAIL = #{email}
 	</select>
 	
 	<update id="updateEmailVerify">

@@ -173,6 +173,25 @@
 			DETAIL_CODE = #{code}
 	</select>
 	
+	<select id="selectCmmnCodeList" resultMap="detailCode">
+		/* CommonCodeMapper.selectCmmnCodeList */
+		
+		SELECT
+			A.CODE,
+			A.CODE_NAME,
+			B.DETAIL_CODE,
+			B.DETAIL_CODE_NAME,
+			B.SORT_ORDR
+		FROM 
+			TB_COMMON_CODE A 
+			LEFT OUTER JOIN TB_COMMON_CODE_DETAIL B ON B.CODE = A.CODE
+		WHERE
+			A.USE_AT = 'Y'
+			AND B.USE_AT = 'Y'
+			AND A.CODE = #{searchCode}
+		ORDER BY B.SORT_ORDR, A.CODE
+	</select>
+	
 	<update id="updateCommonCode">
 		/* CommonCodeMapper.updateCommonCode */
 		

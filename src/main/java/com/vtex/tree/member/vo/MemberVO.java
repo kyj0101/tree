@@ -33,5 +33,7 @@ public class MemberVO {
 	private String lastUpdusrId;
 	private String quitAt;
 	private String roleCode;
+	private String departmentName;
+	private String positionName;
 
 }

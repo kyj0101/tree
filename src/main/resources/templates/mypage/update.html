@@ -84,7 +84,7 @@
                     <td>
                     	<div class="mb-3">
                      		<select class="custom-select" id="department" name="department">
-                     			<option th:each="department: ${departmentList}" th:value="${department}" th:utext="${department}" th:selected="${department==member.department}"></option>
+                     			<option th:each="department: ${departmentList}" th:value="${department.detailCode}" th:utext="${department.detailCodeName}" th:selected="${department.detailCode==member.department}"></option>
                      		</select>                           
                     	</div>
                     </td>
@@ -94,7 +94,7 @@
                     <td>
 						<div class="mb-3">
                      		<select class="custom-select" id="position" name="position">
-                     			<option  th:each="position: ${positionList}" th:value="${position}" th:utext="${position}" th:selected="${position==member.position}"></option>
+                     			<option  th:each="position: ${positionList}" th:value="${position.detailCode}" th:utext="${position.detailCodeName}" th:selected="${position.detailCode==member.position}"></option>
                      		</select>                           
                     	</div>
                     </td>

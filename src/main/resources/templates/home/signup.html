@@ -50,7 +50,7 @@
     <section>
         <div class="signup-div">
             <h4 class="signup-title">회원 가입</h4>
-            <form method="POST" action="/signup" id="signup-form">
+            <form method="POST" action="/signupAction" id="signup-form">
                 <label for="exampleInputPassword1" class="form-label">이메일</label>
                 <div class="form-row" style="display: flex;">
                   <div class="col-md-12 mb-3" style="display: flex; justify-content: space-around;">
@@ -93,14 +93,23 @@
                 </div>
 
                 <div class="mb-3">
-                    <label for="department" class="form-label">부서</label>
-                    <input type="text" class="form-control" id="department" name="department">
-                </div>
-                <div class="mb-3">
-                    <label for="position" class="form-label">직급</label>
-                    <input type="text" class="form-control" id="position" name="position">
-                </div>
-            </form>
+                    <label for="department" class="form-label">부서</label> 
+                    <select class="custom-select" id="department" name="department">
+						<option th:each="department: ${departmentList}" th:value="${department.detailCode}"
+							th:utext="${department.detailCodeName}" ></option>
+					</select>
+				</div>
+
+				<div class="mb-3">
+					<label for="position" class="form-label">직급</label> 
+					<select
+						class="custom-select" id="position" name="position">
+						<option th:each="position: ${positionList}" th:value="${position.detailCode}"
+							th:utext="${position.detailCodeName}" ></option>
+					</select>
+				</div>
+
+			</form>
             <button type="submit" class="btn btn-primary">이메일 인증하기</button>
             <p>
               *이메일 인증하기 버튼을 누르면 인증 이메일이 전송됩니다.

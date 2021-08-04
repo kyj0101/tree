@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
 
@@ -35,6 +36,9 @@ public class HomeController {
 
 	@Autowired
 	private HomeService homeService;
+	
+	@Autowired
+	private CommonCodeService commonCodeService;
 	
 	@Autowired
 	private JavaMailSenderImpl mailSender;
@@ -60,9 +64,27 @@ public class HomeController {
 	/**
 	 * 회원가입 페이지
 	 * @return
+	 * @throws Exception 
 	 */
 	@RequestMapping("/signup")
-	public String signUp() {
+	public String signUp(Model model) throws Exception {
+		
+		//부서 목록
+ 		Map<String, String> param = new HashMap<>();
+		param.put("searchCode", "COM001");
+		
+		List<Map<String, String>> departmentList = commonCodeService.selectCmmnCodeList(param);
+		
+		model.addAttribute("departmentList", departmentList);
+		
+		//직급 목록
+		Map<String, String> param2 = new HashMap<>();
+		param2.put("searchCode", "COM002");
+		
+		List<Map<String, String>> positionList = commonCodeService.selectCmmnCodeList(param2);
+		
+		model.addAttribute("positionList", positionList);
+		
 		return "home/signup";
 	}
 	
@@ -103,7 +125,7 @@ public class HomeController {
 	 * @throws MessagingException
 	 * @throws UnsupportedEncodingException
 	 */
-	@PostMapping("/signup")
+	@PostMapping("/signupAction")
 	public String signUp(MemberVO member, String domain) throws MessagingException, UnsupportedEncodingException {
 		
 		String password = getEncryptedPassword(member.getPassword());

@@ -4,11 +4,88 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.board.mapper.BoardMapper">
 
-	<select id="test" resultType="string">
-		SELECT
-			*
-		FROM
-			TB_MEMBER
-	</select>
+	<insert id="insertFile">
+		/* BoardMapper.insertFile */
+		
+		INSERT INTO
+			TB_FILE
+				(
+					FILE_ID,
+					FRST_REGIST_PNTTM,
+					USE_AT
+				)
+			VALUES
+				(
+					SEQ_TB_FILE.NEXTVAL,
+					SYSDATE,
+					DEFAULT
+				)
+		<selectKey resultType="_int" keyProperty="no" order="AFTER">
+			SELECT
+				SEQ_TB_FILE.CURRVAL
+			FROM
+				DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertFileDetail">
+		/* BoardMapper.insertFileDetail */
+		
+		INSERT INTO
+			TB_FILE_DETAIL
+				(
+					FILE_ID,
+					FILE_SN,
+					ORIGINAL_FILE_NAME,
+					RENAMED_FILE_NAME,
+					FILE_STORE
+				)
+				VALUES
+					(
+						#{fileId},
+						#{fileSn},
+						#{originalName},
+						#{reNamed},
+						#{fileStore}
+					)
+	</insert>
+	
+	<insert id="insertBoard">
+		/* BoardMapper.insertBoard */
+		
+		INSERT INTO
+			TB_BOARD
+				(
+					BOARD_NO,
+					CATEGORY_NO,
+					NOTICE_AT,
+					EMAIL,
+					BOARD_VIEW,
+					BOARD_DATE,
+					BOARD_CONTENT,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT,
+					ATTACHMENT_NO
+				)
+			VALUES
+				(
+					SEQ_TB_BOARD.NEXTVAL,
+					1,
+					#{noticeAt},
+					#{email},
+					0,
+					SYSDATE,	
+					#{content},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'N',
+					#{fileId}
+				)
+	</insert>
 
 </mapper>

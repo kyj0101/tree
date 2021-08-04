@@ -86,6 +86,11 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	public int deleteDetailCode(Map<String, String> param) throws Exception {
 		return commonCodeMapper.deleteDetailCode(param);
 	}
+	
+	@Override
+	public List<Map<String, String>> selectCmmnCodeList(Map<String, String> param) throws Exception {
+		return commonCodeMapper.selectCmmnCodeList(param);
+	}
 
 	
 	
