@@ -55,6 +55,10 @@ $(function() {
 			},
 			success(result) {
 				var board = result.board;
+				var files = result.fileListMap;
+				console.log(result);
+				
+				//게시글
 				var info = "";
 				
 				info += "작성자 : ";
@@ -63,7 +67,8 @@ $(function() {
 				info += board.boardView;
 				
 				$(".boardDetailTitle").text(board.boardTitle);
-				$(".boardDetailContent").text(board.boardContent);
+				$(".file-download-ul").before(board.boardContent);
+				$(".file-download-ul").append("<hr>");
 				$(".board-info-p").text(info);
 				
 				var loginEmail = $(".loginMemberEmail").val();
@@ -72,7 +77,28 @@ $(function() {
 				if(loginEmail == authorEmail){
 					$(".board-update-btn").removeClass("hidden");
 				}
+				
+				//파일
+				
 
+				$.each(files, function(index, elem){
+					console.log(elem.originalFileName);
+					var aTag = "<li>";
+					
+					aTag += "<a href=\"/board/file/download/?fileStore=" 
+							+ encodeURI(elem.fileStore)
+							+ '&renamedFileName=' 
+							+ elem.renamedFileName
+							+ '&originalFileName='
+							+ elem.originalFileName + "\""
+							+ '>'; 					
+					aTag += elem.originalFileName;
+					aTag += "</a>";
+					aTag += "</li>";
+					
+					$(".file-download-ul").append(aTag);				
+				});
+					
 			},
 		});
 	});

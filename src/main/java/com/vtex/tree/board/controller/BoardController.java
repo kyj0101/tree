@@ -3,6 +3,8 @@ package com.vtex.tree.board.controller;
 import static com.vtex.tree.common.util.FileUtil.getFileMap;
 import static com.vtex.tree.common.util.PageBar.getPageBar;
 
+import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,7 +16,11 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,7 +34,7 @@ import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
-
+import java.net.URLEncoder;
 @RequestMapping("/board")
 @Controller
 public class BoardController {
@@ -42,7 +48,7 @@ public class BoardController {
 	private HomeService homeService;
 
 	@Autowired
-	private ServletContext servletContext;
+	private ResourceLoader resourceLoader;
 
 	@RequestMapping("/list")
 	public String getBoardList(@RequestParam(defaultValue = "1") int cPage,HttpServletRequest request, @RequestParam(defaultValue = "1") int category, Model model) throws Exception {
@@ -145,6 +151,19 @@ public class BoardController {
 		mav.addObject("fileListMap", fileListMap);
 		mav.setViewName("jsonView");
 		return mav;
+	}
+	
+	@RequestMapping("/file/download")
+	public ResponseEntity<Resource> fileDowload(String fileStore, String renamedFileName, String originalFileName) throws UnsupportedEncodingException{
+		
+		String saveDirectory = fileStore;
+		File downFile = new File(saveDirectory, renamedFileName);
+		Resource resource = resourceLoader.getResource("file:" + downFile);
+		originalFileName = "attachment;fileName=\"" + URLEncoder.encode(originalFileName, "UTF-8") + "\"";
+		
+		return ResponseEntity.ok()
+							.contentType(MediaType.APPLICATION_OCTET_STREAM)
+							.header(HttpHeaders.CONTENT_DISPOSITION, originalFileName).body(resource);
 	}
 
 }
