@@ -287,5 +287,15 @@
 		WHERE
 			BOARD_NO = #{boardNo}
 	</update>
+	
+	<delete id="deleteFile">
+		/* BoardMapper.deleteFile */
+		
+		DELETE FROM
+			TB_FILE_DETAIL
+		WHERE
+			FILE_STORE = #{fileStore}
+			AND RENAMED_FILE_NAME = #{renamedFile}
+	</delete>
 
 </mapper>

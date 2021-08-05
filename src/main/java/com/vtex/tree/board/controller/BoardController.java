@@ -32,6 +32,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
+import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
 import java.net.URLEncoder;
@@ -165,5 +166,24 @@ public class BoardController {
 							.contentType(MediaType.APPLICATION_OCTET_STREAM)
 							.header(HttpHeaders.CONTENT_DISPOSITION, originalFileName).body(resource);
 	}
-
+	
+	@ResponseBody
+	@RequestMapping("/file/delete")
+	public String fileDelete(String fileStore, String renamedFile) throws Exception {
+		fileStore = fileStore.replace("%5C", "\\");
+		FileUtil.deleteOneFile(fileStore, renamedFile);
+		
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("fileStore", fileStore);
+		param.put("renamedFile", renamedFile);
+		
+		int resultCnt = boardService.deleteFile(param);
+		
+		if(resultCnt > 0) {
+			return "ok";	
+		}
+		
+		return "fail";
+	}
 }

@@ -15,6 +15,7 @@
   
   <link rel="stylesheet" href="/css/common/main.css">
   <script src="/js/common/main.js"></script>
+  <script src="/js/common/common.js"></script>
   <script src="/js/board/board.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -314,7 +315,7 @@
     <div class="modal-content">
 		<input type="hidden" th:value="${session.loginMember.email}" class="loginMemberEmail" />
       <div class="modal-header">
-        <h5 class="modal-title boardDetailTitle" id="add-modal-label">게시글 제목</h5>
+        <h5 class="modal-title boardDetailTitle" id="add-modal-label"></h5>
 
         <button type="button" class="close" data-dismiss="modal"  onclick="location.href=/board/list">
           <span aria-hidden="true">&times;</span>
@@ -322,6 +323,7 @@
       </div>
 
       <div class="modal-body member-modal-body boardDetailContent">
+      	<div class="textDiv"></div>
         <ul class="file-download-ul">
         </ul>
       </div>

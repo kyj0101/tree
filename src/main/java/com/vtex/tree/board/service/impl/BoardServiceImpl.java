@@ -57,4 +57,9 @@ public class BoardServiceImpl implements BoardService{
 	public void addViewNum(Map<String, Object> param) throws Exception {
 		boardMapper.addViewNum(param);
 	}
+	
+	@Override
+	public int deleteFile(Map<String, Object> param) throws Exception {
+		return boardMapper.deleteFile(param);
+	}
 }

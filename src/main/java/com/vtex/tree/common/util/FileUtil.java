@@ -62,4 +62,10 @@ public class FileUtil {
 			throw e;
 		}
 	}
+	
+	public static void deleteOneFile(String saveDirectory, String renamedFile) {
+
+		File dir = new File(saveDirectory, renamedFile);
+		dir.delete();
+	}
 }

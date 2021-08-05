@@ -48,12 +48,6 @@ $(function(){
         $this.prev().text(fileName);
     });
 
-    $(".modal-footer").on("click",".btn-outline-secondary",function(){
-        var input = $($(this).parent().prev()).children()[1];
-        
-        $(input).prev().text("파일을 첨부하세요.");
-        $(input).val("");
-    });
 
     $(".add-file-input").click(function(){
 

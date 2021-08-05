@@ -23,4 +23,6 @@ public interface BoardService {
 	List<Map<String, Object>> selectBoardFiles(int fileId) throws Exception;
 
 	void addViewNum(Map<String, Object> param) throws Exception;
+	
+	int deleteFile(Map<String, Object> param) throws Exception;
 }
