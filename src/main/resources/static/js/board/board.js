@@ -51,24 +51,35 @@ $(function() {
 			type: "POST",
 			url: "/board/detail",
 			data: {
-				"title": board.title,
-				"content": board.content,
-				"fileId": result,
-				"noticeAt": board.noticeAt
+				"boardNo":boardNo
 			},
 			success(result) {
-				console.log(result);
-				if (result == "ok") {
-					alert("작성되었습니다.");
-					location.replace('/board/list')
-
-				} else {
-					alert("작성에 실패하였습니다.");
-					return;
+				var board = result.board;
+				var info = "";
+				
+				info += "작성자 : ";
+				info += board.name;
+				info += " 조회수 : ";
+				info += board.boardView;
+				
+				$(".boardDetailTitle").text(board.boardTitle);
+				$(".boardDetailContent").text(board.boardContent);
+				$(".board-info-p").text(info);
+				
+				var loginEmail = $(".loginMemberEmail").val();
+				var authorEmail = board.email;
+				
+				if(loginEmail == authorEmail){
+					$(".board-update-btn").removeClass("hidden");
 				}
+
 			},
 		});
 	});
+	
+	$(".close").click(function(){
+		location.replace('/board/list') 
+	})
 });
 
 function insertBoard(board, result) {

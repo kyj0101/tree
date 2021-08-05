@@ -376,3 +376,7 @@ nav ul {
 .form-check-input{
 	margin-top: 8px;
 }
+
+.hidden{
+	display: none;
+}

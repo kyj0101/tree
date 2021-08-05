@@ -42,4 +42,19 @@ public class BoardServiceImpl implements BoardService{
 	public int getBoardListCnt(int category) throws Exception {
 		return boardMapper.getBoardListCnt(category);
 	}
+	
+	@Override
+	public BoardVO selectOneBoard(int boardNo) throws Exception {
+		return boardMapper.selectOneBoard(boardNo);
+	}
+	
+	@Override
+	public List<Map<String, Object>> selectBoardFiles(int fileId) throws Exception {
+		return boardMapper.selectBoardFiles(fileId);
+	}
+	
+	@Override
+	public void addViewNum(Map<String, Object> param) throws Exception {
+		boardMapper.addViewNum(param);
+	}
 }

@@ -20,4 +20,9 @@ public interface BoardMapper {
 	
 	int getBoardListCnt(int category) throws Exception;
 	
+	BoardVO selectOneBoard(int boardNo) throws Exception;
+	
+	List<Map<String, Object>> selectBoardFiles(int fileId) throws Exception;
+	
+	void addViewNum(Map<String, Object> param) throws Exception;
 }

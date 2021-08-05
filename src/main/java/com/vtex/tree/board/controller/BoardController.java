@@ -3,6 +3,7 @@ package com.vtex.tree.board.controller;
 import static com.vtex.tree.common.util.FileUtil.getFileMap;
 import static com.vtex.tree.common.util.PageBar.getPageBar;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
@@ -103,8 +105,7 @@ public class BoardController {
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		Map<String, Object> param = new HashMap<>();
-		System.out.println(fileId);
-		
+
 		param.put("title", title);
 		param.put("content", content);
 		param.put("email", member.getEmail());
@@ -120,8 +121,30 @@ public class BoardController {
 	}
 	
 	@RequestMapping("/detail")
-	public void getBoardDetail(int boardNo) {
+	public ModelAndView getBoardDetail(int boardNo) throws Exception {
 		
+		//게시글 가져오기
+		ModelAndView mav = new ModelAndView();
+		BoardVO board = boardService.selectOneBoard(boardNo);
+		List<Map<String, Object>> fileListMap = new ArrayList<>();
+		
+		if(board.getFileId() != 0) {
+			fileListMap = boardService.selectBoardFiles(board.getFileId());
+		}
+		
+		//게시글 조회수 증가
+		Map<String, Object> param = new HashMap<>();
+		int boardView = board.getBoardView() + 1;
+		param.put("boardView", boardView);
+		param.put("boardNo", boardNo);
+		
+		boardService.addViewNum(param);
+		board.setBoardView(boardView);
+		
+		mav.addObject("board", board);
+		mav.addObject("fileListMap", fileListMap);
+		mav.setViewName("jsonView");
+		return mav;
 	}
 
 }
