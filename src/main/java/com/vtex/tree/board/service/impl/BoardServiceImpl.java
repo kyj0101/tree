@@ -62,4 +62,14 @@ public class BoardServiceImpl implements BoardService{
 	public int deleteFile(Map<String, Object> param) throws Exception {
 		return boardMapper.deleteFile(param);
 	}
+	
+	@Override
+	public int getMaxFileSn(int fileId) throws Exception {
+		return boardMapper.getMaxFileSn(fileId);
+	}
+	
+	@Override
+	public int updateBoard(Map<String, Object> param) throws Exception {
+		return boardMapper.updateBoard(param);
+	}
 }

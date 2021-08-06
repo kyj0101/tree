@@ -7,43 +7,58 @@ $(function() {
 
 		var formData = new FormData();
 		var inputFile = $("input[name='uploadFile']");
+		var text = $(".boardBtn").text();
 		var count = 0;
 		
-		if(confirm("작성하시겠습니까?")){
+		//수정 or 새로 입력 
+		if(text == "수정" && confirm("수정하시겠습니까?")){
 			var isNull = nullCheck(board);
-			
-			if(isNull){
+
+			if (isNull) {
 				alert("빈 칸이 있습니다.");
-			}else{
-				$.each(inputFile, function(index, elem) {
+			} else {
+				
+				board.noticeAt = $("#noticeAt:checked").val()
+				board.boardNo = $("#boardNo").val();
+				formData = returnFormData(inputFile, count);
 
-					if (elem.files.length > 0) {
-						count++;
-						formData.append("uploadFile", $(elem)[0].files[0]);
-					}
-				});
+				var url = $(".hiddenFile").val();
 
+				if (url != undefined && formData != null) {
+
+					var indexFileId = url.indexOf("&fileId=");
+					var indexRename = url.indexOf("&renamedFileName=");
+					var fileId = (url.substring(indexFileId, indexRename)).replace("&fileId=", "");
+
+					formData.append("fileId", fileId);
+					updateFile(formData);
+					updateBoard(board);
+
+				} else {
+					updateBoard(board);
+				}
+				return;
+			}
+			
+		}else if(text == "글쓰기" && confirm("작성하시겠습니까?")){
+	
+			var isNull = nullCheck(board);
+
+			if (isNull) {
+				alert("빈 칸이 있습니다.");
+			} else {
+				formData = returnFormData(inputFile, count);
 				board.noticeAt = $("#noticeAt:checked").val();
+			
+				//파일이 있다면 파일 먼저 insert
+				if (formData != null) {
+					insertFile(formData, board);
 
-				if (count > 0) {
-					$.ajax({
-						url: "/board/file/insert",
-						processData: false,
-						contentType: false,
-						data: formData,
-						type: 'POST',
-						success: function(result) {
-							insertBoard(board, result);
-						}
-					});
-					
 				} else {
 					insertBoard(board, null);
 				}
 			}
-			
-		}
-		
+		}	
 	});
 
 	$(".boardTitle").click(function() {
@@ -80,14 +95,16 @@ $(function() {
 				$(".textDiv").append(board.boardContent);
 				$(".textDiv").append("<hr>");
 				$(".board-info-p").text(info);
-
+				$("#boardNo").val(board.boardNo);
+				
 				var loginEmail = $(".loginMemberEmail").val();
 				var authorEmail = board.email;
+
 
 				if (loginEmail == authorEmail) {
 					$(".board-update-btn").removeClass("hidden");
 				}
-
+				
 				//파일
 				$.each(files, function(index, elem){
 
@@ -95,6 +112,8 @@ $(function() {
 					
 					aTag += "<a class=\"fileA\" href=\"/board/file/download/?fileStore=" 
 							+ encodeURI(elem.fileStore)
+							+ '&fileId='
+							+ elem.fileId
 							+ '&renamedFileName=' 
 							+ elem.renamedFileName
 							+ '&originalFileName='
@@ -118,8 +137,7 @@ $(function() {
 		
 		var title = $(".boardDetailTitle").text();
 		var content = $(".textDiv").text();
-		var files = [];
-		
+
 		if($(".fileA").length > 0){
 
 			$(".input-file").empty();			
@@ -130,7 +148,7 @@ $(function() {
 				
 				html += "<div class='custom-file'>";
 				html += "<label class='custom-file-label file1'>" +  $(elem).text() +" </label>";
-				html += "<input type='hidden' value='" + ($(elem).attr("href")).replace("/board/file/download/", "/board/file/delete") + "'/>"
+				html += "<input type='hidden' class='hiddenFile' value='" + ($(elem).attr("href")).replace("/board/file/download/", "/board/file/delete") + "'/>"
 				html += "</div>";
 				html += "<div class='input-group-append' name='file-del-btn'>";
 				html += "<button class='btn btn-outline-secondary' type='button' id='inputGroupFileAddon04'>파일삭제</button>";
@@ -173,12 +191,7 @@ $(function() {
 				},
 
 				success(result) {
-					if(result == "ok"){
-						alert("삭제되었습니다.");
-						
-					}else{
-						alert("삭제를 실패했습니다.");
-					}
+					alert("삭제되었습니다.");
 				},
 			});
 
@@ -186,8 +199,21 @@ $(function() {
 			$(input).prev().text("파일을 첨부하세요.");
 			$(input).val("");
 		}
-
 	});
+	
+	$(".add-file-input").click(function(){
+
+        var num = ($(".btn-outline-secondary:visible").length);
+
+        if(num >= 5){
+            alert("파일 첨부는 최대 5개 입니다.");
+            return;
+
+        }else{
+            var fileinput = "<div class='input-group input-file'><div class='custom-file'><label class='custom-file-label file1'>파일을 첨부하세요.</label> <input type='file' class='custom-file-input file-input'name='uploadFile'><hr /></div><div class='input-group-append' name='file-del-btn'><button class='btn btn-outline-secondary' type='button' id='inputGroupFileAddon04'>파일삭제</button></div></div>";
+            $(".modal-footer").append(fileinput);
+        }
+    });
 });
 
 function insertBoard(board, result) {
@@ -212,4 +238,76 @@ function insertBoard(board, result) {
 			}
 		},
 	});
+}
+
+function insertFile(formData,board){
+	$.ajax({
+		url: "/board/file/insert",
+		processData: false,
+		contentType: false,
+		data: formData,
+		type: 'POST',
+		success: function(result) {
+			insertBoard(board, result);
+		}
+	});
+}
+
+function updateFile(formData){
+
+	$.ajax({
+		url: "/board/file/update",
+		processData: false,
+		contentType: false,
+		data: formData,
+		type: 'POST',
+		success: function(result) {
+		}
+	});
+}
+
+function updateBoard(board){
+	
+	$.ajax({
+		type: "POST",
+		url: "/board/update",
+		data: {
+			"title": board.title,
+			"content": board.content,
+			"noticeAt": board.noticeAt,
+			"boardNo":board.boardNo
+		},
+		success(result) {
+			console.log(result);
+			if (result == "ok") {
+				alert("수정되었습니다.");
+				location.replace('/board/list')
+
+			} else {
+				alert("수정을 실패하였습니다.");
+				return;
+			}
+		},
+	});
+}
+
+function returnFormData(inputFile){
+  	
+	var formData = new FormData();
+	var haveFile = false;
+	
+	$.each(inputFile, function(index, elem) {
+
+		if (elem.files.length > 0) {
+			
+			formData.append("uploadFile", $(elem)[0].files[0]);
+			haveFile = true;
+		}
+	});
+	
+	if(haveFile){
+		return formData;		
+	}else{
+		return null;
+	}
 }

@@ -170,6 +170,7 @@ public class BoardController {
 	@ResponseBody
 	@RequestMapping("/file/delete")
 	public String fileDelete(String fileStore, String renamedFile) throws Exception {
+		
 		fileStore = fileStore.replace("%5C", "\\");
 		FileUtil.deleteOneFile(fileStore, renamedFile);
 		
@@ -182,6 +183,53 @@ public class BoardController {
 		
 		if(resultCnt > 0) {
 			return "ok";	
+		}
+		
+		return "fail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/file/update")
+	public int updateFile(MultipartFile[] uploadFile, int fileId) throws Exception {
+
+		String saveDirectory = "C:\\Users\\kangyujeong98\\Documents\\workspace\\git\\tree\\tree\\src\\main\\resources\\static\\upload\\board";
+		int resultCnt = 0;
+		int maxFileSn = boardService.getMaxFileSn(fileId);
+		int fileSn = maxFileSn;
+
+		for (MultipartFile upFile : uploadFile) {
+
+			fileSn++;
+
+			Map<String, Object> fileMap = getFileMap(upFile, saveDirectory, fileId, fileSn);
+			resultCnt = boardService.insertFileDetail(fileMap);
+		}
+
+		if (resultCnt > 0) {
+			return fileId;
+		}
+
+		return 0;
+	}
+	
+	@ResponseBody
+	@RequestMapping("/update")
+	public String updateBoard(String title, String content, String boardNo, String noticeAt, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("title", title);
+		param.put("content", content);
+		param.put("boardNo", boardNo);
+		param.put("noticeAt", noticeAt != null ? "Y" : "N");
+		param.put("email", member.getEmail());
+		
+		int resultCnt = boardService.updateBoard(param);
+		
+		if(resultCnt > 0) {
+			return "ok";
 		}
 		
 		return "fail";

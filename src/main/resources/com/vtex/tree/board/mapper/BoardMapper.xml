@@ -252,6 +252,8 @@
 			A.FILE_ID,
 			A.BOARD_VIEW,
 			A.EMAIL,
+			A.NOTICE_AT,
+			A.BOARD_NO,
 			B.NAME
 		FROM
 			TB_BOARD A
@@ -277,6 +279,17 @@
 			AND A.FILE_ID = #{fileId}
 	</select>
 	
+	<select id="getMaxFileSn" resultType="int">
+		/* BoardMapper.getMaxFileSn */
+		
+		SELECT
+			MAX(FILE_SN)
+		FROM
+			TB_FILE_DETAIL
+		WHERE
+			FILE_ID = #{fileId}
+	</select>
+	
 	<update id="addViewNum">
 		/* BoardMapper.addViewNum */
 		
@@ -284,6 +297,21 @@
 			TB_BOARD
 		SET
 			BOARD_VIEW = #{boardView}
+		WHERE
+			BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateBoard">
+		/* BoardMapper.updateBoard */
+		
+		UPDATE
+			TB_BOARD
+		SET
+			BOARD_TITLE = #{title},
+			BOARD_CONTENT = #{content},
+			NOTICE_AT = #{noticeAt},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
 		WHERE
 			BOARD_NO = #{boardNo}
 	</update>
