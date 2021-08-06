@@ -1,10 +1,13 @@
 $(function() {
+	var categoryNo = $("#categoryNo").val();
+	
 	$(".boardBtn").click(function() {
 
 		var board = new Object()
 		board.title = $("#title").val();
 		board.content = $("#content").val();
-
+		board.categoryNo = $("#categoryNo").val();
+		
 		var formData = new FormData();
 		var inputFile = $("input[name='uploadFile']");
 		var text = $(".boardBtn").text();
@@ -23,15 +26,26 @@ $(function() {
 				formData = returnFormData(inputFile, count);
 
 				var url = $(".hiddenFile").val();
+				console.log(formData);	
+				//파일이 있다면
+				if (formData != null) {
+					
+					//기존 파일이 있다면
+					if(url != undefined){
+						
+						var indexFileId = url.indexOf("&fileId=");
+						var indexRename = url.indexOf("&renamedFileName=");
+						var fileId = (url.substring(indexFileId, indexRename)).replace("&fileId=", "");
+						formData.append("fileId", fileId);		
+						updateFile(formData);
+					
+					//기존 파일이 없다면	
+					}else{
+						
+						//formData.append("boardNo", board.boardNo);	
+						updateInsertFile(formData);
+					}
 
-				if (url != undefined && formData != null) {
-
-					var indexFileId = url.indexOf("&fileId=");
-					var indexRename = url.indexOf("&renamedFileName=");
-					var fileId = (url.substring(indexFileId, indexRename)).replace("&fileId=", "");
-
-					formData.append("fileId", fileId);
-					updateFile(formData);
 					updateBoard(board);
 
 				} else {
@@ -99,8 +113,11 @@ $(function() {
 				
 				var loginEmail = $(".loginMemberEmail").val();
 				var authorEmail = board.email;
-
-
+				
+				if(board.noticeAt == "Y"){
+					$("#noticeAt").attr("checked", true);
+				}
+				
 				if (loginEmail == authorEmail) {
 					$(".board-update-btn").removeClass("hidden");
 					$(".boardDeleteBtn").removeClass("hidden");
@@ -131,7 +148,7 @@ $(function() {
 	});
 	
 	$(".close").click(function(){
-		location.replace('/board/list') 
+		location.replace('/board/list?category=' + categoryNo)
 	});
 	
 	$(".board-update-btn").click(function(){
@@ -175,10 +192,11 @@ $(function() {
 
 			var url = $($($($(this).parent().parent()).children()[0]).children()[1]).val();
 			var indexStore = url.indexOf("fileStore=");
+			var indexFileId = url.indexOf("&fileId=");
 			var indexRename = url.indexOf("&renamedFileName=");
 			var indexOriginal = url.indexOf("&origin");
 
-			var fileStore = url.substring(indexStore, indexRename).replace("fileStore=", "");
+			var fileStore = url.substring(indexStore, indexFileId).replace("fileStore=", "");
 			var renamedFile = url.substring(indexRename, indexOriginal).replace("&renamedFileName=", "");
 			
 			$($(this).parent().parent()).empty();
@@ -228,7 +246,7 @@ $(function() {
 
 				if (result == "ok") {
 					alert("삭제되었습니다.");
-					location.replace('/board/list')
+					location.replace('/board/list?category=' + categoryNo)
 
 				} else {
 					alert("삭제를 실패하였습니다.");
@@ -247,13 +265,14 @@ function insertBoard(board, result) {
 			"title": board.title,
 			"content": board.content,
 			"fileId": result,
-			"noticeAt": board.noticeAt
+			"noticeAt": board.noticeAt,
+			"categoryNo":board.categoryNo
 		},
 		success(result) {
 			console.log(result);
 			if (result == "ok") {
 				alert("작성되었습니다.");
-				location.replace('/board/list')
+				location.replace('/board/list?category=' + board.categoryNo)
 
 			} else {
 				alert("작성에 실패하였습니다.");
@@ -264,6 +283,7 @@ function insertBoard(board, result) {
 }
 
 function insertFile(formData,board){
+
 	$.ajax({
 		url: "/board/file/insert",
 		processData: false,
@@ -272,6 +292,21 @@ function insertFile(formData,board){
 		type: 'POST',
 		success: function(result) {
 			insertBoard(board, result);
+		}
+	});
+}
+
+//게시글을 업데이트 하는데 기존의 파일이 없는 경우
+function updateInsertFile(formData){
+	console.log(formData);
+	$.ajax({
+		url: "/board/file/updateinsert",
+		processData: false,
+		contentType: false,
+		data: formData,
+		type: 'POST',
+		success: function(result) {
+			console.log(result);
 		}
 	});
 }
@@ -304,7 +339,7 @@ function updateBoard(board){
 			console.log(result);
 			if (result == "ok") {
 				alert("수정되었습니다.");
-				location.replace('/board/list')
+				location.replace('/board/list?category=' + board.categoryNo)
 
 			} else {
 				alert("수정을 실패하였습니다.");

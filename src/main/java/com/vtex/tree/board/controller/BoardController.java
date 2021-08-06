@@ -5,12 +5,12 @@ import static com.vtex.tree.common.util.PageBar.getPageBar;
 
 import java.io.File;
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -33,9 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
 import com.vtex.tree.common.util.FileUtil;
-import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
-import java.net.URLEncoder;
 @RequestMapping("/board")
 @Controller
 public class BoardController {
@@ -44,9 +42,6 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
-
-	@Autowired
-	private HomeService homeService;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -61,8 +56,12 @@ public class BoardController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String getBoardList(@RequestParam(defaultValue = "1") int cPage,HttpServletRequest request, @RequestParam(defaultValue = "1") int category, Model model) throws Exception {
+	public String getBoardList(@RequestParam(defaultValue = "1") int cPage,
+								HttpServletRequest request, 
+								@RequestParam(defaultValue = "1") int category, 
+								Model model) throws Exception {
 		
+		//게시판리스트
 		Map<String, Object> param = new HashMap<>();
 
 		param.put("numPerPage", NUMPERPAGE);
@@ -79,6 +78,19 @@ public class BoardController {
 		List<BoardVO> boardList = boardService.getBoardList(category, rowBounds);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pageBar", pageBar);
+		
+		//카테고리 리스트
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
+		List<Map<String, Object>> categoryMapList = boardService.getCategoryList(member.getEmail());
+		model.addAttribute("categoryMapList", categoryMapList);
+		
+		//현재 카테고리 
+		Map<String, Object> categoryMap = boardService.getCategory(category);
+		System.out.println(categoryMap.toString());
+		model.addAttribute("categoryMap", categoryMap);
+		
 		return "board/board";
 	}
 	
@@ -98,6 +110,7 @@ public class BoardController {
 												String content, 
 												String noticeAt,
 												String fileId,
+												String categoryNo,
 												HttpServletRequest request,
 												MultipartFile[] uploadFile) throws Exception {
 
@@ -110,7 +123,8 @@ public class BoardController {
 		param.put("email", member.getEmail());
 		param.put("fileId", fileId);
 		param.put("noticeAt", noticeAt != null ? "Y" : "N");
-
+		param.put("categoryNo", categoryNo);
+		
 		int resultCnt = boardService.insertBoard(param);
 
 		if (resultCnt > 0) {
@@ -302,21 +316,42 @@ public class BoardController {
 		int resultCnt = 0;
 		int maxFileSn = boardService.getMaxFileSn(fileId);
 		int fileSn = maxFileSn;
-
+		
 		for (MultipartFile upFile : uploadFile) {
-
+			
 			fileSn++;
-
+			
 			Map<String, Object> fileMap = getFileMap(upFile, saveDirectory, fileId, fileSn);
 			resultCnt = boardService.insertFileDetail(fileMap);
-		}
-
+		}	
+		
 		if (resultCnt > 0) {
 			return fileId;
 		}
 
-		return 0;
+		return 0;	
+	}
+	
+	/**
+	 * 업데이트시 기존 파일이 없는데 새로 추가한 경우
+	 * @throws Exception 
+	 */
+	@ResponseBody
+	@RequestMapping("/file/updateinsert")
+	public void updateInsertFile(MultipartFile[] multipartFile, String boardNo) throws Exception {
+
+		int fileId = insertFile(multipartFile);
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("fileId", fileId);
+		param.put("boardNo", boardNo);
+		
+		int resultCnt = boardService.updateInsertFile(param);
+		
+		
+		
 	}
 	
 
-}
+}	

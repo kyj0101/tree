@@ -5,6 +5,7 @@ var commonCodeClickNum = 0; //연속으로 공통코드 테이블 누르면 page
 
 $(function() {
 	
+	//공통코드 추가 버튼 이벤트
 	$(".add-btn").click(function() {
 		
 		$(".commonCodeAddBtn").text("저장");
@@ -19,6 +20,7 @@ $(function() {
 		$(".detailCodePageBar").empty();
 	});
 	
+	//공통코드에 코드 입력할때 중복 검사 
 	$("#code").change(function(){
 		
 		var url = '/commoncode/code/duplication/check';
@@ -30,15 +32,13 @@ $(function() {
 
 	$(".commonCodeAddBtn").click(function() {
 		
-
 		var isUpdate = $(".commonCodeAddBtn").text() == "수정" ? true : false;
-		
 		var commonCode = new Object();
 		
 		commonCode.code = $("#code").val();
 		commonCode.codeName = $("#codeName").val();
 		commonCode.useAt = $('input[name="useAt"]:checked').val();
-			
+
 		if(confirm($(".commonCodeAddBtn").text() + "하시겠습니까?")){
 
 			var isNull = nullCheck(commonCode);
@@ -263,6 +263,7 @@ $(function() {
 
 				$.each(result, function(i, item){
 					
+					console.log(item);
 					if(i == result.length -1 ){
 						total = item.total;
 
@@ -274,6 +275,7 @@ $(function() {
 						html += '<td>' + item.detailCode + '</td>';
 						html += '<td>' + item.detailCodeName + '</td>';
 						html += '<td>' + item.useAt + '</td>';
+						html += '<td>' + item.sortOrdr + '</td>';
 						html += '</tr>';
 						
 						$(".detailCodeTbody").append(html);
@@ -383,10 +385,12 @@ $(function() {
 		
 	});
 	
+	//공통 상세 코드 추가 버튼 이벤트
 	$(".addDetailCode").click(function(){
 		$(".detailCodeAdd").text("저장");
 		$("#detailCode").removeAttr("readonly");
 		$("#detailCode").css("background","none");
+		
 		
 		detailCodeEmpty();
 		
@@ -529,7 +533,7 @@ function commonCodeEmpty(){
 
 	$("#code").val("");
 	$("#codeName").val("");
-	$('input[name="useAt"]:checked').prop("checked",false);
+	$("#useAt_Y").prop("checked", true);
 	
 	$(".commonCode").val("");
 }
@@ -539,5 +543,5 @@ function detailCodeEmpty(){
 	$("#detailCode").val("");
 	$("#detailCodeName").val("");
 	$("#sortOrdr").val("");
-	$('input[name="detailCodeUseAt"]:checked').prop("checked",false);
+	$("#detailCodeUseAtY").prop("checked", true);
 }

@@ -77,4 +77,19 @@ public class BoardServiceImpl implements BoardService{
 	public int deleteBoard(String boardNo) throws Exception {
 		return boardMapper.deleteBoard(boardNo);
 	}
+	
+	@Override
+	public List<Map<String, Object>> getCategoryList(String email) {
+		return boardMapper.getCategoryList(email);
+	}
+	
+	@Override
+	public Map<String, Object> getCategory(int category) {
+		return boardMapper.getCategory(category);
+	}
+	
+	@Override
+	public int updateInsertFile(Map<String, Object> param) {
+		return boardMapper.updateInsertFile(param);
+	}
 }

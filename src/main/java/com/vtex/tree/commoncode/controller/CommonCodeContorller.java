@@ -90,7 +90,7 @@ public class CommonCodeContorller {
 		param.put("code", code);
 		param.put("email", member.getEmail());
 		param.put("useAt", useAt);
-		
+		System.out.println(useAt);
 		String resultMsg = "";
 		int resultCnt = commonCodeService.insertCommonCode(param);
 		

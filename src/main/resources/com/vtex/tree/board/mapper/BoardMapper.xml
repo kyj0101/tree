@@ -12,6 +12,12 @@
 		<result column="file_store" property="fileStore"/>
 	</resultMap>
 	
+	<resultMap type="map" id="categoryMap">
+		<id column="category_no" property="categoryNo"/>
+		
+		<result column="category_name" property="categoryName"/>
+	</resultMap>
+	
 	<insert id="insertFile">
 		/* BoardMapper.insertFile */
 		
@@ -82,7 +88,7 @@
 			VALUES
 				(
 					SEQ_TB_BOARD.NEXTVAL,
-					1,
+					#{categoryNo},
 					#{noticeAt},
 					#{email},
 					0,
@@ -100,7 +106,7 @@
 
 	<select id="getBoardList" resultType="boardVO">
 		/* BoardMapper.getBoardList */
-
+		
 		SELECT
 			A.TOP_AT,
 			A.BOARD_NO,
@@ -129,14 +135,14 @@
 							TB_BOARD A
 						WHERE
 							A.NOTICE_AT = 'Y'
-							AND A.CATEGORY_NO = 1
+							AND A.CATEGORY_NO = #{category}
 							AND A.DELETE_AT = 'N'
 					) AS TOTCNT
 				FROM
 					TB_BOARD A
 				WHERE
 					A.NOTICE_AT = 'Y'
-					AND A.CATEGORY_NO = 1
+					AND A.CATEGORY_NO = #{category}
 					AND A.DELETE_AT = 'N'
 					
 				UNION ALL
@@ -158,14 +164,14 @@
 							TB_BOARD A
 						WHERE
 							A.NOTICE_AT = 'N'
-							AND A.CATEGORY_NO = 1
+							AND A.CATEGORY_NO = #{category}
 							AND A.DELETE_AT = 'N'
 					) AS TOTCNT
 				FROM
 					TB_BOARD A
 				WHERE
 					A.NOTICE_AT = 'N'
-					AND A.CATEGORY_NO = 1
+					AND A.CATEGORY_NO = #{category}
 					AND A.DELETE_AT = 'N'
 				) A
 			LEFT OUTER JOIN TB_MEMBER B ON A.EMAIL = B.EMAIL
@@ -199,14 +205,14 @@
 							TB_BOARD A
 						WHERE
 							A.NOTICE_AT = 'Y'
-							AND A.CATEGORY_NO = 1
+							AND A.CATEGORY_NO = #{category}
 							AND A.DELETE_AT = 'N'
 					) AS TOTCNT
 				FROM
 					TB_BOARD A
 				WHERE
 					A.NOTICE_AT = 'Y'
-					AND A.CATEGORY_NO = 1
+					AND A.CATEGORY_NO = #{category}
 					AND A.DELETE_AT = 'N'
 					
 				UNION ALL
@@ -228,14 +234,14 @@
 							TB_BOARD A
 						WHERE
 							A.NOTICE_AT = 'N'
-							AND A.CATEGORY_NO = 1
+							AND A.CATEGORY_NO = #{category}
 							AND A.DELETE_AT = 'N'
 					) AS TOTCNT
 				FROM
 					TB_BOARD A
 				WHERE
 					A.NOTICE_AT = 'N'
-					AND A.CATEGORY_NO = 1
+					AND A.CATEGORY_NO = #{category}
 					AND A.DELETE_AT = 'N'
 				) A
 			LEFT OUTER JOIN TB_MEMBER B ON A.EMAIL = B.EMAIL
@@ -290,6 +296,33 @@
 			FILE_ID = #{fileId}
 	</select>
 	
+	<select id="getCategoryList" resultMap="categoryMap">
+		/* BoardMapper.getCategoryList */
+		
+		 SELECT
+		 	A.CATEGORY_NAME,
+		 	A.CATEGORY_NO
+		FROM 
+			TB_CATEGORY A
+			LEFT OUTER JOIN TB_CATEGORY_USER B ON B.CATEGORY_NO = A.CATEGORY_NO
+		WHERE 
+			B.EMAIL = #{email}	
+			AND A.DELETE_AT = 'N'
+	</select>
+	
+	<select id="getCategory" resultMap="categoryMap">
+		/* BoardMapper.getCategoryName */
+		
+		SELECT
+			CATEGORY_NO,
+			CATEGORY_NAME
+		FROM
+			TB_CATEGORY
+		WHERE
+			CATEGORY_NO = #{categoryNo}
+			AND DELETE_AT = 'N'
+	</select>
+	
 	<update id="addViewNum">
 		/* BoardMapper.addViewNum */
 		
@@ -312,6 +345,17 @@
 			NOTICE_AT = #{noticeAt},
 			LAST_UPDT_PNTTM = SYSDATE,
 			LAST_UPDUSR_ID = #{email}
+		WHERE
+			BOARD_NO = #{boardNo}
+	</update>
+	
+	<update id="updateInsertFile">
+		/* BoardMapper.updateInsertFile */
+		
+		UPDATE
+			TB_BOARD
+		SET
+			FILE_ID = #{fileId}
 		WHERE
 			BOARD_NO = #{boardNo}
 	</update>

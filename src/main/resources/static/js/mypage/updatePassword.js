@@ -27,8 +27,7 @@ $(function(){
 	$(".passwordUpdateBtn").click(function(){
 		
 		var passwordObj = new Object();
-		
-		passwordObj.password = $("#password").val();
+
 		passwordObj.newPassword = $("#newPassword").val();
 		passwordObj.checkPassword = $("#checkPassword").val();
 		

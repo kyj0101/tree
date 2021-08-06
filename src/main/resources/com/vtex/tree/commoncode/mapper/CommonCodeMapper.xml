@@ -42,7 +42,7 @@
 					#{email},
 					SYSDATE,
 					#{email},
-					'Y'
+					#{useAt}
 				)
 	</insert>
 	

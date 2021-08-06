@@ -115,13 +115,7 @@ public class MemberController {
 		try {
 			HttpSession session = request.getSession();
 			MemberVO member = (MemberVO)session.getAttribute("loginMember");
-			
-			if(!member.getPassword().equals(getEncryptedPassword(password))) {
-				
-				redirectAttribute.addFlashAttribute("msg", "비밀번호가 일치하지 않습니다.");
-				return "redirect:/member/mypage/update/password/view";
-			}
-			
+
 			Map<String, String> param = new HashMap<>();
 			String encryptedPassword = getEncryptedPassword(newPassword);
 			

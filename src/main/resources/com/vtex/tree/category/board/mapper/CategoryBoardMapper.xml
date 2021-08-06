@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.category.board.mapper.CategoryBoardMapper">
+	
+	<insert id="insertCategoryBoard">
+		/* CategoryBoardMapper.insertCategoryBoard */
+		
+		INSERT INTO 
+			TB_CATEGORY
+				(
+					CATEGORY_NO,
+					CATEGORY_NAME,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT
+				)
+			VALUES
+				(
+					SEQ_TB_CATEGORY.NEXTVAL,
+					#{title},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'N'
+				)
+		<selectKey resultType="_int" keyProperty="no" order="AFTER">
+			SELECT
+				SEQ_TB_CATEGORY.CURRVAL
+			FROM
+				DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertCategoryBoardUser">
+		/* CategoryBoardMapper.insertCategoryBoardUser */
+		
+		INSERT INTO
+			TB_CATEGORY_USER
+				(
+					EMAIL,
+					CATEGORY_NO,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT
+				)
+			VALUES
+				(
+					#{userEmail},
+					#{categoryNo},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'N'
+				)
+	</insert>
+	
+	<select id="getMemberList" resultType="memberVO">
+		/* CategoryBoardMapper.getMemberList */
+		
+		SELECT
+		 	A.NAME,
+		 	A.EMAIL,
+		 	B.DETAIL_CODE_NAME AS DEPARTMENT_NAME,
+		 	(
+		 		SELECT
+		 			DETAIL_CODE_NAME
+		 		FROM
+		 			TB_COMMON_CODE_DETAIL C
+		 		WHERE
+		 			C.DETAIL_CODE = A.POSITION
+		 	)  AS POSITION_NAME
+		FROM
+			TB_MEMBER A
+			LEFT OUTER JOIN TB_COMMON_CODE_DETAIL B ON B.DETAIL_CODE = A.DEPARTMENT
+		ORDER BY A.NAME
+	</select>
+	
+	<update id="deleteCategoryBoard">
+		/* CategoryBoardMapper.deleteCategoryBoard */
+		
+		UPDATE
+			TB_CATEGORY
+		SET
+			DELETE_AT = 'Y'
+		WHERE
+			CATEGORY_NO = #{categoryNo}
+	</update>
+
+</mapper>

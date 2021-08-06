@@ -18,6 +18,7 @@ import lombok.Setter;
 public class BoardVO {
 	private int boardNo;
 	private int categoryNo;
+	private String categoryName;
 	private String noticeAt;
 	private String email;
 	private int boardView;

@@ -30,7 +30,7 @@ function phoneRegExp(phone){
 
 function nameRegExp(name){
 	
-	if(/^[가-힣]{2,4}$/.test(name)){
+	if(/^[가-힣a-z-A-Z]{2,15}$/.test(name)){
 		return true;
 
 	}else{	

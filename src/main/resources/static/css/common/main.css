@@ -80,10 +80,6 @@ header {
 	font-size: 20px;
 }
 
-.chat-list-ul li:hover, .board-list-ul li:hover {
-	text-decoration: underline;
-}
-
 .chat-list-ul li, .board-list-ul li {
 	cursor: pointer;
 }

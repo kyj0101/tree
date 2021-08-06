@@ -17,6 +17,7 @@
   <script src="/js/common/main.js"></script>
   <script src="/js/common/common.js"></script>
   <script src="/js/board/board.js"></script>
+  <script src="/js/category/boardCategory.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +39,14 @@
       </div>
       <hr class="plus-hr" >
       <ul class="board-list-ul">
-        <li><a href="/board/list">공지사항</a></li>
+        <li>
+        	<a href="/board/list">전체 공지사항</a>
+        </li>
+        <li th:each="category : ${categoryMapList}" style="display: flex; justify-content: space-between;">
+        	<a th:href="@{/board/list(category=${category.categoryNo})}" th:text="${category.categoryName}" ></a>
+        	<i class="fas fa-times categoryDelete" style="padding-right: 15px;"></i>
+        </li>
+        
       </ul>
       <hr>
       <div class="plus-board" data-toggle="modal" data-target="#addModal">
@@ -47,7 +55,7 @@
       </div>
       <hr class="plus-hr">
       <ul class="chat-list-ul">
-        <li><a href="/chat/room">회의실</a></li>
+        <li><a href="/chat/room">전체 회의실</a></li>
       </ul>
     </aside>
 
@@ -59,7 +67,7 @@
         <li>
           <button type="button" style="appearance: none; border: none; background: none;" data-toggle="tooltip"
             data-placement="top" title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">
-            <i class="fas fa-info-circle"></i>
+            <i class="fas fa-info-circle "></i>
           </button>
 
         </li>
@@ -130,7 +138,7 @@
 
       <figure>
         <figcaption>
-          <p class="category-p">카테고리</p>
+          <p class="category-p"  th:text="${categoryMap.categoryName}"></p>
         </figcaption>
       </figure>
       <table class="table table-striped board-list-table">
@@ -198,109 +206,12 @@
 
         <div>
           <ul class="member-list-ul">
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
-            <hr />
-            <li class="member-list-li">
-              <p>이름 : 김대표</p>
-              <p>부서 : 개발팀</p>
-              <p>직급 : 대표</p>
-              <input type="checkbox" aria-label="Checkbox for following text input">
-            </li>
+         	<li></li>
           </ul>
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary add-board-btn">생성</button>
-          <button type="button" class="btn btn-primary add-chat-btn">생성</button>
+          <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 670px;">생성</button>
         </div>
 
       </div>
@@ -359,15 +270,17 @@
 							id="title"
 							list="datalistOptions" placeholder="제목을 입력하세요."
 							aria-label="Search" aria-describedby="basic-addon2">
+						<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
 						<div>
 							<input class="form-check-input" type="checkbox" value="Y" id="noticeAt" name="noticeAt">
-							<label class="form-check-label" for="defaultCheck1"> 공지사항 </label>
+							<label class="form-check-label" for="noticeAt"> 공지사항 </label>
 						</div>
 					</div>
 
 					<textarea class="board-content-textarea" name="content" id="content" cols="25"
 						rows="10"></textarea>
 					<div class="modal-footer">
+						<span>*파일은 최대 5개까지 첨부할 수 있습니다.</span>
 						<div class="boardBtnDiv" role="group" aria-label="Basic example">
 							<button type="button" class="btn btn-info add-file-input">파일첨부추가</button>
 							<button type="button" class="btn btn-primary boardBtn">글쓰기</button>

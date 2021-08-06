@@ -1,15 +1,7 @@
 
 $(function(){
 
-    $(".add-board").click(function(){
-
-        $('#addModal').trigger('focus');
-        $('#add-modal-label').text("게시판 추가");
-        $(".add-chat-btn").css("display","none")
-        $(".add-board-btn").css("display","inline-block")
-        (".form-check").css("display","block")
-    });
-  
+ 
     $(".add-chat").click(function(){
 
         $('#addModal').trigger('focus');
@@ -19,10 +11,6 @@ $(function(){
         $(".form-check").css("display","none")
     });
 
-    $(".add-board-btn").on('click', function(){
-        const title = $(".title-input").val(); 
-        $(".board-list-ul").append("<li><a href='#'>"+ title + "</a></li>")
-    });
 
     $(".add-chat-btn").on('click', function(){
         const title = $(".title-input").val(); 
