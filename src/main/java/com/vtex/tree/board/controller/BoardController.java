@@ -50,7 +50,16 @@ public class BoardController {
 
 	@Autowired
 	private ResourceLoader resourceLoader;
-
+	
+	/**
+	 * 게시글 리스트 조회
+	 * @param cPage
+	 * @param request
+	 * @param category
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/list")
 	public String getBoardList(@RequestParam(defaultValue = "1") int cPage,HttpServletRequest request, @RequestParam(defaultValue = "1") int category, Model model) throws Exception {
 		
@@ -72,35 +81,18 @@ public class BoardController {
 		model.addAttribute("pageBar", pageBar);
 		return "board/board";
 	}
-
-	@ResponseBody
-	@RequestMapping("/file/insert")
-	public int insertFile(MultipartFile[] uploadFile) throws Exception {
-
-		String saveDirectory = "C:\\Users\\kangyujeong98\\Documents\\workspace\\git\\tree\\tree\\src\\main\\resources\\static\\upload\\board";
-		Map<String, Object> resultMap = new HashMap<>();
-		
-		boardService.insertFile(resultMap);
-		
-		int resultCnt = 0;
-		int fileId = Integer.parseInt(resultMap.get("no") + "");
-		int fileSn = 0;
-
-		for (MultipartFile upFile : uploadFile) {
-
-			fileSn++;
-
-			Map<String, Object> fileMap = getFileMap(upFile, saveDirectory, fileId, fileSn);
-			resultCnt = boardService.insertFileDetail(fileMap);
-		}
-
-		if (resultCnt > 0) {
-			return fileId;
-		}
-
-		return 0;
-	}
-
+	
+	/**
+	 * 게시글 insert
+	 * @param title
+	 * @param content
+	 * @param noticeAt
+	 * @param fileId
+	 * @param request
+	 * @param uploadFile
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/insert")
 	public ResponseEntity<String> insertBoard(String title, 
 												String content, 
@@ -127,6 +119,12 @@ public class BoardController {
 		return new ResponseEntity<String>("fail", HttpStatus.BAD_REQUEST);
 	}
 	
+	/**
+	 * 게시글 상세보기
+	 * @param boardNo
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/detail")
 	public ModelAndView getBoardDetail(int boardNo) throws Exception {
 		
@@ -154,6 +152,100 @@ public class BoardController {
 		return mav;
 	}
 	
+	/**
+	 * 게시글 update
+	 * @param title
+	 * @param content
+	 * @param boardNo
+	 * @param noticeAt
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	public String updateBoard(String title, String content, String boardNo, String noticeAt, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		Map<String, Object> param = new HashMap<String, Object>();
+		
+		param.put("title", title);
+		param.put("content", content);
+		param.put("boardNo", boardNo);
+		param.put("noticeAt", noticeAt != null ? "Y" : "N");
+		param.put("email", member.getEmail());
+		
+		int resultCnt = boardService.updateBoard(param);
+		
+		if(resultCnt > 0) {
+			return "ok";
+		}
+		
+		return "fail";
+	}
+	
+	/**
+	 * 게시글 삭제 
+	 * @param boardNo
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/delete")
+	public String deleteBoard(String boardNo) throws Exception {
+		
+		int resultCnt = boardService.deleteBoard(boardNo);
+		
+		if(resultCnt > 0) {
+			return "ok";
+		}
+		
+		return "fail";
+	}
+	
+	/**
+	 * 파일 insert
+	 * @param uploadFile
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/file/insert")
+	public int insertFile(MultipartFile[] uploadFile) throws Exception {
+
+		String saveDirectory = "C:\\Users\\kangyujeong98\\Documents\\workspace\\git\\tree\\tree\\src\\main\\resources\\static\\upload\\board";
+		Map<String, Object> resultMap = new HashMap<>();
+		
+		boardService.insertFile(resultMap);
+		
+		int resultCnt = 0;
+		int fileId = Integer.parseInt(resultMap.get("no") + "");
+		int fileSn = 0;
+
+		for (MultipartFile upFile : uploadFile) {
+
+			fileSn++;
+
+			Map<String, Object> fileMap = getFileMap(upFile, saveDirectory, fileId, fileSn);
+			resultCnt = boardService.insertFileDetail(fileMap);
+		}
+
+		if (resultCnt > 0) {
+			return fileId;
+		}
+
+		return 0;
+	}
+	
+	/**
+	 * 파일 다운로드
+	 * @param fileStore
+	 * @param renamedFileName
+	 * @param originalFileName
+	 * @return
+	 * @throws UnsupportedEncodingException
+	 */
 	@RequestMapping("/file/download")
 	public ResponseEntity<Resource> fileDowload(String fileStore, String renamedFileName, String originalFileName) throws UnsupportedEncodingException{
 		
@@ -167,6 +259,13 @@ public class BoardController {
 							.header(HttpHeaders.CONTENT_DISPOSITION, originalFileName).body(resource);
 	}
 	
+	/**
+	 * 파일 delete
+	 * @param fileStore
+	 * @param renamedFile
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/file/delete")
 	public String fileDelete(String fileStore, String renamedFile) throws Exception {
@@ -188,6 +287,13 @@ public class BoardController {
 		return "fail";
 	}
 	
+	/**
+	 * 파일 update
+	 * @param uploadFile
+	 * @param fileId
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/file/update")
 	public int updateFile(MultipartFile[] uploadFile, int fileId) throws Exception {
@@ -212,26 +318,5 @@ public class BoardController {
 		return 0;
 	}
 	
-	@ResponseBody
-	@RequestMapping("/update")
-	public String updateBoard(String title, String content, String boardNo, String noticeAt, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		Map<String, Object> param = new HashMap<String, Object>();
-		
-		param.put("title", title);
-		param.put("content", content);
-		param.put("boardNo", boardNo);
-		param.put("noticeAt", noticeAt != null ? "Y" : "N");
-		param.put("email", member.getEmail());
-		
-		int resultCnt = boardService.updateBoard(param);
-		
-		if(resultCnt > 0) {
-			return "ok";
-		}
-		
-		return "fail";
-	}
+
 }

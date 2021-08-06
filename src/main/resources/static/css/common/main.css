@@ -350,8 +350,12 @@ nav ul {
 
 
 .modal-footer{
-	justify-content: center !important;
+	justify-content: space-between;
 	width: 100%;
+}
+
+.boardDeleteBtn{
+	margin-left: 70px;
 }
 
 .boardBtnDiv {

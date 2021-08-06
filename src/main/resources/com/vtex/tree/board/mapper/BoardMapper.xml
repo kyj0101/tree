@@ -316,6 +316,17 @@
 			BOARD_NO = #{boardNo}
 	</update>
 	
+	<update id="deleteBoard">
+		/* BoardMapper.deleteBoard */
+		
+		UPDATE
+			TB_BOARD
+		SET
+			DELETE_AT = 'Y'
+		WHERE
+			BOARD_NO = #{boardNo}
+	</update>
+	
 	<delete id="deleteFile">
 		/* BoardMapper.deleteFile */
 		

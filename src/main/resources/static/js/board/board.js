@@ -103,6 +103,7 @@ $(function() {
 
 				if (loginEmail == authorEmail) {
 					$(".board-update-btn").removeClass("hidden");
+					$(".boardDeleteBtn").removeClass("hidden");
 				}
 				
 				//파일
@@ -214,6 +215,28 @@ $(function() {
             $(".modal-footer").append(fileinput);
         }
     });
+
+	$(".boardDeleteBtn").click(function(){
+	
+		var boardNo = $("#boardNo").val();
+	
+		$.ajax({
+			type: "POST",
+			url: "/board/delete",
+			data: {"boardNo":boardNo},
+			success(result) {
+
+				if (result == "ok") {
+					alert("삭제되었습니다.");
+					location.replace('/board/list')
+
+				} else {
+					alert("삭제를 실패하였습니다.");
+					return;
+				}
+			},
+		});
+	});
 });
 
 function insertBoard(board, result) {
