@@ -4,11 +4,103 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.attendance.mapper.AttendanceMapper">
 
-	<select id="test" resultType="string">
+	<insert id="insertIn">
+		/* AttendanceMapper.insertIn */
+		
+		INSERT INTO
+			TB_ATTENDANCE
+				(
+					EMAIL,
+					DAY,
+					IN_TIME,
+					OUT_TIME,
+					LATENESS_AT,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT
+				)
+			VALUES
+				(
+					#{email},
+					#{day},
+					#{inTime},
+					null,
+					#{latenessAt},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'N'
+				)
+	</insert>
+	
+	<select id="isIn" resultType="int">
+		/* AttendanceMapper.isIn */
+		
 		SELECT
-			*
+			COUNT(IN_TIME)	
 		FROM
-			TB_MEMBER
+			TB_ATTENDANCE
+		WHERE
+			DAY = TO_CHAR(SYSDATE, 'yyyy-mm-dd')
+			AND EMAIL = #{email}
 	</select>
+	
+	<select id="isOut" resultType="int">
+		/* AttendanceMapper.isOut */
+		
+		SELECT
+			COUNT(OUT_TIME)	
+		FROM
+			TB_ATTENDANCE
+		WHERE
+			DAY = TO_CHAR(SYSDATE, 'yyyy-mm-dd')
+			AND EMAIL = #{email}
+	</select>
+	
+	<select id="getAttendanceList" resultType="attendanceVO">
+		/* AttendanceMApper.getAttendanceList */
+		
+		SELECT
+			A.EMAIL,
+			B.NAME,
+			A.DAY,
+			A.IN_TIME,
+			A.OUT_TIME,
+			A.LATENESS_AT,
+			A.LATENESS_REASON
+		FROM
+			TB_ATTENDANCE A
+			LEFT OUTER JOIN TB_MEMBER B  ON B.EMAIL = A.EMAIL
+		WHERE
+			A.DELETE_AT = 'N'
+		 	AND B.QUIT_AT = 'N'
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	</select>
+	
+	<select id="getAttendanceListCnt" resultType="int">
+		/* AttendanceMApper.getAttendanceListCnt */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_ATTENDANCE	
+	</select>
+	
+	<update id="updateOut">
+		/* AttendanceMapper.updateOut */
+		
+		UPDATE
+			TB_ATTENDANCE
+		SET
+			OUT_TIME = #{outTime},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{email}
+		WHERE
+			DAY = #{day}
+			AND EMAIL = #{email}
+	</update>
 
 </mapper>

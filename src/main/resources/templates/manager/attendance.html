@@ -49,79 +49,9 @@
             <a class="nav-link active" href="/employee/list">직원 목록</a>
             <hr>
         </nav>
-
-        <div class="cards" >
-            <div class="d-sm-flex col-xl-3 col-md-6 mb-4" >
-                <div class="card border-left-warning h-100 py-2" style="background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                    주별 평균 근무시간 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">40시간</div>
-                            </div>
-                            <div class="col-auto">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="d-sm-flex col-xl-3 mb-4">
-                <div class="card border-left-warning h-100 py-2" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-uppercase mb-1">
-                                    한달 평균 근무시간 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">320시간</div>
-                            </div>
-                            <div class="col-auto">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="d-sm-flex col-xl-3 mb-4">
-                <div class="card border-left-primary h-100 py-2" style="background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold  text-uppercase mb-1">
-                                    총 직원 연차 사용 횟수  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold">5회</div>
-                            </div>
-                            <div class="col-auto">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="d-sm-flex col-xl-3 col-md-6 mb-4">
-                <div class="card border-left-success h-100 py-2" style="background-image: linear-gradient(120deg, #a1c4fd 0%, #c2e9fb 100%);">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold  text-uppercase mb-1">
-                                    총 직원 지각 횟수  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">0회</div>
-                            </div>
-                            <div class="col-auto">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div> 
     </section>
 
-    <div class="select-div">
+    <div class="select-div" style="top: 100px;">
         <div class="search-attendance-div" style="padding: 20px;">
             <input type="date" class="form-control" style="width: 170px; ">
             <p style="margin-left: 15px; margin-right: 15px;">
@@ -154,110 +84,21 @@
               </tr>
             </thead>
             <tbody>
-              <tr data-toggle="modal" data-target="#update-modal">
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>08:50</td>
-                <td>18:00</td>
-                <td>X</td>
-                <td></td>
+              <tr data-toggle="modal" data-target="#update-modal" th:each="attendance : ${attendanceList}">
+                <th scope="row" th:text="${attendance.email}"></th>
+                <td th:text="${attendance.name}"></td>
+                <td th:text="${attendance.day}"></td>
+                <td th:text="${attendance.inTime}"></td>
+                <td th:text="${attendance.outTime}"></td>
+                <td th:text="${attendance.latenessAt}"></td>
+                <td th:text="${attendance.latenessReason}"></td>
               </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>없음</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>교통지연</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>병환</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>없음</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>없음</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>없음</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>없음</td>
-              </tr>
-              <tr>
-                <th scope="row">aaa123@gmail.com</th>
-                <td>김사원</td>
-                <td>2021-01-01</td>
-                <td>12:50</td>
-                <td>18:00</td>
-                <td>O</td>
-                <td>없음</td>
-              </tr>
-
+              
             </tbody>
           </table>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload-modal"  style="margin-left: 1500px; margin-top: 15px;">등록</button>
-        <nav aria-label="Page navigation example" class="pagebar">
-            <ul class="pagination justify-content-center">
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item"><a class="page-link" href="#">4</a></li>
-                <li class="page-item"><a class="page-link" href="#">5</a></li>
-                <li class="page-item">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+	    <nav aria-label="Page navigation example" th:utext="${pageBar}">
+	    </nav>
     </div>
 
     <!-- Modal -->

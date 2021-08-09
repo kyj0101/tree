@@ -13,11 +13,13 @@
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
   
+
   <link rel="stylesheet" href="/css/common/main.css">
   <script src="/js/common/main.js"></script>
   <script src="/js/common/common.js"></script>
   <script src="/js/board/board.js"></script>
   <script src="/js/category/boardCategory.js"></script>
+  <script src="/js/attendance/attendanceRecord.js"></script>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -61,8 +63,7 @@
 
     <div class="header-container">
       <ul class="info-ul">
-        <li>
-          공지사항
+        <li th:text="${categoryMap.categoryName}">
         </li>
         <li>
           <button type="button" style="appearance: none; border: none; background: none;" data-toggle="tooltip"
@@ -119,10 +120,20 @@
           </ul>
           <ul class="btn-ul">
             <li>
-              <button type="button" class="btn btn-primary">출근</button>
+            	<!-- 출근전 -->
+            	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${!isIn and !isOut}">출근</button>
+            	<button type="button" class="btn btn-success disabled attendanceOutBtn" style="margin-left: 15px;" th:if="${!isIn and !isOut}" disabled>퇴근</button>    
+            	
+            	<!-- 출근후 -->
+              	<button type="button" class="btn btn-primary attendanceInBtn disabled" th:if="${isIn and !isOut}" disabled>출근</button>
+	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and !isOut}" style="margin-left: 15px;">퇴근</button>
+	            
+	            <!-- 퇴근후 --> 
+	            <button type="button" class="btn btn-primary attendanceInBtn disabled" th:if="${isIn and isOut}" disabled>출근</button>
+	            <button type="button" class="btn btn-success attendanceOutBtn disabled" th:if="${isIn and isOut}" style="margin-left: 15px;" disabled>퇴근</button>
+	               
             </li>
             <li>
-              <button type="button" class="btn btn-success disabled">퇴근</button>    
             </li>
           </ul>
           <button type="button" class="btn btn-warning btnLogout">로그아웃</button>
@@ -276,9 +287,9 @@
 							<label class="form-check-label" for="noticeAt"> 공지사항 </label>
 						</div>
 					</div>
+					
+					<div id="editor" name="content" class="board-content-textarea"></div>
 
-					<textarea class="board-content-textarea" name="content" id="content" cols="25"
-						rows="10"></textarea>
 					<div class="modal-footer">
 						<span>*파일은 최대 5개까지 첨부할 수 있습니다.</span>
 						<div class="boardBtnDiv" role="group" aria-label="Basic example">
@@ -306,3 +317,22 @@
 
 </div>
 </div>
+
+<!-- toast editor -->
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+  
+<script type="text/javascript">
+const Editor = toastui.Editor;
+
+const editor = new Editor({
+	  el: document.querySelector('#editor'),
+	  height: '600px',
+	  initialEditType: 'wysiwyg',
+	  previewStyle: 'vertical',
+	  toolbarItems: [
+		    ['heading', 'bold', 'italic', 'strike'],
+		    ['hr', 'quote'],
+		  ],
+	});
+</script>

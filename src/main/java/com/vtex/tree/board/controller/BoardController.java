@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
 import com.vtex.tree.common.util.FileUtil;
@@ -42,6 +44,9 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
+	
+	@Autowired
+	private AttendanceService attendanceService;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -90,6 +95,13 @@ public class BoardController {
 		Map<String, Object> categoryMap = boardService.getCategory(category);
 		System.out.println(categoryMap.toString());
 		model.addAttribute("categoryMap", categoryMap);
+		
+		//출퇴근 여부
+		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
+		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
+		
+		model.addAttribute("isIn", isIn);
+		model.addAttribute("isOut", isOut);
 		
 		return "board/board";
 	}
@@ -338,9 +350,9 @@ public class BoardController {
 	 */
 	@ResponseBody
 	@RequestMapping("/file/updateinsert")
-	public void updateInsertFile(MultipartFile[] multipartFile, String boardNo) throws Exception {
+	public String updateInsertFile(MultipartFile[] uploadFile, String boardNo) throws Exception {
 
-		int fileId = insertFile(multipartFile);
+		int fileId = insertFile(uploadFile);
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -349,7 +361,11 @@ public class BoardController {
 		
 		int resultCnt = boardService.updateInsertFile(param);
 		
-		
+		if(resultCnt > 0) {
+			return "ok";
+		}else {
+			return "fail";
+		}
 		
 	}
 	

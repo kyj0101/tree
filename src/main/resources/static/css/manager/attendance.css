@@ -42,19 +42,9 @@ nav{
     font-size: 20px;
 }
 
-nav .disabled{
-    margin-top: 15px;
-    font-size: 14px;
-}
-
 nav hr{
     height: 2px;
     margin: 5px 0 5px 0;
-}
-
-.active{
-    padding-left: 25px;
-    font-weight: 400;
 }
 
 .fa-arrow-left{

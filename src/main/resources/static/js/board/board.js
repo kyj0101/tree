@@ -1,3 +1,5 @@
+
+
 $(function() {
 	var categoryNo = $("#categoryNo").val();
 	
@@ -5,7 +7,7 @@ $(function() {
 
 		var board = new Object()
 		board.title = $("#title").val();
-		board.content = $("#content").val();
+		board.content = editor.getHTML();
 		board.categoryNo = $("#categoryNo").val();
 		
 		var formData = new FormData();
@@ -26,7 +28,7 @@ $(function() {
 				formData = returnFormData(inputFile, count);
 
 				var url = $(".hiddenFile").val();
-				console.log(formData);	
+
 				//파일이 있다면
 				if (formData != null) {
 					
@@ -42,7 +44,7 @@ $(function() {
 					//기존 파일이 없다면	
 					}else{
 						
-						//formData.append("boardNo", board.boardNo);	
+						formData.append("boardNo", board.boardNo);	
 						updateInsertFile(formData);
 					}
 
@@ -154,7 +156,7 @@ $(function() {
 	$(".board-update-btn").click(function(){
 		
 		var title = $(".boardDetailTitle").text();
-		var content = $(".textDiv").text();
+		var content =  $(".textDiv").html();
 
 		if($(".fileA").length > 0){
 
@@ -178,9 +180,11 @@ $(function() {
 		}
 			
 		$(".title-input").val(title);
-		$(".board-content-textarea").val(content);
-		$(".boardBtn").text("수정");
 
+		editor.setHTML(content);
+
+		$(".boardBtn").text("수정");
+		
 		$('#view-board-modal').modal('hide');
 		$('#write-board-modal').modal('show');
 	});
@@ -353,7 +357,7 @@ function returnFormData(inputFile){
   	
 	var formData = new FormData();
 	var haveFile = false;
-	
+	console.log(inputFile);
 	$.each(inputFile, function(index, elem) {
 
 		if (elem.files.length > 0) {
