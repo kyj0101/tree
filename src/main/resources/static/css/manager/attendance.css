@@ -110,7 +110,7 @@ nav hr{
     margin-top: 5px;
 }
 
-td{
+tr{
     cursor: pointer;
 }
 
@@ -124,4 +124,11 @@ td{
     height: 100px;
     border: none;
     box-shadow: 1.5px 1.5px 1.5px 1.5px rgb(233, 233, 233);
+}
+
+.ui-autocomplete
+{
+    position:absolute;
+    cursor:default;
+    z-index:100000000 !important
 }

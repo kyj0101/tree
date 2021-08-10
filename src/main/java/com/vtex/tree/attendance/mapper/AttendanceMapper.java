@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.vtex.tree.attendance.vo.AttendanceVO;
+import com.vtex.tree.member.vo.MemberVO;
 
 @Mapper
 public interface AttendanceMapper {
@@ -22,4 +23,10 @@ public interface AttendanceMapper {
 	List<AttendanceVO> getAttendanceList(Map<String, Object> param, RowBounds rowBounds) throws Exception;
 
 	int getAttendanceListCnt(Map<String, Object> param)throws Exception;
+	
+	int updateAttendance(Map<String, Object> param) throws Exception;
+	
+	List<MemberVO> autoName(String searchName) throws Exception;
+	
+	int insertAttendance(Map<String, Object> param) throws Exception;
 }

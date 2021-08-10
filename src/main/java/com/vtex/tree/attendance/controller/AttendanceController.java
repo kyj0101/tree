@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -42,6 +43,18 @@ public class AttendanceController {
 	@Autowired
 	private AttendanceService attendanceService;
 	
+	/**
+	 * 검색 리스트 
+	 * @param startDay : 날짜 검색할 때 시작 날짜
+	 * @param endDay : 날짜 검색할 때 종료 날짜
+	 * @param name : 이름 또는 이메일
+	 * @param latenessAt : 지각 여부
+	 * @param cPage : 현재 페이지
+	 * @param request 
+	 * @param model 
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/list")
 	public String getAttendanceList(@RequestParam(required = false)String startDay,
 									@RequestParam(required = false)String endDay,
@@ -59,7 +72,7 @@ public class AttendanceController {
 		param.put("endDay", endDay);
 		param.put("name", name);
 		param.put("latenessAt", latenessAt);
-		System.out.println("==================" + latenessAt + "===============");
+		
 		int offset = (cPage - 1) * NUMPERPAGE;		
 		RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
 		
@@ -78,6 +91,12 @@ public class AttendanceController {
 	}
 	
 	
+	/**
+	 * 근태 출근 처리 
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/in")
 	public String insertIn(HttpServletRequest request) throws Exception {
@@ -104,6 +123,12 @@ public class AttendanceController {
 		}
 	}
 	
+	/**
+	 * 근태 퇴근 처리
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
 	@ResponseBody
 	@RequestMapping("/out")
 	public String updateOut(HttpServletRequest request) throws Exception {
@@ -132,6 +157,80 @@ public class AttendanceController {
 		}else {
 			return "fail";
 		}
+	}
+	
+	/**
+	 * 근태 기록 수정
+	 * @param attendanceVO
+	 * @param request
+	 * @return
+	 * @throws Exception
+	 */
+	@ResponseBody
+	@RequestMapping("/update")
+	public String updateAttendance(AttendanceVO attendanceVO, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("day", attendanceVO.getDay());
+		param.put("inTime", attendanceVO.getInTime());
+		param.put("outTime", attendanceVO.getOutTime());
+		param.put("latenessAt", attendanceVO.getLatenessAt());
+		param.put("latenessReason", attendanceVO.getLatenessReason());
+		param.put("email", attendanceVO.getEmail());
+		param.put("adminEmail", member.getEmail());
+		
+		int resultCnt = attendanceService.updateAttendance(param);
+		
+		if(resultCnt > 0) {
+			return "ok";			
+
+		}else {
+			return "fail";
+		}
+	}
+	
+	/**
+	 * 근태 등록시 이름 자동완성 
+	 * @param searchName
+	 * @throws Exception
+	 */
+	@RequestMapping("/auto/name")
+	public  ResponseEntity<List<MemberVO>> autoName(String searchName) throws Exception {
+		List<MemberVO> memberList = attendanceService.autoName(searchName);
+		
+		return ResponseEntity.ok()
+							.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+							.body(memberList);
+	}
+	
+	@ResponseBody
+	@RequestMapping("/insert")
+	public String insertAttendance(AttendanceVO attendanceVO, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("day", attendanceVO.getDay());
+		param.put("inTime", attendanceVO.getInTime());
+		param.put("outTime", attendanceVO.getOutTime());
+		param.put("latenessAt", attendanceVO.getLatenessAt());
+		param.put("latenessReason", attendanceVO.getLatenessReason());
+		param.put("email", attendanceVO.getEmail());
+		param.put("adminEmail", member.getEmail());
+		
+		int resultCnt = attendanceService.insertAttendance(param);
+		
+		if(resultCnt > 0) {
+			return "ok";
+
+		}else {
+			return "fail";
+		}
+		
 	}
 
 }

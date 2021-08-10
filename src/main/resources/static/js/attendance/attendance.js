@@ -1,7 +1,52 @@
 $(function(){
-	//fnSearch();
+	$("#updateLatenessAtSelectedChange").on("change", updateLatenessAtSelectedChange);
+	
+
+	//근태 등록할때 이름 자동완성
+	$("#searchName").autocomplete({
+		source: function(request, response) {
+			
+			$.ajax({
+				url: "/attendance/auto/name",
+				data: {
+					searchName: request.term
+				},
+				success(data) {
+
+					response(
+						$.map(data, function(item) {
+
+							return {
+								label: item.name + "," + item.email + ","+ item.departmentName +   "," + item.positionName,
+								value: item.name
+							}
+						})
+					);
+				},
+
+				error(xhr, status, err) {
+					console.log(xhr, status, err);
+				}
+			});//end of ajax   	  
+		},//end of source
+
+		focus: function(e, focus) {
+			return false;
+		},
+
+		select: function(e, select) {
+			var label = select.item.label;
+			var index = label.split(",");
+			label = index[1];
+			
+			$("#insertEmail").val(label);
+		}
+
+	});
+
 });
 
+//검색 버튼 함수
 function fnSearch(){
 	
 	var startDay = $(".startDay").val();
@@ -9,27 +54,152 @@ function fnSearch(){
 	var memberName = $(".memberName").val();
 	var latenessAt = $("#latenessAt option:selected").val();
 	
-	/*	
-	if(latenessAt == undefined ){
-		latenessAt = 'N';
-	}*/
-	
-	var cPage = 3;
-	
-	console.log(startDay);
-	console.log(endDay);
-	console.log(memberName);
-	console.log(latenessAt);
-	console.log(cPage);
-	
 	$("#s_startDay").val(startDay);
 	$("#s_endDay").val(endDay);
 	$("#s_name").val(memberName);
 	$("#s_latenessAt").val(latenessAt);
-	//$("#cPage").val(cPage);
-	
+
 	$("#searchForm").attr("action", "/attendance/list");
-	$("#searchForm").submit();
+	$("#searchForm").submit();	
+}
+
+//테이블에서 컬럼 클릭하면 나오는 팝업 
+function fnPopup(e){
+	var email = $($(e).children()[0]).text();
+	var name = $($(e).children()[1]).text();
+	var day = $($(e).children()[2]).text();
+	var inTime = $($(e).children()[3]).text();
+	var outTime = $($(e).children()[4]).text();
+	var latenessAt = $($(e).children()[5]).text();
+	var reason = $($(e).children()[6]).text();
 	
+	$(".updateEmail").val(email);
+	$(".updateDay").val(day);
+	$(".updateName").val(name);
+	$(".updateInTime").val(inTime);
+	$(".updateOutTime").val(outTime);
+	
+	if(latenessAt == '예'){
+		$("#updateLatenessAtY").attr("selected",true);	
+	}else{
+		$("#updateLatenessAtN").attr("selected",true);
+	}
+	
+	$(".updateLatenessAtReason").val(reason);
+}
+
+//수정팝업에 저장버튼 누를때 이벤트
+function fnUpdate(){
+	
+	var email = $(".updateEmail").val();
+	var day = $(".updateDay").val();
+	var name = $(".updateName").val();
+	var inTime = $(".updateInTime").val();
+	var outTime = $(".updateOutTime").val();
+	var latenessAt = $("#updateLatenessAtSelected option:selected").val();
+	var latenessReason = $(".updateLatenessAtReason").val() == null ? "" : $(".updateLatenessAtReason").val();
+
+	$.ajax({
+
+		type: "post",
+		url: "/attendance/update",
+		data:{
+			"email":email,
+			"day":day,
+			"name":name,
+			"inTime":inTime,
+			"outTime":outTime,
+			"latenessAt":latenessAt,
+			"latenessReason":latenessReason
+		},
+		success(result) {
+			
+			if(result == "ok"){
+				
+				$('#update-modal').modal('hide')
+				alert("수정되었습니다.");
+				location.replace(window.location.href);
+			
+			}else{
+				alert("수정을 실패했습니다.");
+			}
+		},
+	});
+}
+
+//수정할때 지각여부 변경시 지각 사유 지우고 readonly
+function updateLatenessAtSelectedChange(){
+	
+	var latenessAt = $("#updateLatenessAtSelected option:selected").val();
+	
+	if(latenessAt == 'N'){
+		$(".updateLatenessAtReason").val("");
+		$(".updateLatenessAtReason").attr("readonly", true);
+	
+	}else{
+		$(".updateLatenessAtReason").removeAttr("readonly");
+	}
+}
+
+//저장 
+function insert(){
+	
+	var attendance = new Object();
+	
+	attendance.email = $("#insertEmail").val();
+	attendance.day = $("#insertDay").val();
+	attendance.name = $("#searchName").val();
+	attendance.inTime = $("#insertInTime").val();
+	attendance.outTime = $("#insertOutTime").val();
+	attendance.latenessAt = $("#insertLatenessAt option:selected").val();
+	
+	var isNull = nullCheck(attendance);
+	
+	if(isNull){
+		alert("입력되지 않은 칸이 있습니다.");
+		return;
+	
+	}else{
+		var latenessReason = $("#insertLatenessAtReason").val() == null ? "" : $("#insertLatenessAtReason").val();
+
+		$.ajax({
+
+			type: "post",
+			url: "/attendance/insert",
+			data: {
+				"email": attendance.email,
+				"day": attendance.day,
+				"name": attendance.name,
+				"inTime": attendance.inTime,
+				"outTime": attendance.outTime,
+				"latenessAt": attendance.latenessAt,
+				"latenessReason": latenessReason
+			},
+			success(result) {
+
+				if (result == "ok") {
+
+					$('#upload-modal').modal('hide')
+					alert("등록되었습니다.");
+					location.replace(window.location.href);
+
+				} else {
+					alert("등록을 실패했습니다.");
+				}
+			},
+		});
+	}
 	
 }
+
+
+
+
+
+
+
+
+
+
+
+

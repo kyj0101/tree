@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.vtex.tree.attendance.mapper.AttendanceMapper;
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.attendance.vo.AttendanceVO;
+import com.vtex.tree.member.vo.MemberVO;
 
 @Service
 public class AttendanceServiceImpl implements AttendanceService {
@@ -45,6 +46,21 @@ public class AttendanceServiceImpl implements AttendanceService {
 	@Override
 	public int getAttendanceListCnt(Map<String, Object> param) throws Exception {
 		return attendanceMapper.getAttendanceListCnt(param);
+	}
+
+	@Override
+	public int updateAttendance(Map<String, Object> param) throws Exception {
+		return attendanceMapper.updateAttendance(param);
+	}
+	
+	@Override
+	public List<MemberVO> autoName(String searchName) throws Exception {
+		return attendanceMapper.autoName(searchName);
+	}
+	
+	@Override
+	public int insertAttendance(Map<String, Object> param) throws Exception {
+		return attendanceMapper.insertAttendance(param);
 	}
 
 
