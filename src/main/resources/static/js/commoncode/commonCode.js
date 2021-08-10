@@ -320,7 +320,7 @@ $(function() {
 					pageNo++;
 				}
 				
-				if(cPage > totalPage) {
+				if(cPage >= totalPage) {
 					pageBar += "<li disabled class=\"page-item\">\r\n" + 
 							"      <a class=\"page-link\" href=\"#\">&raquo;</a>\r\n" + 
 							"    </li>\n";

@@ -43,8 +43,10 @@ public class AttendanceServiceImpl implements AttendanceService {
 	}
 	
 	@Override
-	public int getAttendanceListCnt() throws Exception {
-		return attendanceMapper.getAttendanceListCnt();
+	public int getAttendanceListCnt(Map<String, Object> param) throws Exception {
+		return attendanceMapper.getAttendanceListCnt(param);
 	}
+
+
 	
 }

@@ -12,7 +12,7 @@ ul{
 }
 
 .card{
-    width: 1200px; 
+    width: 1400px; 
     height: 80px;
     margin: 0 auto; 
     margin-bottom: 20px;
@@ -21,15 +21,16 @@ ul{
 
 .card-body{
     margin: 0 auto; 
-    width: 1200px; 
+    width: 1400px; 
     height: 80px;
 }
 
 .card-ul{
     display: flex;
-    justify-content: space-around;
 }
 
 .card-ul li{
     font-size: 20px;
+ 	text-align: left;
+ 	width: 25%;
 }

@@ -19,7 +19,7 @@ $(function(){
 				}
 			},	
 		});
-	});
+	}); //end of $(".attendanceInBtn").click()
 	
 	//퇴근 버튼 클릭시 퇴근 처리
 	$(".attendanceOutBtn").click(function(){
@@ -40,6 +40,6 @@ $(function(){
 				}
 			},	
 		});
-	});
+	}); // end of $(".attendanceOutBtn").click()
 	
 });

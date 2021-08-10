@@ -15,6 +15,9 @@ import javax.servlet.http.HttpSession;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,29 +46,37 @@ public class AttendanceController {
 	public String getAttendanceList(@RequestParam(required = false)String startDay,
 									@RequestParam(required = false)String endDay,
 									@RequestParam(required = false)String name,
-									@RequestParam(required = false)String lateness,
+									@RequestParam(required = false)String latenessAt,
 									@RequestParam(defaultValue = "1")int cPage,
 									HttpServletRequest request,
 									Model model) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
-
+		System.out.println(cPage);
 		param.put("numPerPage", NUMPERPAGE);
 		param.put("cPage", cPage);
-		
+		param.put("startDay", startDay);
+		param.put("endDay", endDay);
+		param.put("name", name);
+		param.put("latenessAt", latenessAt);
+		System.out.println("==================" + latenessAt + "===============");
 		int offset = (cPage - 1) * NUMPERPAGE;		
 		RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
 		
-		int totalContents = attendanceService.getAttendanceListCnt();
-		String url = request.getRequestURI();
+		String setParams = "?startDay=" + startDay + "&endDay=" + endDay + "&name=" + name + "&latenessAt=" + latenessAt;
+		int totalContents = attendanceService.getAttendanceListCnt(param);
+		String url = request.getRequestURI() + setParams;
+		
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
 		
 		List<AttendanceVO> attendanceList = attendanceService.getAttendanceList(param, rowBounds);
 		model.addAttribute("attendanceList", attendanceList);
 		model.addAttribute("pageBar", pageBar);
+		model.addAttribute("param", param);
 		
 		return "manager/attendance";
 	}
+	
 	
 	@ResponseBody
 	@RequestMapping("/in")

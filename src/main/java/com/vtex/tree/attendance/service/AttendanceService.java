@@ -19,6 +19,6 @@ public interface AttendanceService {
 
 	List<AttendanceVO> getAttendanceList(Map<String, Object> param, RowBounds rowBounds) throws Exception;
 
-	int getAttendanceListCnt()throws Exception;
+	int getAttendanceListCnt(Map<String, Object> param)throws Exception;
 
 }

@@ -18,8 +18,6 @@ public class PageBar {
 		
 		//증감변수
 		int pageNo = pageStart;
-		System.out.println("====================================="+pageNo);
-		System.out.println(((2 - 1) / pageBarSize) * pageBarSize + 1);
 		pageBar.append("<nav><ul class=\"pagination justify-content-center\">\n");
 		
 		//이전 영역
@@ -46,7 +44,7 @@ public class PageBar {
 			pageNo++;
 		}
 		//다음 영역
-		if(cPage > totalPage) {
+		if(cPage >= totalPage) {
 			pageBar.append("<li class=\"page-item\">\r\n" + 
 					"      <a class=\"page-link\" href=\"#\">&raquo;</a>\r\n" + 
 					"    </li>\n");
@@ -62,4 +60,6 @@ public class PageBar {
 		
 		return pageBar.toString();
 	}
+	
+	
 }

@@ -19,6 +19,8 @@
 
     <link rel="stylesheet" href="/css/manager/attendance.css">
     <link rel="stylesheet" href="/css/manager/employee.css">
+    
+    <script href="/js/employee/employee.js"></script>
 </head>
 
 <body>
@@ -28,11 +30,7 @@
         </div>
     </header>
 
-
-
-
     <section>
-        
         <nav class="nav flex-column" style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
             <a class="nav-link disabled" href="#">시스템</a>
             <hr>
@@ -49,7 +47,7 @@
         </nav>
 
 
-        <div class="card-div">
+        <div class="card-div" style="margin-bottom: 70px;">
             <div style="width: 90%; padding:20px; margin-left: 20px; position: relative; bottom: 20px;">
                 <h3>
                     <i class="fas fa-users-cog"></i>
@@ -57,109 +55,24 @@
                 </h3>
                 <hr style="color: black; border: solid 1px black;">
             </div>
-            <div class="card">
+            <div class="card" th:each="member : ${memberList}">
                 <div class="card-body" >
                     <ul class="card-ul" style="display: flex;">
                         <li><i class="fas fa-user-circle"></i></li>
-                        <li>aaa123@naver.com</li>
-                        <li>김사원</li>
-                        <li>개발팀</li>
-                        <li>사원</li> 
-                        <li>정회원</li>
-                        <li><a href="#" class="btn btn-primary" data-toggle="modal" data-target="#update-member-modal">수정</a></li>
+                        <li th:text="${member.email}"></li>
+                        <li th:text="${member.name}"></li>
+                        <li th:text="${member.departmentName}"></li>
+                        <li th:text="${member.positionName}"></li> 
+                        <li th:if="${member.quitAt == 'N'}">회원</li>
+                        <li th:if="${member.quitAt == 'Y'}">탈퇴 회원</li>
+                        <li><a href="#" class="btn btn-primary employeeUpdateBtn" data-toggle="modal" data-target="#update-member-modal">수정</a></li>
                     </ul>
                 </div>
             </div>
-            
-            <div class="card">
-                <div class="card-body" >
-                    <ul class="card-ul" style="display: flex;">
-                        <li><i class="fas fa-user-circle"></i></li>
-                        <li>aaa123@naver.com</li>
-                        <li>김사원</li>
-                        <li>개발팀</li>
-                        <li>사원</li> 
-                        <li>탈퇴</li>
-                        <li><a href="#" class="btn btn-primary">수정</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body" >
-                    <ul class="card-ul" style="display: flex;">
-                        <li><i class="fas fa-user-circle"></i></li>
-                        <li>aaa123@naver.com</li>
-                        <li>김사원</li>
-                        <li>개발팀</li>
-                        <li>사원</li> 
-                        <li>탈퇴</li>
-                        <li><a href="#" class="btn btn-primary">수정</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body" >
-                    <ul class="card-ul" style="display: flex;">
-                        <li><i class="fas fa-user-circle"></i></li>
-                        <li>aaa123@naver.com</li>
-                        <li>김사원</li>
-                        <li>개발팀</li>
-                        <li>사원</li> 
-                        <li>탈퇴</li>
-                        <li><a href="#" class="btn btn-primary">수정</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body" >
-                    <ul class="card-ul" style="display: flex;">
-                        <li><i class="fas fa-user-circle"></i></li>
-                        <li>aaa123@naver.com</li>
-                        <li>김사원</li>
-                        <li>개발팀</li>
-                        <li>사원</li> 
-                        <li>탈퇴</li>
-                        <li><a href="#" class="btn btn-primary">수정</a></li>
-                    </ul>
-                </div>
-            </div>
-
-                <div class="card">
-                <div class="card-body" >
-                    <ul class="card-ul" style="display: flex;">
-                        <li><i class="fas fa-user-circle"></i></li>
-                        <li>aaa123@naver.com</li>
-                        <li>김사원</li>
-                        <li>개발팀</li>
-                        <li>사원</li> 
-                        <li>탈퇴</li>
-                        <li><a href="#" class="btn btn-primary">수정</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <nav aria-label="Page navigation example" class="pagebar" style="margin-bottom: 50px;">
-                <ul class="pagination justify-content-center">
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
-                        </a>
-                    </li>
-                    <li class="page-item"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">4</a></li>
-                    <li class="page-item"><a class="page-link" href="#">5</a></li>
-                    <li class="page-item">
-                        <a class="page-link" href="#" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
+            <nav aria-label="Page navigation example" th:utext="${pageBar}" style="margin-top: 50px;">
             </nav>
+           </div>
+
         </div>
     </section>
     

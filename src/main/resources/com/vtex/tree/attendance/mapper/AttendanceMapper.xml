@@ -62,7 +62,7 @@
 	
 	<select id="getAttendanceList" resultType="attendanceVO">
 		/* AttendanceMApper.getAttendanceList */
-		
+	
 		SELECT
 			A.EMAIL,
 			B.NAME,
@@ -77,7 +77,25 @@
 		WHERE
 			A.DELETE_AT = 'N'
 		 	AND B.QUIT_AT = 'N'
-		ORDER BY A.FRST_REGIST_PNTTM DESC
+		 	<if test="(startDay != null and startDay != '') and (endDay == null or endDay == '')">
+		 		AND A.DAY = #{startDay}
+		 	</if>
+		 	<if test="(startDay == null or startDay == '') and (endDay != null and endDay != '')">
+		 		AND A.DAY = #{endDay}
+		 	</if>
+		 	<if test="(startDay != null and  startDay != '') and (endDay != null and endDay != '')">
+		 		AND TO_DATE(A.DAY, 'YYYY-MM-DD') BETWEEN TO_DATE(#{startDay}, 'YYYY-MM-DD')  AND TO_DATE(#{endDay}, 'YYYY-MM-DD')
+		 	</if>
+		 	<if test="latenessAt != null and latenessAt != ''">
+		 		AND A.LATENESS_AT = #{latenessAt}
+		 	</if>
+		 	<if test="name != null and name != ''">
+		 		AND ( A.EMAIL LIKE '%' || #{name} || '%' OR  B.NAME LIKE '%' || #{name} || '%' )
+		 	</if>
+		ORDER BY
+			TO_DATE(A.DAY, 'YYYY-MM-DD')DESC,
+			TO_DATE(A.IN_TIME, 'HH24:MI')DESC, 
+			TO_DATE(A.OUT_TIME, 'HH24:MI') DESC	
 	</select>
 	
 	<select id="getAttendanceListCnt" resultType="int">
@@ -86,7 +104,26 @@
 		SELECT
 			COUNT(*)
 		FROM
-			TB_ATTENDANCE	
+			TB_ATTENDANCE A
+			LEFT OUTER JOIN TB_MEMBER B  ON B.EMAIL = A.EMAIL
+		WHERE
+			A.DELETE_AT = 'N'
+		 	AND B.QUIT_AT = 'N'
+		 	<if test="(startDay != null and startDay != '') and (endDay == null or endDay == '')">
+		 		AND A.DAY = #{startDay}
+		 	</if>
+		 	<if test="(startDay == null or startDay == '') and (endDay != null and endDay != '')">
+		 		AND A.DAY = #{endDay}
+		 	</if>
+		 	<if test="(startDay != null and  startDay != '') and (endDay != null and endDay != '')">
+		 		AND TO_DATE(A.DAY, 'YYYY-MM-DD') BETWEEN TO_DATE(#{startDay}, 'YYYY-MM-DD')  AND TO_DATE(#{endDay}, 'YYYY-MM-DD')
+		 	</if>
+			<if test="latenessAt != null and latenessAt != ''">
+		 		AND A.LATENESS_AT = #{latenessAt}
+		 	</if>
+		 	<if test="name != null and name != ''">
+		 		AND ( A.EMAIL LIKE '%' || #{name} || '%' OR  B.NAME LIKE '%' || #{name} || '%' )
+		 	</if>	
 	</select>
 	
 	<update id="updateOut">

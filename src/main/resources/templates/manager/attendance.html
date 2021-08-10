@@ -8,7 +8,7 @@
     <title>근태관리</title>
     <script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
@@ -17,6 +17,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
 
     <link rel="stylesheet" href="/css/manager/attendance.css">
+    <script src="/js/attendance/attendance.js"></script>
 
     <!-- jquery autoComplete -->
     <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
@@ -31,9 +32,6 @@
         </div>
     </header>
 
-
-
-
     <section>
         <nav class="nav flex-column" style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
             <a class="nav-link disabled" href="#">시스템</a>
@@ -42,7 +40,7 @@
             <hr>
             <a class="nav-link disabled" href="#">근태</a>
             <hr>
-            <a class="nav-link active " href="/attendance/list">근태 목록</a>
+            <a class="nav-link active " href="/attendance/list" >근태 목록</a>
             <hr>
             <a class="nav-link disabled" href="#">직원</a>
             <hr>
@@ -53,24 +51,26 @@
 
     <div class="select-div" style="top: 100px;">
         <div class="search-attendance-div" style="padding: 20px;">
-            <input type="date" class="form-control" style="width: 170px; ">
+            <input type="date" class="form-control startDay" style="width: 170px;" th:value="${param.startDay}">
             <p style="margin-left: 15px; margin-right: 15px;">
                 ~
             </p>
-            <input type="date" class="form-control"  style="width: 170px; margin-right: 15px;">
-            <div class="input-group mb-3" style="width: 230px">
-                <p class="input-group-text">사원명</p>
-                <input type="search" class="form-control">
+            <input type="date" class="form-control endDay"  style="width: 170px; margin-right: 15px;" th:value="${param.endDay}">
+            <div class="input-group mb-3" style="width: 350px">
+                <p class="input-group-text" >검색어</p>
+                <input type="search" class="form-control memberName" placeholder="이메일 또는 이름을 입력해주세요." th:value="${param.name}">
             </div>
-            <div class="form-check" style="margin-left: 20px; margin-right: 20px; padding-top: 10px;">
-                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                <label class="form-check-label" for="flexCheckDefault">
-                  지각여부
-                </label>
+            <div class="form-check" style="margin-left: 20px; margin-right: 20px;">
+	            <p class="input-group-text" style="display: inline-block;">지각여부</p>
+            	<select id="latenessAt" name="latenessAt">
+            		<option value="" th:selected="${#strings.equals(param.latenessAt, '')}">전체</option>
+            		<option value="Y" th:selected="${#strings.equals(param.latenessAt, 'Y')}">예</option>
+            		<option value="N" th:selected="${#strings.equals(param.latenessAt, 'N')}">아니요</option>            		            		
+            	</select>                    	
             </div>
-            <button type="submit" class="btn btn-primary attendance-search-btn">검색</button>
+            <button type="button" class="btn btn-primary attendance-search-btn" onclick="fnSearch();">검색</button>
         </div>
-
+	
         <table class="table table-bordered attendance-table table-hover">
             <thead>
               <tr>
@@ -83,22 +83,22 @@
                 <th scope="col">지각사유</th>
               </tr>
             </thead>
-            <tbody>
-              <tr data-toggle="modal" data-target="#update-modal" th:each="attendance : ${attendanceList}">
+            <tbody id="tbody_data" class="tableTbody">
+            <tr  data-toggle="modal" data-target="#update-modal" th:each="attendance : ${attendanceList}">
                 <th scope="row" th:text="${attendance.email}"></th>
                 <td th:text="${attendance.name}"></td>
                 <td th:text="${attendance.day}"></td>
                 <td th:text="${attendance.inTime}"></td>
                 <td th:text="${attendance.outTime}"></td>
-                <td th:text="${attendance.latenessAt}"></td>
+                <td th:if="${attendance.latenessAt == 'Y'}">예</td>
+                <td th:if="${attendance.latenessAt == 'N'}">아니요</td>
                 <td th:text="${attendance.latenessReason}"></td>
               </tr>
-              
             </tbody>
           </table>
         <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#upload-modal"  style="margin-left: 1500px; margin-top: 15px;">등록</button>
-	    <nav aria-label="Page navigation example" th:utext="${pageBar}">
-	    </nav>
+<nav aria-label="Page navigation example" th:utext="${pageBar}">
+	    </nav> 
     </div>
 
     <!-- Modal -->
@@ -123,8 +123,8 @@
                     </div>
 
                     <div class="input-group mb-3">
-                        <p class="input-group-text">사원명</p>
-                        <input type="search" class="form-control" value="김사원" readonly>
+                        <p class="input-group-text">검색어</p>
+                        <input type="search" class="form-control"  readonly>
                     </div>
 
                     <div class="input-group mb-3">
@@ -209,5 +209,12 @@
             </div>
         </div>
     </div>
+    <form id="searchForm" name="searchForm" method="post">
+    	<input type="hidden" id="s_startDay" name="startDay"/>
+    	<input type="hidden" id="s_endDay" name="endDay"/>
+    	<input type="hidden" id="s_name" name="name"/>
+    	<input type="hidden" id="s_latenessAt" name="latenessAt"/>
+    <!-- 	<input type="hidden" id="s_cPage" name="cPage"/> -->
+    </form>
 </body>
 </html>

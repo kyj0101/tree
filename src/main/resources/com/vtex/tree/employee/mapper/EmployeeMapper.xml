@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.employee.mapper.EmployeeMapper">
+
+	<select id="getMemberList" resultType="memberVO">
+		/* EmployeeMapper.getMemberList */
+		
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			B.DETAIL_CODE_NAME AS DEPARTMENT_NAME,
+			C.DETAIL_CODE_NAME AS POSITION_NAME,
+			A.QUIT_AT
+		FROM 
+			TB_MEMBER A
+			LEFT JOIN TB_COMMON_CODE_DETAIL B ON B.DETAIL_CODE  = A.DEPARTMENT
+			LEFT JOIN TB_COMMON_CODE_DETAIL C ON C.DETAIL_CODE = A.POSITION
+		WHERE
+			ROLE_CODE != 'ADMIN'
+		ORDER BY A.NAME
+	</select>
+	
+	<select id="getMemberListCnt" resultType="int">
+		/* EmployeeMapper.getMemberListCnt */
+		
+		SELECT
+			COUNT(*)
+		FROM 
+			TB_MEMBER A
+			LEFT JOIN TB_COMMON_CODE_DETAIL B ON B.DETAIL_CODE  = A.DEPARTMENT
+			LEFT JOIN TB_COMMON_CODE_DETAIL C ON C.DETAIL_CODE = A.POSITION
+		WHERE
+			ROLE_CODE != 'ADMIN'
+		ORDER BY A.NAME	
+	</select>
+
+</mapper>

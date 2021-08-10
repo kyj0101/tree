@@ -20,6 +20,6 @@ public interface AttendanceMapper {
 	int isOut(String email) throws Exception;
 	
 	List<AttendanceVO> getAttendanceList(Map<String, Object> param, RowBounds rowBounds) throws Exception;
-	
-	int getAttendanceListCnt()throws Exception;
+
+	int getAttendanceListCnt(Map<String, Object> param)throws Exception;
 }
