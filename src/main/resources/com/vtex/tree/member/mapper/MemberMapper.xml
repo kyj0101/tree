@@ -67,7 +67,7 @@
 			TB_MEMBER
 		SET
 			QUIT_AT = 'Y',
-			QUIT_REASON = #{resonCode}
+			QUIT_REASON = #{reasonCode}
 		WHERE
 			EMAIL = #{email}
 			AND PASSWORD = #{password}
