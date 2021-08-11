@@ -65,7 +65,7 @@ public class AttendanceController {
 									Model model) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
-		System.out.println(cPage);
+
 		param.put("numPerPage", NUMPERPAGE);
 		param.put("cPage", cPage);
 		param.put("startDay", startDay);
@@ -113,10 +113,11 @@ public class AttendanceController {
 		String time = timeFormat.format(now);
 		String latenessAt = AttendanceUtil.getTimeDifference(time, workingTime) > 0 ? "N" : "Y";
 
-		AttendanceVO attendance = new AttendanceVO(member.getEmail(), day, time, null, latenessAt, null, member.getEmail(), null, member.getEmail(), "N", null, null);
+		AttendanceVO attendance = new AttendanceVO(0,member.getEmail(), day, time, null, latenessAt, null, member.getEmail(), null, member.getEmail(), "N", null, null);
 		int resultCnt = attendanceService.insertIn(attendance);
 		
 		if(resultCnt > 0) {
+			session.setAttribute("attendanceNo", attendance.getAttendanceNo());
 			return "ok";
 		}else {
 			return "fail";
@@ -143,12 +144,14 @@ public class AttendanceController {
 		
 		String day = dayFormat.format(now);
 		String outTime = timeFormat.format(now);
+		int attendanceNo = Integer.parseInt(session.getAttribute("attendanceNo") + "");
 		
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("day", day);
 		param.put("outTime", outTime);
 		param.put("email", member.getEmail());
+		param.put("attendanceNo", attendanceNo);
 		
 		int resultCnt = attendanceService.updateOut(param);
 		
@@ -174,6 +177,7 @@ public class AttendanceController {
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		Map<String, Object> param = new HashMap<>();
 		
+		param.put("attendanceNo", attendanceVO.getAttendanceNo());
 		param.put("day", attendanceVO.getDay());
 		param.put("inTime", attendanceVO.getInTime());
 		param.put("outTime", attendanceVO.getOutTime());
@@ -214,6 +218,7 @@ public class AttendanceController {
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		Map<String, Object> param = new HashMap<>();
 		
+		param.put("attendanceNo", attendanceVO.getAttendanceNo());
 		param.put("day", attendanceVO.getDay());
 		param.put("inTime", attendanceVO.getInTime());
 		param.put("outTime", attendanceVO.getOutTime());
@@ -229,8 +234,29 @@ public class AttendanceController {
 
 		}else {
 			return "fail";
-		}
+		}	
+	}
+	
+	@ResponseBody
+	@RequestMapping("/delete")
+	public String deleteAttendance(int attendanceNo, HttpServletRequest request) throws Exception {
 		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("email", member.getEmail());
+		param.put("attendanceNo", attendanceNo);
+		
+		int resultCnt = attendanceService.deleteAttendance(param);
+		
+		if(resultCnt > 0) {
+			return "ok";
+		
+		}else {
+			return "fail";
+		}
 	}
 
 }

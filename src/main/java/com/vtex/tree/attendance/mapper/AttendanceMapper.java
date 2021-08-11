@@ -29,4 +29,6 @@ public interface AttendanceMapper {
 	List<MemberVO> autoName(String searchName) throws Exception;
 	
 	int insertAttendance(Map<String, Object> param) throws Exception;
+	
+	int deleteAttendance(Map<String, Object> param) throws Exception;
 }

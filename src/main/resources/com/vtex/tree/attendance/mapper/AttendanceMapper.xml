@@ -10,6 +10,7 @@
 		INSERT INTO
 			TB_ATTENDANCE
 				(
+					ATTENDANCE_NO,
 					EMAIL,
 					DAY,
 					IN_TIME,
@@ -23,6 +24,7 @@
 				)
 			VALUES
 				(
+					SEQ_TB_ATTENDANCE.NEXTVAL,
 					#{email},
 					#{day},
 					#{inTime},
@@ -32,8 +34,14 @@
 					#{email},
 					SYSDATE,
 					#{email},
-					'N'
+					'N'					
 				)
+		<selectKey resultType="int" keyProperty="attendanceNo" order="AFTER">
+			SELECT
+				SEQ_TB_ATTENDANCE.CURRVAL	
+			FROM
+				DUAL
+		</selectKey>
 	</insert>
 	
 	<insert id="insertAttendance">
@@ -42,6 +50,7 @@
 		INSERT INTO
 				TB_ATTENDANCE
 					(
+						ATTENDANCE_NO,
 						EMAIL,
 						DAY,
 						IN_TIME,
@@ -56,6 +65,7 @@
 					)
 				VALUES
 					(
+						SEQ_TB_ATTENDANCE.NEXTVAL,
 						#{email},
 						#{day},
 						#{inTime},
@@ -98,6 +108,7 @@
 		/* AttendanceMApper.getAttendanceList */
 	
 		SELECT
+			A.ATTENDANCE_NO,
 			A.EMAIL,
 			B.NAME,
 			A.DAY,
@@ -190,7 +201,8 @@
 			LAST_UPDT_PNTTM = SYSDATE,
 			LAST_UPDUSR_ID = #{email}
 		WHERE
-			DAY = #{day}
+			ATTENDANCE_NO = #{attendanceNo}
+			AND DAY = #{day}
 			AND EMAIL = #{email}
 	</update>
 	
@@ -207,8 +219,20 @@
 			LAST_UPDT_PNTTM = SYSDATE,
 			LAST_UPDUSR_ID = #{adminEmail}
 		WHERE
-			DAY = #{day}
+			ATTENDANCE_NO = #{attendanceNo}
+			AND DAY = #{day}
 			AND EMAIL = #{email}		
+	</update>
+	
+	<update id="deleteAttendance">
+		/* AttendanceMapper.deleteAttendance*/
+		
+		UPDATE
+			TB_ATTENDANCE
+		SET
+			DELETE_AT = 'Y'
+		WHERE
+			ATTENDANCE_NO = #{attendanceNo}
 	</update>
 
 </mapper>

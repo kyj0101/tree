@@ -16,6 +16,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AttendanceVO {
+	private int attendanceNo;
 	private String email;
 	private String day;
 	private String inTime;

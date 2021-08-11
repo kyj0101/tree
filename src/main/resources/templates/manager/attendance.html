@@ -76,6 +76,7 @@
         <table class="table table-bordered attendance-table table-hover">
             <thead>
               <tr>
+              	<th scope="col">번호</th>
                 <th scope="col">이메일</th>
                 <th scope="col">이름</th>
                 <th scope="col">일자</th>
@@ -87,7 +88,8 @@
             </thead>
             <tbody id="tbody_data" class="tableTbody">
             <tr  data-toggle="modal" data-target="#update-modal" th:each="attendance : ${attendanceList}" onclick="fnPopup(this);">
-                <th scope="row" th:text="${attendance.email}"></th>
+                <th th:text="${attendance.attendanceNo}"></th>
+                <td scope="row" th:text="${attendance.email}"></td>
                 <td th:text="${attendance.name}"></td>
                 <td th:text="${attendance.day}"></td>
                 <td th:text="${attendance.inTime}"></td>
@@ -119,6 +121,7 @@
                 </div>
     
                 <div class="modal-body member-modal-body ">
+                	<input type="hidden" class="form-control updateAttendanceNo" readonly>
                 	<input type="hidden" class="form-control updateEmail" readonly>
                 	
                     <div class="input-group mb-3">
@@ -153,8 +156,7 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-warning" data-dismiss="modal">삭제</button>
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
+                    <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="deleteAttendance();">삭제</button>
                     <button type="button" class="btn btn-primary" onclick="fnUpdate();">저장</button>
                 </div>
             </div>
@@ -195,9 +197,9 @@
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text">지각 여부</span>
-                        <select class="form-control" name="latenessYn" id="insertLatenessAt">
-                            <option value="Y">예</option>
-                            <option value="N">아니요</option>
+                        <select class="form-control" name="latenessYn" id="insertLatenessAt" onchange="insertLatenessAtSelectedChange();">
+                            <option value="Y" id="insertLatenessAtY">예</option>
+                            <option value="N" id="insertLatenessAtN">아니요</option>
                        </select>
                     </div>
                     <div class="input-group mb-3">
@@ -207,8 +209,7 @@
                 </div>
                 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" onclick="insert();">저장</button>
+                    <button type="button" class="btn btn-primary" onclick="insertAttendance();">저장</button>
                 </div>
             </div>
         </div>

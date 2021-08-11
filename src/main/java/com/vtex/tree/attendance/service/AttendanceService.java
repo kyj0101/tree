@@ -28,4 +28,6 @@ public interface AttendanceService {
 
 	int insertAttendance(Map<String, Object> param) throws Exception;
 
+	int deleteAttendance(Map<String, Object> param) throws Exception;
+
 }

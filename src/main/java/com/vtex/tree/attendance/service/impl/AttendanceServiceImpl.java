@@ -62,7 +62,9 @@ public class AttendanceServiceImpl implements AttendanceService {
 	public int insertAttendance(Map<String, Object> param) throws Exception {
 		return attendanceMapper.insertAttendance(param);
 	}
-
-
 	
+	@Override
+	public int deleteAttendance(Map<String, Object> param) throws Exception {
+		return attendanceMapper.deleteAttendance(param);
+	}
 }
