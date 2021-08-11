@@ -26,7 +26,6 @@ section{
     width: 100%; 
     height: 100vh; 
 }
-  
 .header-container{
     margin: 0;
     width: 200vh;
@@ -34,8 +33,9 @@ section{
     display: flex;
     border-top: solid 1.7px rgb(214, 214, 214);
     background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
-  
+  	justify-content:space-between;
 }
+
 
 
 nav{
@@ -47,7 +47,7 @@ nav hr{
     margin: 5px 0 5px 0;
 }
 
-.fa-arrow-left{
+.fa-arrow-left, .fa-home{
     margin-top: 10px;
     font-size: 28px;
     padding: 10px;
@@ -55,6 +55,10 @@ nav hr{
     margin-left: 20px;
     cursor: pointer;
     color: white;
+}
+
+.fa-home{
+	margin-right: 30px;
 }
 
 .attendance-select{

@@ -1,6 +1,7 @@
 package com.vtex.tree.employee.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
@@ -14,6 +15,8 @@ public interface EmployeeMapper {
 	
 	int getMemberListCnt() throws Exception;
 	
-	MemberVO getMemberDetail(String email) throws Exception;
-
+	int withdrawEmployee(Map<String, Object> param) throws Exception;
+	
+	int updateEmployee(Map<String, Object> param) throws Exception;
+	
 }

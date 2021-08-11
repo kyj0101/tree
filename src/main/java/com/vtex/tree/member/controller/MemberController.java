@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vtex.tree.commoncode.mapper.CommonCodeMapper;
@@ -107,6 +108,18 @@ public class MemberController {
 		return "mypage/updatePassword"; 
 	}
 	
+	@RequestMapping("/mypage/withdraw/view")
+	public String myPageWithdrawView(Model model) throws Exception {
+		
+		Map<String, String> param = new HashMap<>();
+		param.put("searchCode", "RN000");
+		
+		List<Map<String, String>> reasonList = commonCodeService.selectCmmnCodeList(param);
+		
+		model.addAttribute("reasonList", reasonList);
+		return "mypage/withdraw"; 
+	}
+	
 	@RequestMapping("/mypage/update/password")
 	public String myPageUpdatePassword(String password, 
 										String newPassword, 
@@ -132,6 +145,29 @@ public class MemberController {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
-
 	}
+	
+	@ResponseBody
+	@RequestMapping("/mypage/withdraw")
+	public String myPageWithdraw(String password, String reasonCode, HttpServletRequest request) throws Exception {
+
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("password", getEncryptedPassword(password));
+		param.put("reasonCode", reasonCode);
+		param.put("email", member.getEmail());
+		
+		int resultCnt = memberService.withdraw(param);
+		
+		if(resultCnt > 0) {
+			return "ok";
+		}else {
+			return "fail";
+		}
+	}
+	
+	
 }

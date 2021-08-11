@@ -35,5 +35,10 @@ public class MemberServiceImpl implements MemberService {
 	public void updatePassword(Map<String, String> param) {
 		memberMapper.updatePassword(param);
 	}
+	
+	@Override
+	public int withdraw(Map<String, Object> param) throws Exception {
+		return memberMapper.withdraw(param);
+	}
 
 }

@@ -1,6 +1,7 @@
 package com.vtex.tree.employee.service.impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,12 @@ public class EmployeeServiceImpl implements EmployeeService{
 	}
 
 	@Override
-	public MemberVO getMemberDetail(String email) throws Exception {
-		return employeeMapper.getMemberDetail(email);
+	public int withdrawEmployee(Map<String, Object> param) throws Exception {
+		return employeeMapper.withdrawEmployee(param);
+	}
+	
+	@Override
+	public int updateEmployee(Map<String, Object> param) throws Exception {
+		return employeeMapper.updateEmployee(param);
 	}
 }

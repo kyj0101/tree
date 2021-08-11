@@ -13,4 +13,6 @@ public interface MemberService {
 
 	void updatePassword(Map<String, String> param);
 
+	int withdraw(Map<String, Object> param) throws Exception;
+
 }

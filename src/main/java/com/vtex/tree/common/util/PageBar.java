@@ -22,9 +22,7 @@ public class PageBar {
 		
 		//이전 영역
 		if(cPage == 1) {
-			pageBar.append("<li class=\"page-item disabled\">\r\n" + 
-					"      <a class=\"page-link\" href=\"#\" tabindex=\"-1\">&laquo;</a>\r\n" + 
-					"    </li>\n");
+			pageBar.append("");
 		}
 		else {
 			pageBar.append("<li class=\"page-item\">\r\n" + 
@@ -45,9 +43,7 @@ public class PageBar {
 		}
 		//다음 영역
 		if(cPage >= totalPage) {
-			pageBar.append("<li class=\"page-item\">\r\n" + 
-					"      <a class=\"page-link\" href=\"#\">&raquo;</a>\r\n" + 
-					"    </li>\n");
+			pageBar.append("");
 		}
 		else {
 			pageBar.append("<li class=\"page-item\">\r\n" + 

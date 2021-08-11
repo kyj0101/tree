@@ -59,5 +59,18 @@
 		WHERE
 			EMAIL = #{email}
 	</update>
+	
+	<update id="withdraw">
+		/* MemberMapper.withdraw */
+		
+		UPDATE
+			TB_MEMBER
+		SET
+			QUIT_AT = 'Y',
+			QUIT_REASON = #{resonCode}
+		WHERE
+			EMAIL = #{email}
+			AND PASSWORD = #{password}
+	</update>
 
 </mapper>

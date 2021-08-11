@@ -157,7 +157,7 @@ $(function() {
 		
 		var title = $(".boardDetailTitle").text();
 		var content =  $(".textDiv").html();
-
+		
 		if($(".fileA").length > 0){
 
 			$(".input-file").empty();			

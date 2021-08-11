@@ -222,7 +222,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 670px;">생성</button>
+          <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 650px;">생성</button>
         </div>
 
       </div>
@@ -319,20 +319,18 @@
 </div>
 
 <!-- toast editor -->
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
-<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-  
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/2.0.0/toastui-editor.min.css">
+<script src="https://uicdn.toast.com/editor/2.0.0/toastui-editor-all.min.js"></script>
+<script src="https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.js"></script>
+
 <script type="text/javascript">
 const Editor = toastui.Editor;
 
-const editor = new Editor({
+var editor = new Editor({
 	  el: document.querySelector('#editor'),
-	  height: '600px',
-	  initialEditType: 'wysiwyg',
 	  previewStyle: 'vertical',
-	  toolbarItems: [
-		    ['heading', 'bold', 'italic', 'strike'],
-		    ['hr', 'quote'],
-		  ],
+      initialEditType: "markdown",
+      height: '450px',
 	});
 </script>

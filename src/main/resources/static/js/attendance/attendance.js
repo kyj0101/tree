@@ -158,7 +158,7 @@ function updateLatenessAtSelectedChange(){
 
 //등록할때 지각여부 변경시 지각 사유 지우고 readonly
 function insertLatenessAtSelectedChange(){
-	console.log("?")
+
 	var latenessAt = $("#insertLatenessAt option:selected").val();
 	
 	if(latenessAt == 'N'){

@@ -298,16 +298,15 @@ $(function() {
 				pageBar += '<ul class="pagination justify-content-center">';
 				
 				if(cPage == 1){
-					pageBar += '<li class="page-item" disabled>'
+					pageBar += ''
 					
 				}else{
 					pageBar += '<li class="page-item">'
+					pageBar += '<a class="page-link" href="#" aria-label="Previous">'
+					pageBar += '<span aria-hidden="true">&laquo;</span>';
+					pageBar += '</a>'
+					pageBar += '</li>'	
 				}
-				
-				pageBar += '<a class="page-link" href="#" aria-label="Previous">'
-				pageBar += '<span aria-hidden="true">&laquo;</span>';
-				pageBar += '</a>'
-				pageBar += '</li>'			
 				
 				while(pageNo <= pageEnd && pageNo <= totalPage) {
 					if(pageNo == cPage) {
@@ -321,9 +320,7 @@ $(function() {
 				}
 				
 				if(cPage >= totalPage) {
-					pageBar += "<li disabled class=\"page-item\">\r\n" + 
-							"      <a class=\"page-link\" href=\"#\">&raquo;</a>\r\n" + 
-							"    </li>\n";
+					pageBar += "";
 				}
 				else {
 					pageBar += "<li class=\"page-item\">\r\n" + 

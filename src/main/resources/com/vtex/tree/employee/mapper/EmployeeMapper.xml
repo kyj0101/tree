@@ -35,5 +35,31 @@
 			ROLE_CODE != 'ADMIN'
 		ORDER BY A.NAME	
 	</select>
+	
+	<update id="withdrawEmployee">
+		/* EmployeeMapper.withdrawEmployee */
+		
+		UPDATE
+			TB_MEMBER
+		SET
+			QUIT_AT = 'Y',
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{adminEmail}
+		WHERE
+			EMAIL = #{email}
+	</update>
+	
+	<update id="updateEmployee">
+		/* EmployeeMapper.updateEmployee */
+		
+		UPDATE
+			TB_MEMBER
+		SET
+			NAME = #{name},
+			DEPARTMENT = #{department},
+			POSITION = #{position}
+		WHERE
+			EMAIL = #{email}
+	</update>
 
 </mapper>

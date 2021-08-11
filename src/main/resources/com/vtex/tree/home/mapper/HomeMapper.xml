@@ -94,6 +94,7 @@
 			TB_MEMBER A
 		WHERE
 			A.EMAIL = #{email}
+			AND A.QUIT_AT = 'N'
 	</select>
 	
 	<update id="updateEmailVerify">

@@ -22,7 +22,7 @@
     
     <script type="text/javascript" src="/js/common/regExp.js"></script>    
     <script type="text/javascript" src="/js/common/common.js"></script>
-    <script type="text/javascript" src="/js/mypage/updatePassword.js"></script>
+    <script type="text/javascript" src="/js/mypage/withdraw.js"></script>
     
 </head>
 
@@ -45,36 +45,40 @@
         </nav>
       
         <div class="content-div">
-          <form action="" id="passwordUpdateForm">
-            <table class="table">
-                <tbody>
-                  <tr>
-                    <td>
-                      <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">새 비밀번호</label>
-                        <input type="password" class="form-control" name="newPassword" id="newPassword">
-                        <div id="newPasswordHelp" class="form-text help defaultHelp">(문자, 특수문자가 포함된 숫자의 조합, 최소 8자)</div>
-                      </div>
-                    </td>
-                  </tr>
 
-                  <tr>
+        	<div>
+	        	<h3 style="text-align: center;">탈퇴사유</h3>
+				<div class="form-check" th:each="reason : ${reasonList}"
+					style="width: 570px; margin: 0 auto">
+					<input class="form-check-input" type="radio" name="reason"
+						th:value="${reason.detailCode}"
+						th:id="${reason.detailCodeName}"
+						onchange="radioCheck(this);"
+						> 
+						
+					<label th:for="${reason.detailCodeName}" th:text="${reason.detailCodeName}"></label>
+				</div>
+				<input type="text" class="form-control" name="reasonInput" id="reasonInput" disabled="disabled">
+			</div>
+            <table class="table">
+            	<h3 style="text-align: center; margin-top: 100px;">비밀번호 확인</h3>
+                <tbody>
+                <tr>
                     <td>
                       <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">비밀번호 확인</label>
-                        <input type="password" class="form-control" name="checkPassword" id="checkPassword">
-                        <div id="checkPasswordHelp" class="form-text help hide">비밀번호가 일치하지 않습니다.</div>
+                        <label for="exampleInputPassword1" class="form-label">비밀번호</label>
+                        <input type="password" class="form-control" name="password" id="password">
                       </div>
                     </td>
-                  </tr>
-          
+                  </tr>              
                 </tbody>
               </table>
-              </form>
-              <div class="button-div">
+  
+			<div class="button-div">
                 <button type="button" class="btn btn-secondary" onclick="history.back();">취소</button>
-                <button type="button" class="btn btn-primary passwordUpdateBtn justify-content-center">변경</button>
+                <button type="button" class="btn btn-primary passwordUpdateBtn justify-content-center" onclick="withdrawBtn();">탈퇴</button>
               </div>
+
         </div>
         
     </section>
@@ -91,3 +95,14 @@ if(msg != "" && msg != null ){
 }
 
 </script>
+<style>
+#reasonInput{
+	width: 570px;
+	margin: 0 auto;
+	margin-top: 10px;
+}
+
+.table{
+	margin-top: 0;
+}
+</style>
