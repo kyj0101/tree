@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,6 +22,9 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +40,7 @@ import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.member.vo.MemberVO;
 @RequestMapping("/board")
 @Controller
+@PreAuthorize("hasRole('ROLE_USER')")
 public class BoardController {
 	
 	private final int NUMPERPAGE = 10;
@@ -64,7 +67,8 @@ public class BoardController {
 	public String getBoardList(@RequestParam(defaultValue = "1") int cPage,
 								HttpServletRequest request, 
 								@RequestParam(defaultValue = "1") int category, 
-								Model model) throws Exception {
+								Model model,
+								@AuthenticationPrincipal MemberVO member) throws Exception {
 		
 		//게시판리스트
 		Map<String, Object> param = new HashMap<>();
@@ -86,14 +90,14 @@ public class BoardController {
 		
 		//카테고리 리스트
 		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		session.setAttribute("loginMember", member);
 		
 		List<Map<String, Object>> categoryMapList = boardService.getCategoryList(member.getEmail());
 		model.addAttribute("categoryMapList", categoryMapList);
 		
 		//현재 카테고리 
 		Map<String, Object> categoryMap = boardService.getCategory(category);
-		System.out.println(categoryMap.toString());
+		
 		model.addAttribute("categoryMap", categoryMap);
 		
 		//출퇴근 여부
@@ -294,23 +298,25 @@ public class BoardController {
 	 */
 	@ResponseBody
 	@RequestMapping("/file/delete")
-	public String fileDelete(String fileStore, String renamedFile) throws Exception {
-		
-		fileStore = fileStore.replace("%5C", "\\");
-		FileUtil.deleteOneFile(fileStore, renamedFile);
+	public String fileDelete(String fileId, String fileSn) throws Exception {
 		
 		Map<String, Object> param = new HashMap<String, Object>();
 		
-		param.put("fileStore", fileStore);
-		param.put("renamedFile", renamedFile);
+		param.put("fileId", fileId);
+		param.put("fileSn", fileSn);
+		
+		Map<String, Object> fileMap = boardService.getFile(param);
+		
+		FileUtil.deleteOneFile(fileMap.get("fileStore") + "", fileMap.get("renamedFile") + "");
 		
 		int resultCnt = boardService.deleteFile(param);
 		
 		if(resultCnt > 0) {
 			return "ok";	
-		}
 		
-		return "fail";
+		}else {
+			return "fail";			
+		}
 	}
 	
 	/**
@@ -322,15 +328,20 @@ public class BoardController {
 	 */
 	@ResponseBody
 	@RequestMapping("/file/update")
-	public int updateFile(MultipartFile[] uploadFile, int fileId) throws Exception {
+	public String updateFile(MultipartFile[] uploadFile, int fileId) throws Exception {
 
 		String saveDirectory = "C:\\Users\\kangyujeong98\\Documents\\workspace\\git\\tree\\tree\\src\\main\\resources\\static\\upload\\board";
 		int resultCnt = 0;
-		int maxFileSn = boardService.getMaxFileSn(fileId);
-		int fileSn = maxFileSn;
+		String maxFileSn = boardService.getMaxFileSn(fileId);
+		
+		if(maxFileSn == null) {
+			maxFileSn = "1";
+		}
+		
+		int fileSn = Integer.parseInt(maxFileSn);
 		
 		for (MultipartFile upFile : uploadFile) {
-			
+			System.out.println(upFile.getOriginalFilename());
 			fileSn++;
 			
 			Map<String, Object> fileMap = getFileMap(upFile, saveDirectory, fileId, fileSn);
@@ -338,10 +349,12 @@ public class BoardController {
 		}	
 		
 		if (resultCnt > 0) {
-			return fileId;
+			return "ok";
+			
+		}else {
+			return "fail";				
 		}
 
-		return 0;	
 	}
 	
 	/**

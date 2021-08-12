@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="main.css">
+  <script src="main.js"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+  
+</head>
+
+<body>
+  <header>
+    <aside class="menu-container">
+      <div class="logo">
+        <i class="fas fa-tree" onclick="location.href='home.html'"></i>
+        <p>VTEX</p>
+      </div>
+      <hr>
+      <div class="plus-board">
+        <p>프로젝트 게시판 추가</p>
+        <i class="fas fa-plus add-board" data-toggle="modal" data-target="#addModal"></i>
+      </div>
+      <hr class="plus-hr" >
+      <ul class="board-list-ul">
+        <li><a href="main.html">공지사항</a></li>
+      </ul>
+      <hr>
+      <div class="plus-board" data-toggle="modal" data-target="#addModal">
+        <p>채팅 추가</p>
+        <i class="fas fa-plus add-chat"></i>
+      </div>
+      <hr class="plus-hr">
+      <ul class="chat-list-ul">
+        <li><a href="chat.html">회의실</a></li>
+      </ul>
+    </aside>
+
+    <div class="header-container">
+      <ul class="info-ul">
+        <li>
+          공지사항
+        </li>
+        <li>
+          <button type="button" style="appearance: none; border: none; background: none;" data-toggle="tooltip"
+            data-placement="top" title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">
+            <i class="fas fa-info-circle"></i>
+          </button>
+
+        </li>
+      </ul>
+
+    </div>
+
+
+    <aside>
+      <div class="manager-menu-container">
+        <ul style="display: flex; flex-direction: column; padding:20px;">
+          <li>
+            <i class="fas fa-bars"></i>
+          </li>
+        </ul>
+
+        <ul style="display: flex; flex-direction: column; padding:20px;">
+          <li style="margin-top: 500px; font-size: 25px;">
+              <i class="fas fa-user-circle"></i>
+          </li>
+        </ul>
+
+        <div id="manager-menu" class="manager-menu-hidden">
+          <ul class="list-group">
+            <li class="list-group-item">
+              <a href="manager-attendance.html">관리자 메뉴</a>
+            </li>
+            <li class="list-group-item">
+              <a href="mypage-update.html">마이페이지</a>
+            </li>
+          </ul>
+        </div>
+
+        <div id="user-profile" class="user-profile-hidden">
+          <h5>김개발</h5>
+          <ul>
+            <li>
+              <label for="email" class="visually-hidden">이메일</label>
+              <input class="form-control" id="email" type="email" value="abc123@gmail.com" readonly>
+            </li>
+            <li>
+              <label for="position" class="visually-hidden">부서</label>
+              <input class="form-control" id="position" type="text" value="개발팀"readonly>
+            </li>
+            <li>
+              <label for="department" class="visually-hidden">직급</label>
+              <input class="form-control" id="department" type="text" value="사원"  readonly>
+            </li>
+          </ul>
+          <ul class="btn-ul">
+            <li>
+              <button type="button" class="btn btn-primary">출근</button>
+            </li>
+            <li>
+              <button type="button" class="btn btn-success disabled">퇴근</button>    
+            </li>
+          </ul>
+          <button type="button" class="btn btn-warning">로그아웃</button>
+        </div>
+
+
+
+      </div>
+    </aside>
+
+  </header>
+
+  <section>
+    <div class="content-container">
+
+      <figure>
+        <figcaption>
+          <p class="category-p">카테고리</p>
+        </figcaption>
+      </figure>
+      <table class="table table-striped board-list-table">
+
+        <thead>
+          <tr>
+            <th scope="col">번호</th>
+            <th scope="col">작성자</th>
+            <th scope="co1">제목</th>
+            <th scope="col">조회수</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <th scope="row">
+              <strong>공지</strong>
+            </th>
+            <td>
+              <strong>
+                개발자
+              </strong>
+            </td>
+            <td data-toggle="modal" data-target="#view-board-modal">
+              <strong>
+                공지사항입니다.
+              </strong>
+            </td>
+            <td>
+              <strong>
+                0
+              </strong>
+            </td>
+          </tr>
+          <tr>
+            <th scope="row">1</th>
+            <td>궤발자</td>
+            <td>노트북 추천해주세요</td>
+            <td>30</td>
+          </tr>
+          <tr>
+            <th scope="row">2</th>
+            <td>기발자</td>
+            <td>Node.js 입문용 책 뭐가 좋을까요?</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">3</th>
+            <td>가발자</td>
+            <td>자바스크립트 어려워요</td>
+            <td>120</td>
+          </tr>
+          <tr>
+            <th scope="row">4</th>
+            <td>구발자</td>
+            <td>안녕하세요..................................</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">5</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">6</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+
+          <tr>
+            <th scope="row">7</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <th scope="row">8</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>2</td>
+          </tr>
+          <tr>
+            <th scope="row">9</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">10</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+          <tr>
+            <th scope="row">11</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>50</td>
+          </tr>
+        </tbody>
+
+      </table>
+
+    </div>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Previous">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+        <li class="page-item"><a class="page-link" href="#">1</a></li>
+        <li class="page-item"><a class="page-link" href="#">2</a></li>
+        <li class="page-item"><a class="page-link" href="#">3</a></li>
+        <li class="page-item"><a class="page-link" href="#">4</a></li>
+        <li class="page-item"><a class="page-link" href="#">5</a></li>
+        <li class="page-item">
+          <a class="page-link" href="#" aria-label="Next">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="d-md-flex justify-content-md-end" style="margin-right: 170px;">
+      <button type="button" class="btn btn-primary justify-content-md-end btn-board" data-toggle="modal" data-target="#write-board-modal">
+        글쓰기
+      </button>
+    </div>
+
+  </section>
+
+</body>
+
+</html>
+
+<!-- 게시판 or 채팅방 추가 Modal -->
+<div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-modal-label">프로젝트 게시판 추가</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body member-modal-body ">
+      
+        <div class="input-group">
+          <input type="input" class="form-control bg-light border-0 small title-input" list="datalistOptions" 
+            placeholder="제목을 입력하세요." aria-label="Search" aria-describedby="basic-addon2">
+        </div>
+
+
+        <hr />
+
+        <div>
+          <ul class="member-list-ul">
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+            <hr />
+            <li class="member-list-li">
+              <p>이름 : 김대표</p>
+              <p>부서 : 개발팀</p>
+              <p>직급 : 대표</p>
+              <input type="checkbox" aria-label="Checkbox for following text input">
+            </li>
+          </ul>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary add-board-btn">생성</button>
+          <button type="button" class="btn btn-primary add-chat-btn">생성</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 게시글 상세보기 Modal -->
+<div class="modal fade" id="view-board-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-modal-label">게시글 제목</h5>
+
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body member-modal-body ">
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+        <hr>
+        <ul class="file-download-ul">
+          <li>
+            <a href="#">파일1</a>
+          </li>
+          <li>
+            <a href="#">파일2</a>
+          </li>
+          <li>
+            <a href="#">파일3</a>
+          </li>
+          <li>
+            <a href="#">파일4</a>
+          </li>
+          <li>
+            <a href="#">파일5</a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary board-update-btn">수정</button>
+        <p class="board-info-p">
+          작성자 : ㅇㅇㅇ
+          조회수 : ㅇㅇ
+        </p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- 게시글 작성 Modal -->
+<div class="modal fade" id="write-board-modal" data-backdrop="static" data-keyboard="false" tabindex="-1"
+  aria-labelledby="staticBackdropLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h5 class="modal-title" id="add-modal-label">게시글 제목</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+      <div class="modal-body member-modal-body ">
+        <div class="input-group">
+          <input type="input" class="form-control bg-light border-0 small title-input" list="datalistOptions" 
+            placeholder="제목을 입력하세요." aria-label="Search" aria-describedby="basic-addon2">
+        </div>
+        <div class="form-check">
+          <input class="form-check-input" type="checkbox" value="" id="defaultCheck1">
+          <label class="form-check-label" for="defaultCheck1">
+            공지사항
+          </label>
+        </div>
+        <textarea class="board-content-textarea" name="" id="" cols="25" rows="10" ></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <div class="btn-group" role="group" aria-label="Basic example">
+          <button type="button" class="btn btn-info add-file-input">파일첨부 추가</button>
+        </div>
+        <div class='input-group input-file'>
+          <div class='custom-file'>
+            <label class='custom-file-label file1'>
+              파일을 첨부하세요.
+            </label> 
+            <input type='file' class='custom-file-input file-input'name='uploadFile'>
+            <hr />
+          </div>
+          <div class='input-group-append'>
+            <button class='btn btn-outline-secondary' type='button' id='inputGroupFileAddon04'>파일삭제</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</div>
+</div>

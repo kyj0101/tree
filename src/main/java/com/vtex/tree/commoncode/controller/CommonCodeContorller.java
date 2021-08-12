@@ -15,6 +15,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +31,7 @@ import com.vtex.tree.member.vo.MemberVO;
 
 @RequestMapping("/commoncode")
 @Controller
+@PreAuthorize("hasRole('ROLE_ADMIN')")
 public class CommonCodeContorller {
 
 	private final int NUMPERPAGE = 5;

@@ -1,11 +1,19 @@
 package com.vtex.tree.member.vo;
 
+import java.io.Serializable;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import lombok.AllArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -14,10 +22,10 @@ import lombok.ToString;
 @EqualsAndHashCode
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
-public class MemberVO {
+public class MemberVO implements Serializable, UserDetails{
 	
+	private static final long serialVersionUID = 1L;
+
 	private String email;
 	private String name;
 	private String phone;
@@ -35,5 +43,46 @@ public class MemberVO {
 	private String roleCode;
 	private String departmentName;
 	private String positionName;
+	private Set<SimpleGrantedAuthority> authorities;
+	
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		authorities = new HashSet<>();
+		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+		
+		if(roleCode.equals("ADMIN")) {
+			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+		}
+		return authorities;
+	}
+	
+	@Override
+	public String getUsername() {
+		return email;
+	}
+	
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+	
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+	
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
 
 }

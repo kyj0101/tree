@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.security.mapper.SecurityMapper">
+	
+	<select id="login" resultType="memberVO">
+		/* SecurityMapper.login */
+
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			A.PHONE,
+			A.BIRTH,
+			A.PASSWORD,
+			A.DEPARTMENT,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.DEPARTMENT
+					
+			 ) AS DEPARTMENT_NAME,
+			A.POSITION,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.POSITION
+					
+			 ) AS POSITION_NAME,
+			A.EMAIL_KEY,
+			A.EMAIL_VERIFY_PNTTM,
+			A.QUIT_AT,
+			A.ROLE_CODE 
+		FROM
+			TB_MEMBER A
+		WHERE
+			A.EMAIL = #{email}
+			AND A.QUIT_AT = 'N'
+	</select>
+
+</mapper>

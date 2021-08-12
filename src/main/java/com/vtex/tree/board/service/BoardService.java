@@ -26,7 +26,7 @@ public interface BoardService {
 	
 	int deleteFile(Map<String, Object> param) throws Exception;
 
-	int getMaxFileSn(int fileId) throws Exception;
+	String getMaxFileSn(int fileId) throws Exception;
 	
 	int updateBoard(Map<String, Object> param) throws Exception;
 	
@@ -37,4 +37,6 @@ public interface BoardService {
 	Map<String, Object> getCategory(int category);
 
 	int updateInsertFile(Map<String, Object> param);
+
+	Map<String, Object> getFile(Map<String, Object> param) throws Exception;
 }

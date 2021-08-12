@@ -20,12 +20,18 @@ repositories {
 }
 
 dependencies {
-
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'com.google.code.gson:gson:2.8.7'
 	implementation 'commons-fileupload:commons-fileupload:1.4'
+	
+	//security
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+  	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  	testImplementation 'org.springframework.security:spring-security-test'
+	implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
+  
 	
 	//thymeleaf 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

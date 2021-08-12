@@ -37,9 +37,9 @@
 					#{position},
 					#{emillKey},
 					null,
-					sysdate,
+					SYSDATE,
 					#{frstRegisterId},
-					sysdate,
+					SYSDATE,
 					#{lastUpdusrId},
 					default,
 					'MANAGER'
@@ -89,7 +89,7 @@
 			A.EMAIL_KEY,
 			A.EMAIL_VERIFY_PNTTM,
 			A.QUIT_AT,
-			A.ROLE_CODE
+			A.ROLE_CODE 
 		FROM
 			TB_MEMBER A
 		WHERE

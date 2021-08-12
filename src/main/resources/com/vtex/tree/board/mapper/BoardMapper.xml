@@ -283,6 +283,7 @@
 		WHERE
 			A.USE_AT = 'Y'
 			AND A.FILE_ID = #{fileId}
+			AND B.ORIGINAL_FILE_NAME IS NOT NULL
 	</select>
 	
 	<select id="getMaxFileSn" resultType="int">
@@ -321,6 +322,19 @@
 		WHERE
 			CATEGORY_NO = #{categoryNo}
 			AND DELETE_AT = 'N'
+	</select>
+	
+	<select id="getFile" resultMap="fileMap">
+		/* BoardMapper.getFile */
+		
+		SELECT
+			FILE_STORE,
+			RENAMED_FILE_NAME
+		FROM 
+			TB_FILE_DETAIL
+		WHERE
+			FILE_ID = #{fileId}
+			AND FILE_SN = #{fileSn}
 	</select>
 	
 	<update id="addViewNum">
@@ -377,8 +391,8 @@
 		DELETE FROM
 			TB_FILE_DETAIL
 		WHERE
-			FILE_STORE = #{fileStore}
-			AND RENAMED_FILE_NAME = #{renamedFile}
+			FILE_ID = #{fileId}
+			AND FILE_SN = #{fileSn}
 	</delete>
 
 </mapper>

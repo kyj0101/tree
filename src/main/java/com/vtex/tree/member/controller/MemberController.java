@@ -1,7 +1,5 @@
 package com.vtex.tree.member.controller;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,20 +8,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.vtex.tree.commoncode.mapper.CommonCodeMapper;
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.member.service.MemberService;
 import com.vtex.tree.member.vo.MemberVO;
-import static com.vtex.tree.common.util.EncryptedPassword.*;
 @RequestMapping("/member")
 @Controller
+@PreAuthorize("hasRole('ROLE_USER')")
 public class MemberController {
 	
 	@Autowired
@@ -32,6 +30,10 @@ public class MemberController {
 	@Autowired
 	private CommonCodeService commonCodeService;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+
 	@RequestMapping("/mypage/update/view")
 	public String myPageUpdateView(Model model, HttpServletRequest request) throws Exception {
 		
@@ -130,8 +132,8 @@ public class MemberController {
 			MemberVO member = (MemberVO)session.getAttribute("loginMember");
 
 			Map<String, String> param = new HashMap<>();
-			String encryptedPassword = getEncryptedPassword(newPassword);
-			
+			String encryptedPassword =  passwordEncoder.encode(newPassword);
+
 			param.put("password", encryptedPassword);
 			param.put("email", member.getEmail());
 			
@@ -154,20 +156,21 @@ public class MemberController {
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		
-		Map<String, Object> param = new HashMap<>();
-		
-		param.put("password", getEncryptedPassword(password));
-		param.put("reasonCode", reasonCode);
-		param.put("email", member.getEmail());
-		
-		int resultCnt = memberService.withdraw(param);
-		
-		if(resultCnt > 0) {
-			return "ok";
-		}else {
-			return "fail";
+		if(passwordEncoder.matches(password, member.getPassword())) {
+			Map<String, Object> param = new HashMap<>();
+			
+			param.put("reasonCode", reasonCode);
+			param.put("email", member.getEmail());
+			
+			memberService.withdraw(param);
+			
+			if(session != null) {
+				session.invalidate();			
+			}
+			
+			return "ok";	
 		}
+		
+		return "fail";
 	}
-	
-	
 }

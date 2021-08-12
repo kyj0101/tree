@@ -7,7 +7,7 @@ $(function() {
 
 		var board = new Object()
 		board.title = $("#title").val();
-		board.content = editor.getHTML();
+		board.content = editor.getMarkdown();
 		board.categoryNo = $("#categoryNo").val();
 		
 		var formData = new FormData();
@@ -34,16 +34,15 @@ $(function() {
 					
 					//기존 파일이 있다면
 					if(url != undefined){
-						
-						var indexFileId = url.indexOf("&fileId=");
-						var indexRename = url.indexOf("&renamedFileName=");
-						var fileId = (url.substring(indexFileId, indexRename)).replace("&fileId=", "");
+						var arr = url.split(",");
+						var fileId = arr[0];
+					
 						formData.append("fileId", fileId);		
 						updateFile(formData);
 					
 					//기존 파일이 없다면	
 					}else{
-						
+						console.log("?")
 						formData.append("boardNo", board.boardNo);	
 						updateInsertFile(formData);
 					}
@@ -74,7 +73,7 @@ $(function() {
 					insertBoard(board, null);
 				}
 			}
-		}	
+		}
 	});
 
 	$(".boardTitle").click(function() {
@@ -109,7 +108,6 @@ $(function() {
 
 				$(".boardDetailTitle").text(board.boardTitle);
 				$(".textDiv").append(board.boardContent);
-				$(".textDiv").append("<hr>");
 				$(".board-info-p").text(info);
 				$("#boardNo").val(board.boardNo);
 				
@@ -145,6 +143,11 @@ $(function() {
 					
 					$(".file-download-ul").append(aTag);				
 				});
+				
+						
+				return new Promise(function(resolve, reject){
+					$("#view-board-modal").modal("show");
+				})
 			},
 		});
 	});
@@ -155,38 +158,53 @@ $(function() {
 	
 	$(".board-update-btn").click(function(){
 		
-		var title = $(".boardDetailTitle").text();
-		var content =  $(".textDiv").html();
-		
-		if($(".fileA").length > 0){
+		var boardNo = $("#boardNo").val();
 
-			$(".input-file").empty();			
-
-			$.each($(".fileA"), function(index, elem){
-
-				var html = "<div class='input-group input-file'>";
+		$.ajax({
+			type: "POST",
+			url: "/board/detail",
+			data: {
+				"boardNo":boardNo
+			},
+			success(result){
 				
-				html += "<div class='custom-file'>";
-				html += "<label class='custom-file-label file1'>" +  $(elem).text() +" </label>";
-				html += "<input type='hidden' class='hiddenFile' value='" + ($(elem).attr("href")).replace("/board/file/download/", "/board/file/delete") + "'/>"
-				html += "</div>";
-				html += "<div class='input-group-append' name='file-del-btn'>";
-				html += "<button class='btn btn-outline-secondary' type='button' id='inputGroupFileAddon04'>파일삭제</button>";
-				html += "</div>";
-				html += "</div>";
+				console.log(result);
+				var board = result.board;
+				var fileListMap = result.fileListMap;
+				
+				$(".title-input").val(board.boardTitle);
+				editor.setHtml(board.boardContent);
+				
+				if(fileListMap.length > 0){
 
-				$(".modal-footer").append(html);
-			});
-		}
-			
-		$(".title-input").val(title);
-
-		editor.setHTML(content);
-
-		$(".boardBtn").text("수정");
+					$(".input-file").empty();			
+	
+					$.each(fileListMap, function(index, elem){
 		
-		$('#view-board-modal').modal('hide');
-		$('#write-board-modal').modal('show');
+						var html = "<div class='input-group input-file'>";
+						
+						html += "<div class='custom-file'>";
+						html += "<label class='custom-file-label file1'>" +  elem.originalFileName +" </label>";
+						html += "<input type='hidden' class='hiddenFile' value='" + + elem.fileId + "," + elem.fileSn + "'/>"
+						html += "</div>";
+						html += "<div class='input-group-append' name='file-del-btn'>";
+						html += "<button class='btn btn-outline-secondary' type='button' id='inputGroupFileAddon04'>파일삭제</button>";
+						html += "</div>";
+						html += "</div>";
+		
+						$(".modal-footer").append(html);
+					});
+				}
+									
+
+				
+				return new Promise(function(resolve, reject){
+					$(".boardBtn").text("수정");
+					$('#view-board-modal').modal('hide');
+					$('#write-board-modal').modal('show');
+				})
+			},
+		});
 	});
 	
 	$(".modal-footer").on("click", ".btn-outline-secondary", function() {
@@ -194,27 +212,24 @@ $(function() {
 
 		if ($(".boardBtn").text() == '수정' && confirm("파일을 삭제하시겠습니까? 취소할 수 없습니다.")) {
 
-			var url = $($($($(this).parent().parent()).children()[0]).children()[1]).val();
-			var indexStore = url.indexOf("fileStore=");
-			var indexFileId = url.indexOf("&fileId=");
-			var indexRename = url.indexOf("&renamedFileName=");
-			var indexOriginal = url.indexOf("&origin");
-
-			var fileStore = url.substring(indexStore, indexFileId).replace("fileStore=", "");
-			var renamedFile = url.substring(indexRename, indexOriginal).replace("&renamedFileName=", "");
-			
+			var value = ($($($($(this).parent().parent()).children()[0]).children()[1]).val()).split(",");
+			console.log(value);
 			$($(this).parent().parent()).empty();
 
 			$.ajax({
 				type: "POST",
 				url: "/board/file/delete",
-				data: {
-					"renamedFile": renamedFile,
-					"fileStore": fileStore
+				data:{
+					"fileId":value[0],
+					"fileSn":value[1],
 				},
-
 				success(result) {
-					alert("삭제되었습니다.");
+					
+					if(result == "ok"){
+						alert("삭제되었습니다.");					
+					}else{
+						alert("삭제를 실패했습니다.");
+					}
 				},
 			});
 
@@ -324,6 +339,7 @@ function updateFile(formData){
 		data: formData,
 		type: 'POST',
 		success: function(result) {
+
 		}
 	});
 }
