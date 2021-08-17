@@ -15,7 +15,7 @@ $(function(){
 					location.replace("/board/list");
 					
 				}else{
-					alert("출근 처리를 실패했습니다.");
+					alert("이미 출근 처리되었습니다.");
 				}
 			},	
 		});
@@ -36,7 +36,7 @@ $(function(){
 					location.replace("/board/list");
 					
 				}else{
-					alert("퇴근 처리를 실패했습니다.");
+					alert("이미 퇴근 처리 되었습니다.");
 				}
 			},	
 		});

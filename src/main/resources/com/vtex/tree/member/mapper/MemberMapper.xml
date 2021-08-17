@@ -70,7 +70,6 @@
 			QUIT_REASON = #{reasonCode}
 		WHERE
 			EMAIL = #{email}
-			AND PASSWORD = #{password}
 	</update>
 
 </mapper>

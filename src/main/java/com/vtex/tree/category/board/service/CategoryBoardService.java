@@ -6,7 +6,7 @@ import java.util.Map;
 import com.vtex.tree.member.vo.MemberVO;
 
 public interface CategoryBoardService {
-	List<MemberVO> getMemberList() throws Exception;
+	List<MemberVO> getMemberList(String email) throws Exception;
 
 	int insertCategoryBoard(Map<String, Object> param);
 

@@ -16,6 +16,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -36,8 +37,11 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
+import com.vtex.tree.common.listener.SessionListener;
 import com.vtex.tree.common.util.FileUtil;
+import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.stomp.handler.SocketHandler;
 @RequestMapping("/board")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -50,9 +54,16 @@ public class BoardController {
 	
 	@Autowired
 	private AttendanceService attendanceService;
+	
+	@Autowired
+	private HomeService homeService;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
+	
+	@Value("${empty.msg}")
+	private String emptyMsg;
+	
 	
 	/**
 	 * 게시글 리스트 조회
@@ -69,6 +80,7 @@ public class BoardController {
 								@RequestParam(defaultValue = "1") int category, 
 								Model model,
 								@AuthenticationPrincipal MemberVO member) throws Exception {
+		
 		
 		//게시판리스트
 		Map<String, Object> param = new HashMap<>();
@@ -106,6 +118,11 @@ public class BoardController {
 		
 		model.addAttribute("isIn", isIn);
 		model.addAttribute("isOut", isOut);
+		model.addAttribute("emptyMsg", emptyMsg);
+
+		session.setAttribute("SessionListener", SessionListener.getInstance(homeService));
+		SessionListener sessionListener = SessionListener.getInstance(homeService);
+		sessionListener.setSession(session, member.getEmail());
 		
 		return "board/board";
 	}
@@ -332,16 +349,9 @@ public class BoardController {
 
 		String saveDirectory = "C:\\Users\\kangyujeong98\\Documents\\workspace\\git\\tree\\tree\\src\\main\\resources\\static\\upload\\board";
 		int resultCnt = 0;
-		String maxFileSn = boardService.getMaxFileSn(fileId);
-		
-		if(maxFileSn == null) {
-			maxFileSn = "1";
-		}
-		
-		int fileSn = Integer.parseInt(maxFileSn);
-		
+		int fileSn  = boardService.getMaxFileSn(fileId);
+
 		for (MultipartFile upFile : uploadFile) {
-			System.out.println(upFile.getOriginalFilename());
 			fileSn++;
 			
 			Map<String, Object> fileMap = getFileMap(upFile, saveDirectory, fileId, fileSn);

@@ -36,7 +36,7 @@
     margin-top: 20px;
 }
 
-#chat-textarea{
+#message{
     margin-left:400px; 
     margin-top: 30px; 
     height: 90px;
@@ -58,4 +58,8 @@
 
 .user-p{
     text-align: left;
+}
+
+.fa-user-circle{
+	margin-right: 5px;
 }

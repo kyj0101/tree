@@ -21,9 +21,9 @@ import com.vtex.tree.category.board.service.CategoryBoardService;
 import com.vtex.tree.member.vo.MemberVO;
 
 @ResponseBody
-@Controller
-@RequestMapping("/category/board")
 @PreAuthorize("hasRole('ROLE_USER')")
+@RequestMapping("/category/board")
+@Controller
 public class CategoryBoardController {
 	
 	@Autowired
@@ -31,9 +31,12 @@ public class CategoryBoardController {
 	
 	//카테고리에 선택할 직원목록 
 	@RequestMapping("/memberlist")
-	public void getMemberList(HttpServletResponse response) throws Exception{
+	public void getMemberList(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
-		List<MemberVO> memberList = categoryBoardService.getMemberList();
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		
+		List<MemberVO> memberList = categoryBoardService.getMemberList(member.getEmail());
 
 		response.setContentType("text/html;charset=UTF-8");
 		new Gson().toJson(memberList, response.getWriter());

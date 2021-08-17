@@ -19,6 +19,7 @@ repositories {
 	mavenCentral()
 }
 
+
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-mail'
 	implementation 'org.bgee.log4jdbc-log4j2:log4jdbc-log4j2-jdbc4.1:1.16'
@@ -30,8 +31,16 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
   	testImplementation 'org.springframework.boot:spring-boot-starter-test'
   	testImplementation 'org.springframework.security:spring-security-test'
-	implementation group: 'org.thymeleaf.extras', name: 'thymeleaf-extras-springsecurity4', version: '3.0.2.RELEASE'
-  
+	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	
+	//websocket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	
+	//stomp
+	implementation 'org.webjars:stomp-websocket:2.3.3'
+	
+	//sockjs
+	implementation 'org.webjars:sockjs-client:1.0.2'
 	
 	//thymeleaf 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'

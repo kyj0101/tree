@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
 <head>
     <meta charset="UTF-8">
@@ -42,9 +42,13 @@
         <br>
         협업툴 트리
     </p>
-    <button type="button" class="btn btn-dark" onclick="location.href='login'">로그인</button>
-    <button type="button" class="btn btn-light" onclick="location.href='signup'">회원 가입</button>
-
+    <!-- 로그인 하지 않았다면 -->
+    <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='login'">로그인</button>
+    <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='signup'">회원 가입</button>
+    
+    <!-- 로그인 상태라면 -->
+    <button sec:authorize="isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='/logout'">로그아웃</button>
+	<button sec:authorize="isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='/board/list'">홈으로</button>
     <div class="img-div">
         <img src="img/화면캡쳐.png" alt="">
     </div>

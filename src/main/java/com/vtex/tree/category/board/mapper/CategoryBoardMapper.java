@@ -10,7 +10,7 @@ import com.vtex.tree.member.vo.MemberVO;
 @Mapper
 public interface CategoryBoardMapper {
 	
-	List<MemberVO> getMemberList() throws Exception;
+	List<MemberVO> getMemberList(String email) throws Exception;
 	
 	int insertCategoryBoard(Map<String, Object> param);
 	

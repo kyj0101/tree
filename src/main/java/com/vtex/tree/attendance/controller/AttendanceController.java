@@ -40,6 +40,9 @@ public class AttendanceController {
 	@Value("${working.time}")
 	private String workingTime;
 	
+	@Value("${empty.msg}")
+	private String emptyMsg;
+	
 	@Autowired
 	private AttendanceService attendanceService;
 	
@@ -86,6 +89,7 @@ public class AttendanceController {
 		model.addAttribute("attendanceList", attendanceList);
 		model.addAttribute("pageBar", pageBar);
 		model.addAttribute("param", param);
+		model.addAttribute("emptyMsg", emptyMsg);
 		
 		return "manager/attendance";
 	}
@@ -103,24 +107,29 @@ public class AttendanceController {
 		
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-		
-		SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-		Calendar calendar = Calendar.getInstance();
-		Date now = new Date(calendar.getTimeInMillis());
-		
-		String day = dayFormat.format(now);
-		String time = timeFormat.format(now);
-		String latenessAt = AttendanceUtil.getTimeDifference(time, workingTime) > 0 ? "N" : "Y";
 
-		AttendanceVO attendance = new AttendanceVO(0,member.getEmail(), day, time, null, latenessAt, null, member.getEmail(), null, member.getEmail(), "N", null, null);
-		int resultCnt = attendanceService.insertIn(attendance);
+		//출퇴근 여부
+		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
 		
-		if(resultCnt > 0) {
-			session.setAttribute("attendanceNo", attendance.getAttendanceNo());
-			return "ok";
-		}else {
+		if(isIn) {
 			return "fail";
+		
+		}else {
+			
+			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+			Calendar calendar = Calendar.getInstance();
+			Date now = new Date(calendar.getTimeInMillis());
+			
+			String day = dayFormat.format(now);
+			String time = timeFormat.format(now);
+			String latenessAt = AttendanceUtil.getTimeDifference(time, workingTime) > 0 ? "N" : "Y";
+
+			AttendanceVO attendance = new AttendanceVO(0,member.getEmail(), day, time, null, latenessAt, null, member.getEmail(), null, member.getEmail(), "N", null, null);
+			int resultCnt = attendanceService.insertIn(attendance);
+			session.setAttribute("attendanceNo", attendance.getAttendanceNo());
+			
+			return "ok";
 		}
 	}
 	
@@ -137,28 +146,32 @@ public class AttendanceController {
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		
-		SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
-		Calendar calendar = Calendar.getInstance();
-		Date now = new Date(calendar.getTimeInMillis());
-		
-		String day = dayFormat.format(now);
-		String outTime = timeFormat.format(now);
-		int attendanceNo = Integer.parseInt(session.getAttribute("attendanceNo") + "");
-		
-		Map<String, Object> param = new HashMap<>();
-		
-		param.put("day", day);
-		param.put("outTime", outTime);
-		param.put("email", member.getEmail());
-		param.put("attendanceNo", attendanceNo);
-		
-		int resultCnt = attendanceService.updateOut(param);
-		
-		if(resultCnt > 0) {
-			return "ok";
-		}else {
+		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
+
+		if(isOut){
 			return "fail";
+		
+		}else {
+			
+			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+			Calendar calendar = Calendar.getInstance();
+			Date now = new Date(calendar.getTimeInMillis());
+			
+			String day = dayFormat.format(now);
+			String outTime = timeFormat.format(now);
+			int attendanceNo = Integer.parseInt(session.getAttribute("attendanceNo") + "");
+			
+			Map<String, Object> param = new HashMap<>();
+			
+			param.put("day", day);
+			param.put("outTime", outTime);
+			param.put("email", member.getEmail());
+			param.put("attendanceNo", attendanceNo);
+			
+			int resultCnt = attendanceService.updateOut(param);
+
+			return "ok";
 		}
 	}
 	

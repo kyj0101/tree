@@ -3,4 +3,12 @@
     margin-top: 100px;
     width: 500px;
 }
-    
+   
+.btn-primary{
+	margin-left: 30%;
+}
+
+.form-check{
+	width: 100%;
+	text-align: right;
+}

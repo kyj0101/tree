@@ -290,7 +290,7 @@
 		/* BoardMapper.getMaxFileSn */
 		
 		SELECT
-			MAX(FILE_SN)
+			NVL(MAX(FILE_SN), 0)
 		FROM
 			TB_FILE_DETAIL
 		WHERE

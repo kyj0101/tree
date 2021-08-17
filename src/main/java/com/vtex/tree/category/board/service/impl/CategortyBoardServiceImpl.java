@@ -17,8 +17,8 @@ public class CategortyBoardServiceImpl implements CategoryBoardService{
 	private CategoryBoardMapper categoryBoardMapper;
 	
 	@Override
-	public List<MemberVO> getMemberList() throws Exception {
-		return categoryBoardMapper.getMemberList();
+	public List<MemberVO> getMemberList(String email) throws Exception {
+		return categoryBoardMapper.getMemberList(email);
 	}
 	
 	@Override

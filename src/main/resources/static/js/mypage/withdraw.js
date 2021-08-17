@@ -39,23 +39,27 @@ function withdrawBtn(){
 		return;
 	}
 	
-	$.ajax({
-		type: "post",
-		url: "/member/mypage/withdraw",
-		data: {
-			"password": password,
-			"reasonCode": reasonCode
-		},
-		success(result) {
-
-			if (result == "ok") {
-
-				alert("탈퇴되었습니다.");
-				location.replace("/")
-
-			} else {
-				alert("비밀번호가 일치하지 않습니다.");
-			}
-		},
-	});
+	//탈퇴전 알림
+	if(confirm("정말로 탈퇴하시겠습니까?")){
+		
+		$.ajax({
+			type: "post",
+			url: "/member/mypage/withdraw",
+			data: {
+				"password": password,
+				"reasonCode": reasonCode
+			},
+			success(result) {
+	
+				if (result == "ok") {
+	
+					alert("탈퇴되었습니다.");
+					location.replace("/")
+	
+				} else {
+					alert("비밀번호가 일치하지 않습니다.");
+				}
+			},
+		});	
+	}
 }

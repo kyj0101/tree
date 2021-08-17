@@ -35,5 +35,15 @@ public class HomeServiceImpl implements HomeService {
 	public MemberVO selectOneMember(String email) {
 		return homeMapper.selectOneMember(email);
 	}
+
+	@Override
+	public int setLogin(String email) {
+		return homeMapper.setLogin(email);
+	}
+	
+	@Override
+	public int setLogout(String email) {
+		return homeMapper.setLogout(email);
+	}
 	
 }

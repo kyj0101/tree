@@ -16,4 +16,8 @@ public interface HomeMapper {
 	int updateEmailVerify(Map<String, String> param);
 
 	MemberVO selectOneMember(String userName);
+
+	int setLogin(String email);
+
+	int setLogout(String email);
 }

@@ -16,4 +16,8 @@ public interface HomeService {
 
 	MemberVO selectOneMember(String email);
 
+	int setLogin(String email);
+
+	int setLogout(String email);
+
 }

@@ -107,5 +107,27 @@
 		WHERE
 			EMAIL = #{email}
 	</update>
+	
+	<update id="setLogin">
+		/* HomeMapper.setLogin */
+		
+		UPDATE
+			TB_MEMBER
+		SET
+			LOGIN_AT = 'Y'
+		WHERE
+			EMAIL = #{email}
+	</update>
+	
+	<update id="setLogout">
+		/* HomeMapper.setLogout */
+		
+		UPDATE
+			TB_MEMBER
+		SET
+			LOGIN_AT = 'N'
+		WHERE
+			EMAIL = #{email}
+	</update>
 
 </mapper>

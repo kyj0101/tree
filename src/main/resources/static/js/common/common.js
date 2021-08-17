@@ -1,5 +1,7 @@
 
 
+
+
 function nullCheck(obj){
 	console.log(obj);
 	for(var key in obj){

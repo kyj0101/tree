@@ -1,4 +1,4 @@
-package com.vtex.tree.config.data;
+package com.vtex.tree.config.web;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

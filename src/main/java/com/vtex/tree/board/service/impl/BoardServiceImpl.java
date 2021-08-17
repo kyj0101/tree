@@ -64,7 +64,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public String getMaxFileSn(int fileId) throws Exception {
+	public int getMaxFileSn(int fileId) throws Exception {
 		return boardMapper.getMaxFileSn(fileId);
 	}
 	

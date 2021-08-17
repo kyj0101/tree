@@ -2,12 +2,15 @@ package com.vtex.tree.security.service;
 
 import java.lang.reflect.Member;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.vtex.tree.common.listener.SessionListener;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.security.mapper.SecurityMapper;
 
@@ -24,7 +27,7 @@ public class SecurityDetails implements UserDetailsService{
 	
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-		MemberVO member = securityMapper.login(username);
+		MemberVO member = securityMapper.login(username);		
 		return member;
 	}
 	

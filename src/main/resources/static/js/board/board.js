@@ -7,7 +7,7 @@ $(function() {
 
 		var board = new Object()
 		board.title = $("#title").val();
-		board.content = editor.getMarkdown();
+		board.content = editor.getHtml();
 		board.categoryNo = $("#categoryNo").val();
 		
 		var formData = new FormData();
@@ -42,7 +42,6 @@ $(function() {
 					
 					//기존 파일이 없다면	
 					}else{
-						console.log("?")
 						formData.append("boardNo", board.boardNo);	
 						updateInsertFile(formData);
 					}
@@ -107,6 +106,7 @@ $(function() {
 				info += board.boardView;
 
 				$(".boardDetailTitle").text(board.boardTitle);
+				console.log(board.boardContent);
 				$(".textDiv").append(board.boardContent);
 				$(".board-info-p").text(info);
 				$("#boardNo").val(board.boardNo);

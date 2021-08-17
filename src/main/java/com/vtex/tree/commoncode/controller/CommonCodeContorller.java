@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +36,10 @@ import com.vtex.tree.member.vo.MemberVO;
 public class CommonCodeContorller {
 
 	private final int NUMPERPAGE = 5;
-
+	
+	@Value("${empty.msg}")
+	private String emptyMsg;
+	
 	@Autowired
 	private CommonCodeService commonCodeService;
 
@@ -66,7 +70,8 @@ public class CommonCodeContorller {
 
 		model.addAttribute("commonCodeListMap", commonCodeListMap);
 		model.addAttribute("pageBar", pageBar);
-
+		model.addAttribute("emptyMsg", emptyMsg);
+		
 		return "manager/commonCode";
 	}
 

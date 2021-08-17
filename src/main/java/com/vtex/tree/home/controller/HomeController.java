@@ -67,7 +67,6 @@ public class HomeController {
 	 * 
 	 * @return
 	 */
-	@PreAuthorize("permitAll()")
 	@RequestMapping("/login")
 	public String login() {
 		return "home/login";
@@ -210,6 +209,17 @@ public class HomeController {
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/close")
+	public void close(HttpServletRequest request) {
+		System.out.println("close!!");
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		String email = member.getEmail();
+		
+		homeService.setLogout(email);
 	}
 
 }

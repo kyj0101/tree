@@ -155,12 +155,13 @@ public class MemberController {
 
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-		
+	
 		if(passwordEncoder.matches(password, member.getPassword())) {
 			Map<String, Object> param = new HashMap<>();
 			
 			param.put("reasonCode", reasonCode);
 			param.put("email", member.getEmail());
+			param.put("password", passwordEncoder.encode(password));
 			
 			memberService.withdraw(param);
 			

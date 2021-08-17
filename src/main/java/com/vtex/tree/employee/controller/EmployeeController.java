@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class EmployeeController {
 	
 	@Autowired
 	private CommonCodeService commonCodeService;
+	
+	@Value("${empty.msg}")
+	private String emptyMsg;
 	
 	/**
 	 * 직원 목록 
@@ -75,7 +79,9 @@ public class EmployeeController {
 
 		param2.put("searchCode", "COM002");
 		List<Map<String, String>> positionList = commonCodeService.selectCmmnCodeList(param2);
+		
 		model.addAttribute("positionList", positionList);
+		model.addAttribute("emptyMsg", emptyMsg);
 		
 		return "manager/employee";
 	}

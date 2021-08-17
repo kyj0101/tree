@@ -28,7 +28,7 @@ public interface BoardMapper {
 	
 	int deleteFile(Map<String, Object> param) throws Exception;
 	
-	String getMaxFileSn(int fileId) throws Exception;
+	int getMaxFileSn(int fileId) throws Exception;
 	
 	int updateBoard(Map<String, Object> param) throws Exception;
 	
