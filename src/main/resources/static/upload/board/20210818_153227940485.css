@@ -1,0 +1,356 @@
+
+ body{
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    font-family: 'Noto Sans KR', sans-serif;
+  }
+
+  a{
+      color: rgb(26, 26, 26);
+  }
+  
+  button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+  }
+
+  ul{
+    list-style: none;
+  }
+  
+  /* ----------------------------- header ----------------------------- */
+  
+
+  header{
+    display:flex;
+    width: 100%;
+    height: 59px;
+    
+  }
+
+  .logo{
+    cursor: pointer;
+  }
+  
+  .header-container{
+    margin: 0;
+    width: 200vh;
+    height: 69px;
+    display: flex;
+    border-top: solid 1.7px rgb(214, 214, 214);
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  }
+  
+  .fa-comment-dots{
+    font-size: 35px;
+    color: green;
+    padding: 10px;
+    padding-right: 0px;
+    margin-left: 20px;
+  }
+  
+  .info-ul{
+    margin: 0;
+    list-style: none;
+    display: flex;
+    padding-left: 20px;
+  }
+  
+  .info-ul li{
+    margin-top: 18px;
+    padding: 0 10px 0 0
+  }
+  
+  .user-ul{
+    list-style: none;
+    display: flex;
+    margin-left: 1200px;
+    margin-top: 3px;
+  }
+  
+  .user-ul li{
+    padding: 10px;
+    font-size: 20px;
+  }
+
+  .chat-list-ul li:hover, .board-list-ul li:hover{
+      text-decoration: underline;
+  }
+  
+  .chat-list-ul li, .board-list-ul li{
+    cursor: pointer;
+  }
+  
+  /* ----------------------------- aside ----------------------------- */
+  
+  .menu-container{
+    width: 380px;
+    height: 100vh;
+    background:#fcfcfc;
+    border: solid 1.5px rgb(214, 214, 214);
+  }
+
+ 
+  .logo{
+    height: 50px;
+    text-align: center;
+    display: flex;
+  }
+  
+  aside ul{
+    list-style: none;
+    width: 100%;
+    height: 35%;
+    text-align: left;
+    padding: 0;
+    padding-left: 15px;
+  }
+  
+  .fa-tree{
+    margin-top: 15px;
+    font-size: 22px;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: green;
+  }
+  
+  .logo p{
+    font-size: 21px;
+    margin-top: 10px;
+    font-weight: 700;
+  }
+  
+  .plus-board{
+    text-align: center;
+    display: flex;
+    font-size: 18px;
+  }
+  
+  .plus-board p{
+    padding-left: 20px;
+  }
+  
+  .fa-plus{
+    position: absolute;
+    left: 0;
+    margin-top: 5px;
+    margin-left:250px;
+    font-size: 22px;
+    cursor: pointer;
+  }
+
+  .fa-plus:hover, .fa-bars:hover, .fa-user-circle:hover{
+    color: rgb(90, 90, 90);
+  }
+
+  .plus-hr{
+    margin-top: 0;
+  }
+
+
+
+  /* ----------------------------- section ----------------------------- */
+  
+  section{
+    width: 100%;
+  
+    text-align: center;
+    z-index: -999;
+  }
+  
+  .content-container{
+    width: 95%;
+    text-align: center;
+    margin: 0 auto;
+    
+  }
+  
+  figcaption{
+    text-align: left;
+    margin-left: 300px;
+  }
+  
+  figcaption p{
+    font-size: 22px;
+    font-weight: 600;
+    margin-top: 20px;
+  }
+  
+  .board-list-table{
+    width: 80%;
+    margin: 0 auto;
+    margin-left: 310px;
+    margin-top: 20px;
+  }
+  
+  .board-list-table td:nth-child(3){
+    cursor: pointer;
+  }
+  
+  .board-list-table td:nth-child(3):hover{
+    text-decoration: underline;
+  }
+  
+  .btn-board{
+    width: 100px;
+    height: 50px;
+    font-size: 18px;
+  }
+  
+  
+  nav{
+    margin-left: 120px; 
+    margin-top: 50px; 
+   
+  }
+  
+  nav ul{
+    margin-bottom: 0;
+  }
+  
+  /* ----------------------------- menuBar ----------------------------- */
+  
+  .manager-menu-container{
+    width: 60px;
+    background:#fcfcfc;
+    border: solid 1.5px rgb(214, 214, 214);
+  }
+  
+  .manager-menu-container{
+    height: 100vh;
+  }
+  
+  
+  .manager-menu-container ul li{
+    padding-top: 15px;
+    font-size: 18px;
+  }
+  
+  .manager-menu-container ul li{
+    padding-top: 15px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  .manager-menu{
+    display: block;
+    position: absolute; 
+    width: 220px;  
+    right: 0; 
+    top: 0; 
+    background-color: gray; 
+    margin-right: 60px;
+  }
+
+  .manager-menu-hidden{
+    display: none;
+  }
+  
+  .user-profile{
+    display: flex;
+    flex-direction: column;
+    position: absolute; 
+    bottom: 0; 
+    right: 0; 
+    background-color: rgb(255, 255, 255); 
+    width: 320px; 
+    height: 540px; 
+    margin-right: 90px; 
+    margin-bottom: 50px; 
+    border-radius: 70px 70px 0 70px;
+    border: 1px solid rgb(182, 182, 182);
+    text-align: center;
+    padding: 20px;
+  }
+
+  .user-profile button{
+    color: white;
+    font-size: 18px;
+    width: 75%;
+    margin: 0 auto;
+    margin-top: 40px;
+  }
+
+  .btn-ul{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin: 0 auto;
+  }
+
+  .btn-ul li{
+    margin-bottom: 0;
+    margin-top: 120px;
+  }
+
+  .btn-ul button{
+    width: 90px;
+    margin: 0 auto;
+    cursor: pointer;
+  }
+
+  .user-profile-hidden{
+    display:none
+  }
+  
+  /* ----------------------------- modal -----------------------------  */
+  .member-list-ul{
+      list-style:  none;
+      margin: 0 auto;
+  }
+  .member-list-li{
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+  }
+
+  
+
+  /*----------------------------- modal2 -----------------------------*/
+  .board-info-p{
+    font-size: 18px;
+  }
+
+  .board-update-btn{
+    position: absolute;
+    left: 0;
+    margin-left:20px;
+  }
+
+  .board-content-textarea{
+    width: 100%; 
+    margin-top: 50px; 
+    height: 500px;
+  }
+
+  .file-div{
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .file-download-ul{
+    text-decoration: underline;
+    text-align: left;
+    padding-left: 0;
+  }
+
+  .form-check{
+    padding: 15px;
+    margin-left: 15px;
+    text-align: right;
+  }
+
+  .custom-file-label::after {
+    left: 0;
+    right: auto;
+    width:100px;
+    border-left-width: 0;
+    border-right: inherit;
+    content:"파일첨부";
+}
+
+.custom-file-label{
+  padding-left: 120px;
+}

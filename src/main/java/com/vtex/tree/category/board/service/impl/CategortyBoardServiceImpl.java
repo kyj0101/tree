@@ -32,6 +32,16 @@ public class CategortyBoardServiceImpl implements CategoryBoardService{
 	}
 	
 	@Override
+	public List<Map<String, Object>> getCategoryList(String email) {
+		return categoryBoardMapper.getCategoryList(email);
+	}
+	
+	@Override
+	public Map<String, Object> getCategory(int category) {
+		return categoryBoardMapper.getCategory(category);
+	}
+	
+	@Override
 	public int deleteCategoryBoard(String categoryNo) throws Exception{
 		return categoryBoardMapper.deleteCategoryBoard(categoryNo);
 	}

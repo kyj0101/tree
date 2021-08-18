@@ -43,3 +43,17 @@ function chatReceive(name,msg){
 	$(".chat-ul > li:last").append(name + time + chatText);
 	$("#chat-textarea").val("")
 }
+
+function chatLeave(){
+	if(confirm("채팅방을 나가시겠습니까?")){
+		
+		$.ajax({
+			type: "POST",
+			url: "/chat/leave",
+			data: {"category":category},
+			success(result) {
+				location.replace("/board/list");
+			},
+		});
+	}
+}

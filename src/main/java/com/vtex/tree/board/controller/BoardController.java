@@ -37,7 +37,9 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
-import com.vtex.tree.common.listener.SessionListener;
+import com.vtex.tree.category.board.service.CategoryBoardService;
+import com.vtex.tree.category.chat.service.CategoryChatService;
+import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
@@ -56,7 +58,10 @@ public class BoardController {
 	private AttendanceService attendanceService;
 	
 	@Autowired
-	private HomeService homeService;
+	private CategoryBoardService categoryBoardService;
+	
+	@Autowired
+	private CategoryChatService categoryChatService;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -104,11 +109,16 @@ public class BoardController {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginMember", member);
 		
-		List<Map<String, Object>> categoryMapList = boardService.getCategoryList(member.getEmail());
-		model.addAttribute("categoryMapList", categoryMapList);
+		//1. 게시판
+		List<Map<String, Object>> categoryBoardMapList = categoryBoardService.getCategoryList(member.getEmail());
+		model.addAttribute("categoryBoardMapList", categoryBoardMapList);
+		
+		//2. 채팅
+		List<Map<String, Object>> categoryChatMapList = categoryChatService.getChatRoomList(member.getEmail());
+		model.addAttribute("categoryChatMapList", categoryChatMapList);
 		
 		//현재 카테고리 
-		Map<String, Object> categoryMap = boardService.getCategory(category);
+		Map<String, Object> categoryMap = categoryBoardService.getCategory(category);
 		
 		model.addAttribute("categoryMap", categoryMap);
 		
@@ -120,10 +130,6 @@ public class BoardController {
 		model.addAttribute("isOut", isOut);
 		model.addAttribute("emptyMsg", emptyMsg);
 
-		session.setAttribute("SessionListener", SessionListener.getInstance(homeService));
-		SessionListener sessionListener = SessionListener.getInstance(homeService);
-		sessionListener.setSession(session, member.getEmail());
-		
 		return "board/board";
 	}
 	

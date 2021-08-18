@@ -34,10 +34,6 @@ public interface BoardMapper {
 	
 	int deleteBoard(String boardNo) throws Exception;
 	
-	List<Map<String, Object>> getCategoryList(String email);
-	
-	Map<String, Object> getCategory(int category);
-	
 	int updateInsertFile(Map<String, Object> param);
 	
 	Map<String, Object> getFile(Map<String, Object> param) throws Exception;

@@ -11,13 +11,7 @@
 		<result column="file_sn" property="fileSn"/>
 		<result column="file_store" property="fileStore"/>
 	</resultMap>
-	
-	<resultMap type="map" id="categoryMap">
-		<id column="category_no" property="categoryNo"/>
-		
-		<result column="category_name" property="categoryName"/>
-	</resultMap>
-	
+
 	<insert id="insertFile">
 		/* BoardMapper.insertFile */
 		
@@ -295,33 +289,6 @@
 			TB_FILE_DETAIL
 		WHERE
 			FILE_ID = #{fileId}
-	</select>
-	
-	<select id="getCategoryList" resultMap="categoryMap">
-		/* BoardMapper.getCategoryList */
-		
-		 SELECT
-		 	A.CATEGORY_NAME,
-		 	A.CATEGORY_NO
-		FROM 
-			TB_CATEGORY A
-			LEFT OUTER JOIN TB_CATEGORY_USER B ON B.CATEGORY_NO = A.CATEGORY_NO
-		WHERE 
-			B.EMAIL = #{email}	
-			AND A.DELETE_AT = 'N'
-	</select>
-	
-	<select id="getCategory" resultMap="categoryMap">
-		/* BoardMapper.getCategoryName */
-		
-		SELECT
-			CATEGORY_NO,
-			CATEGORY_NAME
-		FROM
-			TB_CATEGORY
-		WHERE
-			CATEGORY_NO = #{categoryNo}
-			AND DELETE_AT = 'N'
 	</select>
 	
 	<select id="getFile" resultMap="fileMap">

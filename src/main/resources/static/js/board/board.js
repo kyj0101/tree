@@ -7,7 +7,7 @@ $(function() {
 
 		var board = new Object()
 		board.title = $("#title").val();
-		board.content = editor.getHtml();
+		board.content = editor.getHTML();
 		board.categoryNo = $("#categoryNo").val();
 		
 		var formData = new FormData();
@@ -173,7 +173,7 @@ $(function() {
 				var fileListMap = result.fileListMap;
 				
 				$(".title-input").val(board.boardTitle);
-				editor.setHtml(board.boardContent);
+				editor.setHTML(board.boardContent);
 				
 				if(fileListMap.length > 0){
 

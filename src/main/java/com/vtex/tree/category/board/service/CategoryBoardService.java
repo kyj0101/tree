@@ -11,6 +11,10 @@ public interface CategoryBoardService {
 	int insertCategoryBoard(Map<String, Object> param);
 
 	int insertCategoryBoardUser(Map<String, Object> param);
+	
+	List<Map<String, Object>> getCategoryList(String email);
+
+	Map<String, Object> getCategory(int category);
 
 	int deleteCategoryBoard(String categoryNo) throws Exception;
 }

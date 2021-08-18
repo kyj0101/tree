@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.category.chat.mapper.CategoryChatMapper">
+	
+	<resultMap type="map" id="chatRoomMap">
+		<id column="chat_room_number" property="chatRoomNumber"/>
+		
+		<result column="chat_room_title" property="chatRoomTitle"/>
+	</resultMap>
+	
+	<insert id="insertCategoryChat">
+		/* CategoryChatMapper.insertCategoryChat */
+		
+		INSERT INTO
+			TB_CHAT_ROOM
+				(
+					CHAT_ROOM_NUMBER,
+					CHAT_ROOM_TITLE,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT
+				)
+			VALUES
+				(
+					SEQ_TB_CHAT_ROOM.NEXTVAL,
+					#{title},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'N'
+				)
+		<selectKey resultType="_int" keyProperty="no" order="AFTER">
+			SELECT
+				SEQ_TB_CHAT_ROOM.CURRVAL
+			FROM
+				DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertCategoryChatUser">
+		/* CategoryChatMapper.insertCategoryChatUser */
+		
+		INSERT INTO
+			TB_CHAT_USER
+				(
+					CHAT_ROOM_NUMBER,
+					EMAIL,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT
+				) 
+			VALUES
+				(
+					#{categoryNo},
+					#{userEmail},					
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email},
+					'N'
+				)
+	</insert>
+	
+	<select id="getCategoryList" resultMap="chatRoomMap">
+		/* CategoryChatMapper.getCategoryList */
+		
+		SELECT
+			A.CHAT_ROOM_TITLE,
+			A.CHAT_ROOM_NUMBER
+		FROM 
+			TB_CHAT_ROOM A
+			LEFT OUTER JOIN TB_CHAT_USER B ON B.CHAT_ROOM_NUMBER = A.CHAT_ROOM_NUMBER
+		WHERE
+			B.EMAIL = #{email}
+			AND A.DELETE_AT = 'N'
+			AND B.DELETE_AT = 'N'
+	</select>
+	
+	<select id="getChatRoomName" resultType="string">
+		/* CategoryChatMapper.getChatRoomName */
+
+		SELECT
+			CHAT_ROOM_TITLE
+		FROM
+			TB_CHAT_ROOM
+		WHERE
+			CHAT_ROOM_NUMBER = #{category}		
+	</select>
+	
+	
+</mapper>

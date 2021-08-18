@@ -28,6 +28,7 @@ public class SocketHandler extends TextWebSocketHandler{
 		
 		loginMemberList.add(member);
 		
+		System.out.println("add=========================================");
 		System.out.println(loginMemberList.toString());
 
 	}
@@ -39,6 +40,7 @@ public class SocketHandler extends TextWebSocketHandler{
 		MemberVO member = (MemberVO) token.getPrincipal();
 		
 		loginMemberList.remove(member);
+		System.out.println("remove=========================================");
 		System.out.println(loginMemberList.toString());
 		
 	}

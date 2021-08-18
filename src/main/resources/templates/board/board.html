@@ -52,20 +52,26 @@
         <li>
         	<a href="/board/list">전체 공지사항</a>
         </li>
-        <li th:each="category : ${categoryMapList}" style="display: flex; justify-content: space-between;">
+        <li th:each="category : ${categoryBoardMapList}" style="display: flex; justify-content: space-between;">
         	<a th:href="@{/board/list(category=${category.categoryNo})}" th:text="${category.categoryName}" ></a>
         	<i class="fas fa-times categoryDelete" style="padding-right: 15px;"></i>
         </li>
         
       </ul>
       <hr>
-      <div class="plus-board" data-toggle="modal" data-target="#addModal">
+      <div class="plus-board">
         <p>채팅 추가</p>
         <i class="fas fa-plus add-chat" onclick="getLoginMemberList();"></i>
       </div>
       <hr class="plus-hr">
       <ul class="chat-list-ul">
-        <li><a href="/chat/room">전체 회의실</a></li>
+        <li>
+        	<a href="/chat/room">전체 회의실</a>
+        </li>
+        <li th:each="chat : ${categoryChatMapList}" style="display: flex; justify-content: space-between;">
+        	<a th:href="@{/chat/room(category=${chat.chatRoomNumber})}" th:text="${chat.chatRoomTitle}"></a>
+        	<i class="fas fa-times categoryDelete" style="padding-right: 15px;"></i>
+        </li>
       </ul>
     </aside>
 
@@ -223,7 +229,6 @@
             placeholder="제목을 입력하세요." aria-label="Search" aria-describedby="basic-addon2">
         </div>
 
-
         <hr />
 
         <div>
@@ -234,6 +239,7 @@
 
         <div class="modal-footer">
           <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 650px;">생성</button>
+          <button type="button" class="btn btn-primary add-chat-btn" style="margin-left: 650px;" onclick="addChatRoom();">생성</button>
         </div>
 
       </div>
@@ -330,10 +336,8 @@
 </div>
 
 <!-- toast editor -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.48.4/codemirror.css">
-<link rel="stylesheet" href="https://uicdn.toast.com/editor/2.0.0/toastui-editor.min.css">
-<script src="https://uicdn.toast.com/editor/2.0.0/toastui-editor-all.min.js"></script>
-<script src="https://uicdn.toast.com/tui-editor/latest/tui-editor-Editor-full.js"></script>
+  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 <script type="text/javascript">
 const Editor = toastui.Editor;

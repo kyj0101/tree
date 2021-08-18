@@ -9,8 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import com.vtex.tree.common.listener.SessionListener;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.security.mapper.SecurityMapper;
 

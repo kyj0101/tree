@@ -63,3 +63,11 @@
 .fa-user-circle{
 	margin-right: 5px;
 }
+
+#chatLeave{
+	position: absolute;
+	right: 0;
+	margin-right: 100px;
+	top: 0;
+	margin-top: 15px;
+}

@@ -1,6 +1,7 @@
-
-
-
+var ws = new WebSocket('ws://localhost:9090/nnn');
+ws.onopen = e => {
+  	console.log("onopen:",e);
+}
 
 function nullCheck(obj){
 	console.log(obj);

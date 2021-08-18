@@ -31,8 +31,8 @@ $(function(){
 					
 					$(".member-list-ul").append(html);
 				});
+				
 			},
-			
 			error(xhr, status, err) {
 				console.log(xhr, status, err);
 			}

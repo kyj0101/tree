@@ -3,6 +3,12 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.category.board.mapper.CategoryBoardMapper">
+		
+	<resultMap type="map" id="categoryMap">
+		<id column="category_no" property="categoryNo"/>
+		
+		<result column="category_name" property="categoryName"/>
+	</resultMap>
 	
 	<insert id="insertCategoryBoard">
 		/* CategoryBoardMapper.insertCategoryBoard */
@@ -84,6 +90,33 @@
 			A.QUIT_AT = 'N'
 			AND A.EMAIL != #{email}
 		ORDER BY A.NAME
+	</select>
+	
+	<select id="getCategoryList" resultMap="categoryMap">
+		/* CategoryBoardMapper.getCategoryList */
+		
+		 SELECT
+		 	A.CATEGORY_NAME,
+		 	A.CATEGORY_NO
+		FROM 
+			TB_CATEGORY A
+			LEFT OUTER JOIN TB_CATEGORY_USER B ON B.CATEGORY_NO = A.CATEGORY_NO
+		WHERE 
+			B.EMAIL = #{email}	
+			AND A.DELETE_AT = 'N'
+	</select>
+	
+	<select id="getCategory" resultMap="categoryMap">
+		/* CategoryBoardMapper.getCategoryName */
+		
+		SELECT
+			CATEGORY_NO,
+			CATEGORY_NAME
+		FROM
+			TB_CATEGORY
+		WHERE
+			CATEGORY_NO = #{categoryNo}
+			AND DELETE_AT = 'N'
 	</select>
 	
 	<update id="deleteCategoryBoard">

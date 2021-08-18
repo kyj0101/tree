@@ -1,19 +1,5 @@
-var ws = new WebSocket('ws://localhost:9090/nnn');
-ws.onopen = e => {
-  	console.log("onopen:",e);
-}
-  
+
 $(function(){
-
- 
-    $(".add-chat").click(function(){
-
-        $('#addModal').trigger('focus');
-        $('#add-modal-label').text("채팅방 추가");
-        $(".add-chat-btn").css("display","inline-block")
-        $(".add-board-btn").css("display","none")
-        $(".form-check").css("display","none")
-    });
 
 
     $(".add-chat-btn").on('click', function(){
