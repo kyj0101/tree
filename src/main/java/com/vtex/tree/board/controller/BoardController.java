@@ -43,7 +43,7 @@ import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
-import com.vtex.tree.stomp.handler.SocketHandler;
+import com.vtex.tree.socket.handler.SocketHandler;
 @RequestMapping("/board")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")

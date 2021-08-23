@@ -86,6 +86,15 @@ public class AttendanceController {
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
 		
 		List<AttendanceVO> attendanceList = attendanceService.getAttendanceList(param, rowBounds);
+		
+		for(AttendanceVO attendance : attendanceList) {
+			
+			AttendanceUtil.updateDayFormat(attendance, new SimpleDateFormat("yyyy-MM-dd"));
+			AttendanceUtil.updateInTimeFormat(attendance, new SimpleDateFormat("HH:mm"));
+			AttendanceUtil.updateOutTimeFormat(attendance, new SimpleDateFormat("HH:mm"));
+			System.out.println(attendance.getOutTime());
+		}
+		
 		model.addAttribute("attendanceList", attendanceList);
 		model.addAttribute("pageBar", pageBar);
 		model.addAttribute("param", param);
@@ -116,8 +125,8 @@ public class AttendanceController {
 		
 		}else {
 			
-			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+			SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
 			Calendar calendar = Calendar.getInstance();
 			Date now = new Date(calendar.getTimeInMillis());
 			
@@ -128,7 +137,7 @@ public class AttendanceController {
 			AttendanceVO attendance = new AttendanceVO(0,member.getEmail(), day, time, null, latenessAt, null, member.getEmail(), null, member.getEmail(), "N", null, null);
 			int resultCnt = attendanceService.insertIn(attendance);
 			session.setAttribute("attendanceNo", attendance.getAttendanceNo());
-			
+			 
 			return "ok";
 		}
 	}
@@ -153,8 +162,8 @@ public class AttendanceController {
 		
 		}else {
 			
-			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
+			SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
 			Calendar calendar = Calendar.getInstance();
 			Date now = new Date(calendar.getTimeInMillis());
 			

@@ -207,6 +207,7 @@ nav ul {
 	width: 60px;
 	background: #fcfcfc;
 	border: solid 1.5px rgb(214, 214, 214);
+	z-index: 10000;
 }
 
 .manager-menu-container {

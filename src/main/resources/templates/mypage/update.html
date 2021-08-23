@@ -22,7 +22,8 @@
     <script type="text/javascript" src="/js/common/regExp.js"></script>    
     <script type="text/javascript" src="/js/common/common.js"></script>
     <script type="text/javascript" src="/js/mypage/update.js"></script>
-
+    <script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 
 <body>
@@ -82,7 +83,24 @@
                       	</div>
                     </td>
                   </tr>
-                  <tr>
+					<tr>
+						<th scope="row">주소</th>
+						<td>
+							<div class="mb-3">
+								<div style="display: flex">
+										<input type="text" class="form-control" id="zipCode"
+											name="zipCode" style="width: 350px" placeholder="우편번호" th:value="${member.zipCode}">
+										<button class="btn btn-outline-secondary" type="button"
+											id="button-addon2" onclick="findZipCode();">우편번호 찾기</button>
+								</div>
+									<input type="text" class="form-control" id="address"
+										name="address" placeholder="주소"
+										style="margin-top: 5px; margin-bottom: 5px;" th:value="${member.address}"> 
+									<input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소" th:value="${member.detailAddress}">
+							</div>
+						</td>
+					</tr>
+					<tr>
                     <th scope="row">부서</th>
                     <td>
                     	<div class="mb-3">
@@ -102,6 +120,7 @@
                     	</div>
                     </td>
                   </tr>
+
                 </tbody>
               </table>
               <div class="button-div" style="display: flex; justify-content: center;">

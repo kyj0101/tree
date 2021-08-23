@@ -24,7 +24,10 @@
 					LAST_UPDT_PNTTM,
 					LAST_UPDUSR_ID,
 					QUIT_AT,
-					ROLE_CODE
+					ROLE_CODE,
+					ZIP_CODE,
+					ADDRESS,
+					DETAIL_ADDRESS
 				)
 			VALUES
 				(
@@ -42,11 +45,14 @@
 					SYSDATE,
 					#{lastUpdusrId},
 					default,
-					'MANAGER'
+					'MANAGER',
+					#{zipCode},
+					#{address},
+					#{detailAddress}
 				)
 	</insert>
 	
-	<select id="emailCheck" resultType="int">
+	<select id="emailDuplicationCheck" resultType="int">
 		/* HomeMapper.emailCheck */
 		
 		SELECT
@@ -89,11 +95,15 @@
 			A.EMAIL_KEY,
 			A.EMAIL_VERIFY_PNTTM,
 			A.QUIT_AT,
-			A.ROLE_CODE 
+			A.ROLE_CODE,
+			A.ZIP_CODE,
+			A.ADDRESS,
+			A.DETAIL_ADDRESS
 		FROM
 			TB_MEMBER A
 		WHERE
 			A.EMAIL = #{email}
+			AND EMAIL_VERIFY_PNTTM IS NOT NULL
 			AND A.QUIT_AT = 'N'
 	</select>
 	

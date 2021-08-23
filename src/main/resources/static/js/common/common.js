@@ -1,7 +1,5 @@
-var ws = new WebSocket('ws://localhost:9090/nnn');
-ws.onopen = e => {
-  	console.log("onopen:",e);
-}
+var ip = "192.168.0.80";
+var port = "9090";
 
 function nullCheck(obj){
 	console.log(obj);
@@ -39,7 +37,7 @@ function emailDuplicationCheck(email){
 
 	$.ajax({
 		type:"get",
-		url:"http://localhost:9090/login/success",
+		url:"/email/duplication/check",
 		data:{"email":email},
 		
 		success(val){
@@ -52,5 +50,40 @@ function emailDuplicationCheck(email){
 			console.log(xhr, status, err);
 		},
 	});
+}
+
+function findZipCode(){
+	new daum.Postcode({
+        oncomplete: function(data) {
+				
+        	console.log(data);
+			
+			var address = "";
+			
+			//K : 한글 / E : 영문
+			if(data.userLanguageType === 'K'){
+				
+				//R : 도로명 / J : 지번
+				if(data.userSelectedType === 'R'){
+					address = data.address;
+				
+				}else{
+					address = data.jibunAddress;
+				}
+			}else{
+				
+				//R : 도로명 / J : 지번
+				if(data.userSelectedType === 'R'){
+					address = data.addressEnglish;
+				
+				}else{
+					address = data.jibunAddressEnglish;
+				}
+			}
+			
+			$("#zipCode").val(data.zonecode);
+        	$("#address").val(address);
+        }
+    }).open();
 }
 

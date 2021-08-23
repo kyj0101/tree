@@ -22,6 +22,7 @@
 	<script type="text/javascript" src="/js/home/signup.js"></script>
 	<script type="text/javascript" src="/js/common/regExp.js"></script>
 	<script type="text/javascript" src="/js/common/common.js"></script>
+	<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 </head>
 
 <body>
@@ -38,10 +39,10 @@
           <div style="text-align: right;">
             <ul class="navbar-nav" >
               <li class="nav-item">
-                <a class="nav-link" href="login.html">로그인</a>
+                <a class="nav-link" href="/login">로그인</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="signup.html">회원가입</a>
+                <a class="nav-link" href="/signup">회원가입</a>
               </li>
             </ul>
           </div>
@@ -81,6 +82,17 @@
                   <input type="date" class="form-control" id="birth" name="birth">
                   <div id="birthHelp" class="form-text help hide"></div>
                 </div>
+                
+				<div class="mb-3" >
+                  <label for="phone" class="form-label">주소</label>
+                  <div style="display: flex">
+	                  <input type="text" class="form-control" id="zipCode" name="zipCode" style="width: 350px" placeholder="우편번호">
+	                  <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="findZipCode();">우편번호 찾기</button>
+                  </div>
+	              <input type="text" class="form-control" id="address" name="address" placeholder="주소" style="margin-top: 5px; margin-bottom: 5px;" >
+	              <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소">
+                </div>
+                
                 <div class="mb-3">
                   <label for="password" class="form-label">비밀 번호</label>
                   <input type="password" class="form-control" id="password" name="password">

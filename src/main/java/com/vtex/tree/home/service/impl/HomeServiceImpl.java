@@ -18,7 +18,8 @@ public class HomeServiceImpl implements HomeService {
 	
 	@Override
 	public boolean emailDuplicationCheck(String email) {
-		return homeMapper.emailDuplicationCheck(email);
+		int result = homeMapper.emailDuplicationCheck(email);
+		return result > 0;
 	}
 
 	@Override

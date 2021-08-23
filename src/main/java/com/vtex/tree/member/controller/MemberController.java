@@ -9,6 +9,9 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.vtex.tree.commoncode.service.CommonCodeService;
+import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.service.MemberService;
 import com.vtex.tree.member.vo.MemberVO;
 @RequestMapping("/member")
@@ -29,6 +33,9 @@ public class MemberController {
 	
 	@Autowired
 	private CommonCodeService commonCodeService;
+	
+	@Autowired
+	private HomeService homeService;
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -72,7 +79,11 @@ public class MemberController {
 								String birth,
 								String department,
 								String position,
-								HttpServletRequest request) {
+								String zipCode,
+								String address,
+								String detailAddress,
+								HttpServletRequest request,
+								Authentication oldAuthentication) {
 		
 
 		try {
@@ -84,20 +95,21 @@ public class MemberController {
 			param.put("birth", birth.replaceAll("-", ""));
 			param.put("department", department);
 			param.put("position", position);
+			param.put("zipCode", zipCode);
+			param.put("address", address);
+			param.put("detailAddress", detailAddress);
 			
 			memberService.updateMember(param);
 			
 			HttpSession session = request.getSession();
-			MemberVO member = (MemberVO)session.getAttribute("loginMember");
-			
-			member.setName(name);
-			member.setPhone(phone);
-			member.setBirth(birth);
-			member.setDepartment(department);
-			member.setPosition(position);
+			MemberVO member = homeService.selectOneMember(email);
 			
 			session.setAttribute("loginMember", member);
-		
+	
+			Authentication newAuthentication = new UsernamePasswordAuthenticationToken(member, oldAuthentication.getCredentials(), oldAuthentication.getAuthorities());
+			
+			SecurityContextHolder.getContext().setAuthentication(newAuthentication);
+			
 		} catch (Exception e) {
 			throw new RuntimeException();
 		}
@@ -174,4 +186,6 @@ public class MemberController {
 		
 		return "fail";
 	}
+	
+
 }

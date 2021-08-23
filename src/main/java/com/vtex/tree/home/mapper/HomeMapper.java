@@ -9,7 +9,7 @@ import com.vtex.tree.member.vo.MemberVO;
 @Mapper
 public interface HomeMapper {
 
-	boolean emailDuplicationCheck(String email);
+	int emailDuplicationCheck(String email);
 
 	void insertMember(MemberVO member);
 

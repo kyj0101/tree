@@ -1,26 +1,21 @@
 package com.vtex.tree.home.controller;
 
-import static com.vtex.tree.common.util.EncryptedPassword.getEncryptedPassword;
-
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
-import javax.annotation.security.PermitAll;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -29,14 +24,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.vtex.tree.common.util.TemporailyPassword;
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.home.service.HomeService;
+import com.vtex.tree.member.service.MemberService;
 import com.vtex.tree.member.vo.MemberVO;
 
 @Controller
 public class HomeController {
-
-	private Logger logger = LoggerFactory.getLogger(HomeController.class);
 
 	@Autowired
 	private HomeService homeService;
@@ -49,6 +44,15 @@ public class HomeController {
 	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private MemberService memberService;
+	
+	@Value("${ip}")
+	String ip;
+	
+	@Value("${server.port}")
+	String port;
 	
 
 	/**
@@ -110,6 +114,7 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping("/email/duplication/check")
 	public String emailDuplicationCheck(String email) {
+		System.out.println(email);
 		boolean isDuplicate = homeService.emailDuplicationCheck(email);
 
 		return isDuplicate ? "true" : "false";
@@ -155,7 +160,7 @@ public class HomeController {
 		member.setFrstRegisterId(member.getEmail());
 		member.setLastUpdusrId(member.getEmail());
 
-		String url = "http://localhost:9090/email/verify" + "?key=" + key + "&email=" + member.getEmail();
+		String url = "http://" + ip + ":" +  port + "/email/verify" + "?key=" + key + "&email=" + member.getEmail();
 
 		try {
 			homeService.insertMember(member);
@@ -211,15 +216,43 @@ public class HomeController {
 		}
 	}
 	
+	@RequestMapping("/find/password/view")
+	public String findPasswordView() {
+		return "home/findPassword";
+	}
+	
 	@ResponseBody
-	@RequestMapping("/close")
-	public void close(HttpServletRequest request) {
-		System.out.println("close!!");
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-		String email = member.getEmail();
+	@RequestMapping("/find/password")
+	public String findPassword(String email) {
 		
-		homeService.setLogout(email);
+		String tempoPwd =  TemporailyPassword.getTemporailyPassword(8);
+		Map<String, String> param = new HashMap<>();
+		
+		param.put("password", passwordEncoder.encode(tempoPwd));
+		param.put("email", email);
+		
+		memberService.updatePassword(param);
+		
+		MimeMessage message = mailSender.createMimeMessage();
+		MimeMessageHelper helper;
+		
+		try {
+			helper = new MimeMessageHelper(message, true, "UTF-8");
+			helper.setFrom("Tree", "Tree");
+			helper.setTo(email);
+			helper.setSubject("Tree 임시 비밀번호 입니다.");
+			helper.setText(("<p>임시 비밀번호: " + tempoPwd + "</p><p>감사합니다.</p>" + "<p>- Tree -</p>"), true);
+			
+			mailSender.send(message);
+			
+			return "ok";
+		
+		} catch (MessagingException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			
+			return "fail";
+		}
+
 	}
 
 }

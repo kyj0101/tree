@@ -72,17 +72,36 @@ function addChatRoom(){
 			success(result) {
 				console.log(result);
 				if (result == "ok") {
-					alert("게시판이 생성되었습니다.");
+					alert("채팅방이 생성되었습니다.");
 					$('#addModal').modal('hide');
 					location.replace("/board/list");
 				} else {
-					alert("게시판 생성을 실패했습니다.");
+					alert("채팅방 생성을 실패했습니다.");
 				}
 			},
 
 			error(xhr, status, err) {
 				console.log(xhr, status, err);
 			}
+		});
+	}
+}
+
+//채팅방 나가기(x버튼)
+function chatLeave(e){
+	
+	if(confirm("채팅방을 나가시겠습니까?")){
+		var url = $($(e).prev()).attr("href");
+		var indexCategory = url.indexOf("?category=");
+		var category = url.substring(indexCategory).replace("?category=","");
+		
+		$.ajax({
+			type: "POST",
+			url: "/chat/leave",
+			data: {"category":category},
+			success(result) {
+				location.replace("/board/list");
+			},
 		});
 	}
 }

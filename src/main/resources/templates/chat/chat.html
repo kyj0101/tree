@@ -32,7 +32,7 @@
     
     <script src="/js/category/boardCategory.js"></script>
     <script src="/js/category/chatCategory.js"></script>
-    
+    <script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
 </head>
 
 <body>
@@ -70,7 +70,7 @@
         </li>
         <li th:each="chat : ${categoryChatMapList}" style="display: flex; justify-content: space-between;">
         	<a th:href="@{/chat/room(category=${chat.chatRoomNumber})}" th:text="${chat.chatRoomTitle}"></a>
-        	<i class="fas fa-times categoryDelete" style="padding-right: 15px;"></i>
+        	<i class="fas fa-times chatDelete" style="padding-right: 15px;" onclick="chatLeave(this);"></i>
         </li>
       </ul>
     </aside>
@@ -174,8 +174,6 @@
             <textarea name="" id="message" cols="150" rows="2"></textarea>
             <button type="button" class="btn btn-primary" id="chat-send">전송</button>
         </div>
-        <h2 th:text="${loginList}"></h2> 
-        
     </section>
 </body>
 
@@ -229,6 +227,11 @@ var chatName = name + "(" + email + ")";
 //웹소켓 선언 및 연결
 //1.최초 웹소켓 생성 url: /stomp
 let socket = new SockJS('/stomp');
+
+socket.onmessage = function(e) {
+  	console.log("onmessage:",e);
+}
+
 let stompClient = Stomp.over(socket);
 
 stompClient.connect({}, function(frame) {

@@ -30,7 +30,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-  
+  <script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
 
   
 </head>
@@ -70,7 +70,7 @@
         </li>
         <li th:each="chat : ${categoryChatMapList}" style="display: flex; justify-content: space-between;">
         	<a th:href="@{/chat/room(category=${chat.chatRoomNumber})}" th:text="${chat.chatRoomTitle}"></a>
-        	<i class="fas fa-times categoryDelete" style="padding-right: 15px;"></i>
+        	<i class="fas fa-times chatDelete" style="padding-right: 15px;" onclick="chatLeave(this);"></i>
         </li>
       </ul>
     </aside>

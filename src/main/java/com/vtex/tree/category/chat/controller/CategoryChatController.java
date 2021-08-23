@@ -20,7 +20,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.vtex.tree.category.chat.service.CategoryChatService;
 import com.vtex.tree.member.vo.MemberVO;
-import com.vtex.tree.stomp.handler.SocketHandler;
+import com.vtex.tree.socket.handler.SocketHandler;
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @ResponseBody

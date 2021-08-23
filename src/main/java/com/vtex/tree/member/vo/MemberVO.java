@@ -44,6 +44,9 @@ public class MemberVO implements Serializable, UserDetails{
 	private String departmentName;
 	private String positionName;
 	private Set<SimpleGrantedAuthority> authorities;
+	private String zipCode;
+	private String address;
+	private String detailAddress;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;

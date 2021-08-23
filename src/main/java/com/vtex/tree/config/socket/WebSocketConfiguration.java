@@ -6,7 +6,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
-import com.vtex.tree.stomp.handler.SocketHandler;
+import com.vtex.tree.socket.handler.SocketHandler;
 
 @Configuration
 @EnableWebSocket

@@ -67,6 +67,7 @@ function passwordCheckCheck(){
 	}
 }
 
+
 $(function(){
 	
 	$("#email").on("change", emailCheck);
@@ -89,7 +90,10 @@ $(function(){
 		member.password = $("#password").val();
 		member.department = $("#department option:selected").val();
 		member.position = $("#position option:selected").val();
-
+		member.zipCode = $("#zipCode").val();
+		member.address = $("#address").val();
+		member.detailAddress = $("#detailAddress").val();
+		
 		var isNull = nullCheck(member);
 		var isHelpDisplay = helpDisplayCheck();
 		

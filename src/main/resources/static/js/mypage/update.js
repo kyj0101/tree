@@ -10,6 +10,9 @@ $(function(){
 		member.birth = $("#birth").val();
 		member.department = $("#department").val();
 		member.position = $("#position").val();
+		member.zipCode = $("#zipCode").val();
+		member.address = $("#address").val();
+		member.detailAddress = $("#detailAddress").val();
 		
 		var isNull = nullCheck(member);
 		var isHelpDisplay = helpDisplayCheck();

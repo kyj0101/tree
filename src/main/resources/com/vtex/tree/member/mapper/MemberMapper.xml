@@ -44,7 +44,10 @@
 			POSITION= #{position},
 			BIRTH = #{birth},
 			LAST_UPDT_PNTTM = SYSDATE,
-			LAST_UPDUSR_ID = #{email}
+			LAST_UPDUSR_ID = #{email},
+			ZIP_CODE = #{zipCode},
+			ADDRESS = #{address},
+			DETAIL_ADDRESS = #{detailAddress}
 		WHERE
 			EMAIL = #{email}
 	</update>
