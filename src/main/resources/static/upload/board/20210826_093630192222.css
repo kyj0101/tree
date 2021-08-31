@@ -1,0 +1,105 @@
+body{
+    margin: 0;
+    padding: 0;
+    font-family: 'Noto Sans KR', sans-serif;
+    
+}
+
+a{
+    color: rgb(26, 26, 26);
+}
+  
+button {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+}
+header{
+    display:flex;
+    width: 100%;
+    height: 59px;
+}
+
+section{
+    display: flex;
+    width: 100%; 
+    height: 100vh; 
+}
+  
+.header-container{
+    margin: 0;
+    width: 200vh;
+    height: 67px;
+    display: flex;
+    border-top: solid 1.7px rgb(214, 214, 214);
+    background-image: linear-gradient(120deg, #84fab0 0%, #8fd3f4 100%);
+  
+}
+
+
+nav{
+    font-size: 20px;
+}
+
+nav .disabled{
+    margin-top: 15px;
+    font-size: 14px;
+}
+
+nav hr{
+    height: 2px;
+    margin: 5px 0 5px 0;
+}
+
+.fa-arrow-left{
+    margin-top: 10px;
+    font-size: 28px;
+    padding: 10px;
+    padding-right: 0px;
+    margin-left: 20px;
+    cursor: pointer;
+    color: white;
+}
+
+button{
+    width: 80px;
+}
+
+.common-code{
+    width:100%; 
+    height:100%;
+}
+
+.code-div{
+    width: 100%;
+    height:50%;
+}
+
+.code-ul{
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin-top: 20px; 
+}
+
+.code-table{
+    width: 800px;
+    margin-top: 25px;
+}
+
+.add-btn{
+ margin-top: 15px;
+}
+
+.fa-chevron-right{
+    font-size: 42px; 
+    margin-top: 190px;
+}
+figcaption{
+    display: flex;
+    justify-content: space-between;
+}
+figcaption p{
+    font-size: 18px;
+    font-weight: 700;
+}

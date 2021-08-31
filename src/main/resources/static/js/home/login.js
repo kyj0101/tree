@@ -42,3 +42,11 @@ function loginAction(){
 	}
 }
 
+function checkCapsLock(event)  {
+	$("#cpasLockSpan").css("display", "none");
+	
+	if (event.getModifierState("CapsLock")) {
+		$("#cpasLockSpan").css("display", "inline");	
+	}
+}
+

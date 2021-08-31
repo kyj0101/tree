@@ -91,6 +91,11 @@ public class CommonCodeServiceImpl implements CommonCodeService{
 	public List<Map<String, String>> selectCmmnCodeList(Map<String, String> param) throws Exception {
 		return commonCodeMapper.selectCmmnCodeList(param);
 	}
+	
+	@Override
+	public int countDetailCode(Map<String, String> param) {
+		return commonCodeMapper.countDetailCode(param);
+	}
 
 	
 	

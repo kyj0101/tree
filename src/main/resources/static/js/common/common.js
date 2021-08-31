@@ -1,4 +1,4 @@
-var ip = "192.168.0.80";
+var ip = "192.168.1.206";
 var port = "9090";
 
 function nullCheck(obj){

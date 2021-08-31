@@ -4,8 +4,10 @@ $(function(){
 	
 	//근태 등록할때 이름 자동완성
 	$("#searchName").autocomplete({
+		
+		
 		source: function(request, response) {
-			
+		
 			$.ajax({
 				url: "/attendance/auto/name",
 				data: {
@@ -43,6 +45,12 @@ $(function(){
 		}
 
 	});//end of $("#searchName").autocomplete
+	
+	$(".memberName").keydown(function(key) {
+		if (key.keyCode == 13) {// 엔터
+			fnSearch();
+		}
+	});
 
 });
 
@@ -107,8 +115,10 @@ function fnUpdate(){
 	var isNull = nullCheck(attendance);
 	
 	if(isNull){
+	
 		alert("빈 칸이 있습니다.");
 		return;
+				
 	}else{
 		attendance.latenessReason = $(".updateLatenessAtReason").val() == null ? "" : $(".updateLatenessAtReason").val();
 	
@@ -186,7 +196,14 @@ function insertAttendance(){
 	var isNull = nullCheck(attendance);
 	
 	if(isNull){
-		alert("입력되지 않은 칸이 있습니다.");
+		
+		if(attendance.email.length == 0){
+			alert("존재하지 않는 회원입니다.");
+	
+		}else{
+			alert("입력되지 않은 칸이 있습니다.");
+		}
+		
 		return;
 	
 	}else{

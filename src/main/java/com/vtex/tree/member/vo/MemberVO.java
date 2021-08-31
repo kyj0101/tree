@@ -47,6 +47,9 @@ public class MemberVO implements Serializable, UserDetails{
 	private String zipCode;
 	private String address;
 	private String detailAddress;
+	private String loginAt;
+	private String esntlId;
+	private String projectRole;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;
@@ -57,7 +60,7 @@ public class MemberVO implements Serializable, UserDetails{
 		authorities = new HashSet<>();
 		authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
 		
-		if(roleCode.equals("ADMIN")) {
+		if("ADMIN".equals(roleCode)) {
 			authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
 		}
 		return authorities;

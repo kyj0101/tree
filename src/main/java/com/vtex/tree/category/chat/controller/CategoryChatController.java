@@ -1,6 +1,7 @@
 package com.vtex.tree.category.chat.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
+import com.vtex.tree.category.board.service.CategoryBoardService;
 import com.vtex.tree.category.chat.service.CategoryChatService;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.socket.handler.SocketHandler;
@@ -31,20 +33,45 @@ public class CategoryChatController {
 	@Autowired
 	private CategoryChatService categoryChatService;
 	
+	@Autowired
+	private CategoryBoardService categoryBoardService;
+	
 	@RequestMapping("/memberlist")
-	public void getmemberList(HttpServletResponse response) throws JsonIOException, IOException {
+	public void getmemberList(HttpServletResponse response, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		
 		response.setContentType("text/html;charset=UTF-8");
-		new Gson().toJson(SocketHandler.loginMemberList, response.getWriter());
+		
+		List<MemberVO> memberList = categoryBoardService.getMemberList(member.getEmail());
+		List<MemberVO> loginMemberList = new ArrayList<>();
+		
+		for(MemberVO m : memberList) {
+			
+			for(MemberVO loginMember : SocketHandler.loginMemberList) {
+				
+				if(m.getEmail().equals(loginMember.getEmail())){				
+					m.setLoginAt("Y");
+				}				
+			}
+			
+			loginMemberList.add(m);
+		}
+		
+		new Gson().toJson(loginMemberList, response.getWriter());
 	}
 	
 	@RequestMapping("/insert")
-	public String insertCategoryChat(@RequestParam(value="emailArr[]") List<String> emailArr, 
+	public String insertCategoryChat(@RequestParam(value="emailList[]") List<String> emailList, 
 									String title,
 									HttpServletRequest request) throws Exception {
 		
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+		
+		emailList.add(member.getEmail());
+		
 		int resultCnt = 0;
 		int categoryNo = 0;
 		
@@ -58,7 +85,7 @@ public class CategoryChatController {
 		
 		param.put("categoryNo", categoryNo);
 		
-		for(String email : emailArr) {
+		for(String email : emailList) {
 			param.put("userEmail", email);
 			resultCnt = categoryChatService.insertCategoryChatUser(param);
 		}

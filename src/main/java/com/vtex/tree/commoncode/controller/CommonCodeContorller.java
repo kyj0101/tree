@@ -195,19 +195,28 @@ public class CommonCodeContorller {
 
 		param.put("email", member.getEmail());
 		param.put("code", code);
-
-		int resultCnt = commonCodeService.deleteCommonCode(param);
+			
+		int detailCodeNum = commonCodeService.countDetailCode(param);
 		String resultMsg = "ok";
 		
-		if(resultCnt > 0) {
-			
-			mav.addObject("resultCode", 0);
-			mav.addObject("resultMsg", resultMsg);
-		
-		}else {
-			resultMsg = "fail";
+		if(detailCodeNum > 0) {
+			resultMsg = "상세코드를 먼저 삭제하세요.";
 			mav.addObject("resultCode", -1);
 			mav.addObject("resultMsg", resultMsg);
+			
+		}else {
+			int resultCnt = commonCodeService.deleteCommonCode(param);
+			
+			if(resultCnt > 0) {
+				
+				mav.addObject("resultCode", 0);
+				mav.addObject("resultMsg", resultMsg);
+				
+			}else {
+				resultMsg = "fail";
+				mav.addObject("resultCode", -1);
+				mav.addObject("resultMsg", resultMsg);
+			}
 		}
 		
 		mav.setViewName("jsonView");

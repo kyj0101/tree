@@ -128,6 +128,7 @@
 			DELETE_AT = 'Y'
 		WHERE
 			CATEGORY_NO = #{categoryNo}
+			AND FRST_REGISTER_ID = #{email}
 	</update>
 
 </mapper>

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="manager/header">
+</th:block>
+
+<link rel="stylesheet" href="/css/manager/attendance.css">
+<link rel="stylesheet" href="/css/manager/projectSetting.css">
+<script src="/js/project/projectSetting.js"></script>
+<body>
+ <section>
+        <nav class="nav flex-column" style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
+            <a class="nav-link disabled" href="#">시스템</a>
+            <hr>
+            <a class="nav-link active" href="/commoncode/list">공통 코드 관리</a>
+            <hr>
+            <a class="nav-link disabled" href="#">근태</a>
+            <hr>
+            <a class="nav-link active " href="/attendance/list">근태 목록</a>
+            <hr>
+            <a class="nav-link disabled" href="#">직원</a>
+            <hr>
+            <a class="nav-link active" href="/employee/list">직원 목록</a>
+            <hr>
+			<a class="nav-link disabled" href="#">프로젝트</a>
+            <hr>
+			<a class="nav-link active" href="/project/list">프로젝트 목록</a>          
+        </nav>
+        
+        <div class="tableDiv">
+	        <h4 th:text="${project.projectNm}"></h4>
+	        <div style=" width: 85%; height: 60px; display: flex; justify-content: space-between; margin: 0 auto" >
+	        	<ul id="btn-ul">
+	        		<li>
+				        <button type="button" class="btn btn-outline-primary" style="width: 150px; height: 40px;" data-toggle="modal" data-target="#addMember" onclick="getMemberList();">회원추가</button>	        
+	        		</li>
+	        		<li>
+			        	<button type="button" class="btn btn-outline-info" style="width: 150px; height: 40px;" data-toggle="modal" data-target="#addMember" onclick="getMemberList();">메모</button>	        		
+	        		</li>
+	        	</ul>
+	        
+		        <div class="input-group mb-3" style=" width: 500px;" >
+				  <button class="btn btn-outline-secondary" type="button" id="button-addon1">검색</button>
+				  <input type="text" class="form-control" placeholder="" aria-label="Example text with button addon" aria-describedby="button-addon1" style="height: 44px;">
+				</div>
+	        </div>
+	        <table class="table table-bordered table-hover">
+	            <thead>
+	              <tr>
+	                <th scope="col">이메일</th>
+	                <th scope="col">이름</th>
+	                <th scope="col">부서</th>
+	                <th scope="col">직급</th>
+	                <th scope="col">권한</th>
+	              </tr>
+	            </thead>
+	            <tbody id="tbody_data" class="tableTbody">
+					<tr data-toggle="modal" data-target="#updateRole" th:each="member : ${memberList}" onclick="clickTr(this);">
+						<th th:text="${member.esntlId}" style="display: none;"></th>
+						<th th:text="${member.email}"></th>
+						<td th:text="${member.name}"></td>
+						<td th:text="${member.departmentName}"></td>
+						<td th:text="${member.positionName}"></td>
+						<td th:if="${member.projectRole} == 'U'" >일반</td>
+						<td th:if="${member.projectRole} == 'M'" >매니저</td>
+					</tr>					
+				</tbody>
+	          </table>
+			<nav aria-label="Page navigation example" th:utext="${pageBar}"></nav> 
+        </div>
+</section>
+</body>
+</html>
+
+<!-- 직원추가  modal -->
+<div class="modal fade" id="addMember" data-backdrop="static"
+	data-keyboard="false" tabindex="-1"
+	aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg">
+		<div class="modal-content">
+			<input type="hidden" class="form-control" id="insertEmail" readonly>
+			<div class="modal-header">
+				<h5 class="modal-title" id="add-modal-label">회원 추가</h5>
+
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" onclick="reset();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+
+			<div class="modal-body member-modal-body">
+				<div class="mb-3" style="display: flex; justify-content: flex-end;">
+					<select class="custom-select" id="inputGroupSelect02"
+						style="width: 35%;">
+						<option selected>부서</option>
+						<option value="1">One</option>
+						<option value="2">Two</option>
+						<option value="3">Three</option>
+					</select> <select class="custom-select" id="inputGroupSelect02"
+						style="width: 35%">
+						<option selected>직급</option>
+						<option value="1">One</option>
+						<option value="2">Two</option>
+						<option value="3">Three</option>
+					</select>
+				</div>
+				<div class="list-group"></div>
+			</div>
+
+			<div class="modal-footer" style="display: block;">
+				<div class="card" style="width: 100%; height: 200px;">
+					<div class="card-body"></div>
+				</div>
+				<button type="button" class="btn btn-primary" id="addMemberBtn"
+					onclick="addMember();">추가</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 프로젝트 권한 수정 modal -->
+<div class="modal fade" id="updateRole" data-backdrop="static"
+	data-keyboard="false" tabindex="-1"
+	aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg">
+		<div class="modal-content">
+			<input type="hidden" class="form-control" id="insertEmail" readonly>
+			<div class="modal-header">
+				<h5 class="modal-title" id="add-modal-label">회원 추가</h5>
+
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" onclick="reset();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+
+			<div class="modal-body member-modal-body">
+				<div class="form-group">
+					<label for="updateName">선택된 회원</label>
+					<input type="text" class="form-control" id="nameInput" name="nameInput" readonly="readonly">
+					<input type="hidden" class="form-control" id="roleInput" name="roleInput" readonly="readonly">
+					<input type="hidden" class="form-control" id="esntlInput" name="esntlInput" readonly="readonly">
+				</div>
+				<label for="customRange2">수정할 내용을 선택하세요.</label>
+				<div class="mb-3" style="display: flex; justify-content: flex-end;">
+					<select class="custom-select updateSelect">
+					  <option id="selectM" value="selectM">매니저로 지정</option>
+					  <option id="selectU" value="selectU">일반멤버로 지정</option>
+					  <option id="selectD" value="selectD">프로젝트에서 탈퇴</option>
+					</select>
+				</div>
+			</div>
+
+			<div class="modal-footer" style="display: block;">
+				<button type="button" class="btn btn-primary" id="addMemberBtn"
+					onclick="updateRole();">변경</button>
+			</div>
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+var projectId = '[[${project.projectId}]]';
+
+</script>

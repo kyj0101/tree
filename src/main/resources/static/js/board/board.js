@@ -106,7 +106,6 @@ $(function() {
 				info += board.boardView;
 
 				$(".boardDetailTitle").text(board.boardTitle);
-				console.log(board.boardContent);
 				$(".textDiv").append(board.boardContent);
 				$(".board-info-p").text(info);
 				$("#boardNo").val(board.boardNo);

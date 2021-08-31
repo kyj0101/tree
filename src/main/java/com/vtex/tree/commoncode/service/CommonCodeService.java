@@ -37,4 +37,6 @@ public interface CommonCodeService {
 	
 	List<Map<String, String>> selectCmmnCodeList(Map<String, String> param) throws Exception;
 
+	int countDetailCode(Map<String, String> param);
+
 }

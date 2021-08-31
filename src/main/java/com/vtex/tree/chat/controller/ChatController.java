@@ -58,9 +58,13 @@ public class ChatController {
 		session.setAttribute("loginMember", member);
 		
 		//현재 카테고리
-		String chatName = categoryChatService.getChatRoomName(category);
-		model.addAttribute("chatName", chatName);
-		model.addAttribute("category",category);
+		Map<String, Object> categoryMap = new HashMap<>();
+		String categoryName = categoryChatService.getChatRoomName(category);
+		
+		categoryMap.put("categoryName", categoryName);
+		categoryMap.put("category", category);
+		
+		model.addAttribute("categoryMap", categoryMap);
 		
 		//카테고리 리스트
 

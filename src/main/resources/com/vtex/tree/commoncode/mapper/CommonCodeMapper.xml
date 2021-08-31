@@ -192,6 +192,18 @@
 		ORDER BY B.SORT_ORDR, A.CODE
 	</select>
 	
+	<select id="countDetailCode" resultType="int">
+		/* CommonCodeMapper.countDetailCode */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_COMMON_CODE_DETAIL A
+			LEFT OUTER JOIN TB_COMMON_CODE B ON B.CODE = A.CODE
+		WHERE
+			B.CODE = #{code};	
+	</select>
+	
 	<update id="updateCommonCode">
 		/* CommonCodeMapper.updateCommonCode */
 		
@@ -205,20 +217,7 @@
 		WHERE
 			CODE = #{code}
 	</update>
-	
-	<update id="deleteCommonCode">
-		/* CommonCodeMapper.deleteCommonCode */
 		
-		UPDATE
-			TB_COMMON_CODE
-		SET
-			USE_AT = 'N',
-			LAST_UPDT_PNTTM = SYSDATE,
-			LAST_UPDUSR_ID = #{email}
-		WHERE
-			CODE = #{code}
-	</update>
-	
 	<update id="updateDetailCode">
 		/* CommonCodeMapper.updateDetailCode */
 		
@@ -234,18 +233,22 @@
 			DETAIL_CODE = #{detailCode}
 	</update>
 	
-	<update id="deleteDetailCode">
+	<delete id="deleteCommonCode">
+		/* CommonCodeMapper.deleteCommonCode */
+		
+		DELETE FROM
+			TB_COMMON_CODE
+		WHERE
+			CODE = #{code}
+	</delete>
+	
+	<delete id="deleteDetailCode">
 		/* CommonCodeMapper.deleteDetailCode */
 		
-		UPDATE
+		DELETE FROM
 			TB_COMMON_CODE_DETAIL
-		SET
-			USE_AT = 'N',
-			LAST_UPDT_PNTTM = SYSDATE,
-			LAST_UPDUSR_ID = #{email}
 		WHERE
 			DETAIL_CODE = #{detailCode}		
-	</update>
-	
+	</delete>
 
 </mapper>

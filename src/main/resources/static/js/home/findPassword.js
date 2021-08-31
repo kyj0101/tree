@@ -1,7 +1,3 @@
-$(function(){
-	
-});
-
 function checkEmail(){
 	
 	var email = $("#email").val();
@@ -21,6 +17,9 @@ function checkEmail(){
 function findPassword(){
 	
 	var isHelpDisplay = helpDisplayCheck();
+	var email = $("#email").val();
+	var domain  = $(".domain :selected").val();
+	email = (email + domain).trim();
 	
 	if(isHelpDisplay){
 	
@@ -31,7 +30,7 @@ function findPassword(){
 		$.ajax({
 			type: "get",
 			url: "/find/password",
-			data: { "email": email, },
+			data: { "email": email },
 	
 			success(result) {
 				if(result == "ok"){
@@ -44,6 +43,6 @@ function findPassword(){
 			error(xhr, status, err) {
 				console.log(xhr, status, err);
 			}
-		});
+		})
 	}
 }

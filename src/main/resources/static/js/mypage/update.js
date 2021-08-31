@@ -31,6 +31,7 @@ $(function(){
 				$("#updateForm").attr("method", "POST");
 				$("#updateForm").attr("action", "/member/mypage/update/update");
 				$("#updateForm").submit();
+				alert("수정되었습니다.");
 			}
 		}
 	});

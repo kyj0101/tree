@@ -89,9 +89,10 @@ public class AttendanceController {
 		
 		for(AttendanceVO attendance : attendanceList) {
 			
-			AttendanceUtil.updateDayFormat(attendance, new SimpleDateFormat("yyyy-MM-dd"));
-			AttendanceUtil.updateInTimeFormat(attendance, new SimpleDateFormat("HH:mm"));
-			AttendanceUtil.updateOutTimeFormat(attendance, new SimpleDateFormat("HH:mm"));
+			attendance.setDay(AttendanceUtil.updateDayFormat(attendance.getDay(), new SimpleDateFormat("yyyy-MM-dd")));
+			attendance.setInTime(AttendanceUtil.updateInTimeFormat(attendance.getInTime(), new SimpleDateFormat("HH:mm")));
+			attendance.setOutTime(AttendanceUtil.updateOutTimeFormat(attendance.getOutTime(), new SimpleDateFormat("HH:mm")));
+			
 			System.out.println(attendance.getOutTime());
 		}
 		
@@ -224,9 +225,10 @@ public class AttendanceController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/auto/name")
-	public  ResponseEntity<List<MemberVO>> autoName(String searchName) throws Exception {
+	public ResponseEntity<List<MemberVO>> autoName(String searchName) throws Exception {
+
 		List<MemberVO> memberList = attendanceService.autoName(searchName);
-		
+
 		return ResponseEntity.ok()
 							.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
 							.body(memberList);

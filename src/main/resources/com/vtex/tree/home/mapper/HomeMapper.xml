@@ -27,7 +27,8 @@
 					ROLE_CODE,
 					ZIP_CODE,
 					ADDRESS,
-					DETAIL_ADDRESS
+					DETAIL_ADDRESS,
+					ESNTL_ID 
 				)
 			VALUES
 				(
@@ -48,7 +49,8 @@
 					'MANAGER',
 					#{zipCode},
 					#{address},
-					#{detailAddress}
+					#{detailAddress},
+					'USR_'|| LPAD(SEQ_TB_MEMBER.NEXTVAL, 16, '0')
 				)
 	</insert>
 	
@@ -98,7 +100,8 @@
 			A.ROLE_CODE,
 			A.ZIP_CODE,
 			A.ADDRESS,
-			A.DETAIL_ADDRESS
+			A.DETAIL_ADDRESS,
+			A.ESNTL_ID
 		FROM
 			TB_MEMBER A
 		WHERE

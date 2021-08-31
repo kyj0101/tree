@@ -20,6 +20,14 @@ function getLoginMemberList(){
 				html += '<p>이름 : ' + elem.name + '</p>';
 				html += '<p>부서 : ' + elem.departmentName + '</p>';
 				html += '<p>직급 : ' + elem.positionName + '</p>';
+				
+				if(elem.loginAt == 'Y'){
+					html += '<p><i class="fas fa-user-alt" style="color:blue;"></i></p>';
+				
+				}else{
+					html += '<p><i class="fas fa-user-slash" ></i></p>';
+				}
+				
 				html += '<input class="categoryAddMemberCheck" type="checkbox" value="' + elem.email + '">';
 				html += '</li>';
 				html += '<hr />';
@@ -41,23 +49,19 @@ function getLoginMemberList(){
 function addChatRoom(){
 	
 	var checkedArr = $(".categoryAddMemberCheck:checked");
-	var emailArr = [];
+	var emailList = [];
 	var title = $(".title-input").val();
 
 	//체크박스에 있는 email value를 array에 넣음
 	$.each(checkedArr, function(index, elem) {
-		emailArr.push($(elem).val());
+		emailList.push($(elem).val());
 	});
-	
-	console.log(checkedArr);
-	console.log(emailArr);
-	console.log(title);
 
 	if (title.length <= 0) {
 		alert("제목을 입력하세요.");
 
 
-	} else if (emailArr.length <= 0) {
+	} else if (emailList.length <= 0) {
 		alert("회원을 선택하세요.");
 
 	} else {
@@ -67,7 +71,7 @@ function addChatRoom(){
 			url: "/category/chat/insert",
 			data: {
 				"title": title,
-				"emailArr": emailArr
+				"emailList": emailList
 			},
 			success(result) {
 				console.log(result);

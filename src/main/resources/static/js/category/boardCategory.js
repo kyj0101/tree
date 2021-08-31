@@ -18,6 +18,9 @@ $(function(){
 			data: {"boardNo": boardNo},
 			dataType:"json",
 			success(result) {
+				
+				$(".member-list-ul").empty();
+				
 				$.each(result, function(index, elem){
 
 					var html = '<li class="member-list-li">';
@@ -43,19 +46,21 @@ $(function(){
 	$(".add-board-btn").click(function(){
 		
 		var checkedArr = $(".categoryAddMemberCheck:checked");
-		var emailArr = [];
+		var emailList = [];
 		var title = $(".title-input").val();
+		console.log(title);
+		console.log($(".title-input"));
 		
 		//체크박스에 있는 email value를 array에 넣음
 		$.each(checkedArr, function(index, elem){
-			emailArr.push($(elem).val());
+			emailList.push($(elem).val());
 		});
 		
 		if(title.length <= 0){
 			alert("제목을 입력하세요.");
 
 			
-		}else if(emailArr.length <= 0){
+		}else if(emailList.length <= 0){
 			alert("회원을 선택하세요.");
 	
 		}else{
@@ -64,7 +69,7 @@ $(function(){
 				url: "/category/board/insert",
 				data: {
 					"title":title,
-					"emailArr": emailArr
+					"emailList": emailList
 				},
 				success(result) {
 					console.log(result);
@@ -93,7 +98,7 @@ $(function(){
 		if(confirm("게시판을 삭제하시겠습니까?")){
 			$.ajax({
 				type: "POST",
-				url: "/category/board/delete",
+				url: "/project/insert",
 				data: {
 					"categoryNo": categoryNo
 				},

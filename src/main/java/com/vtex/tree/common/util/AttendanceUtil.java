@@ -36,49 +36,54 @@ public class AttendanceUtil {
 	}
 	
 	
-	public static void updateDayFormat(AttendanceVO attendance, SimpleDateFormat simpleDateFormat){
+	public static String updateDayFormat(String day, SimpleDateFormat simpleDateFormat){
 		
 		try {
+			
 			SimpleDateFormat originalFormat = new SimpleDateFormat("yyyyMMdd");
-			Date day = originalFormat.parse(attendance.getDay());
+			Date formatDay = originalFormat.parse(day);
 		
-			attendance.setDay(simpleDateFormat.format(day));
+			return simpleDateFormat.format(formatDay);
 
 		} catch (ParseException e) {
+			
 			e.printStackTrace();
+			
+			return null;
 		}
 	}
 	
-	public static void updateInTimeFormat(AttendanceVO attendance, SimpleDateFormat simpleDateFormat){
+	public static String updateInTimeFormat(String time, SimpleDateFormat simpleDateFormat){
 		
 		try {
+			
 			SimpleDateFormat originalFormat = new SimpleDateFormat("HHmm");
-			Date inTime = originalFormat.parse(attendance.getInTime());
+			Date inTime = originalFormat.parse(time);
 		
-			attendance.setInTime(simpleDateFormat.format(inTime));
+			return simpleDateFormat.format(inTime);
 			
 		} catch (ParseException e) {
-			 
+			 return null;
 		
 		} catch (NullPointerException e) {
-			
+			return null;
 		}
 	}
 	
-	public static void updateOutTimeFormat(AttendanceVO attendance, SimpleDateFormat simpleDateFormat){
+	public static String updateOutTimeFormat(String time, SimpleDateFormat simpleDateFormat){
 		
 		try {
+			
 			SimpleDateFormat originalFormat = new SimpleDateFormat("HHmm");
-			Date outTime = originalFormat.parse(attendance.getOutTime());
+			Date outTime = originalFormat.parse(time);
 			
-			
-			attendance.setOutTime(simpleDateFormat.format(outTime));
+			return simpleDateFormat.format(outTime);
 			
 		} catch (ParseException e) {
-			
+			return null;
 		
 		} catch (NullPointerException e) {
-			
+			return null;
 		}
 	}
 }

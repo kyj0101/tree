@@ -95,12 +95,18 @@ public class HomeController {
 		model.addAttribute("departmentList", departmentList);
 
 		// 직급 목록
-		Map<String, String> param2 = new HashMap<>();
-		param2.put("searchCode", "COM002");
+		param.put("searchCode", "COM002");
 
-		List<Map<String, String>> positionList = commonCodeService.selectCmmnCodeList(param2);
+		List<Map<String, String>> positionList = commonCodeService.selectCmmnCodeList(param);
 
 		model.addAttribute("positionList", positionList);
+		
+		//이메일 목록
+		param.put("searchCode", "EMAIL");
+
+		List<Map<String, String>> emailList = commonCodeService.selectCmmnCodeList(param);
+
+		model.addAttribute("emailList", emailList);
 
 		return "home/signup";
 	}

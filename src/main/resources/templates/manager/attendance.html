@@ -1,62 +1,15 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>근태관리</title>
-    <script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<th:block th:replace="manager/header">
+</th:block>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" href="/css/manager/attendance.css">
+<link rel="stylesheet" href="/css/manager/attendance.css">
       
-	<!-- WebSocket:sock.js CDN -->	
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
-	<!-- stomp -->
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js" integrity="sha512-tL4PIUsPy+Rks1go4kQG8M8/ItpRMvKnbBjQm4d2DQnFwgcBYRRN00QdyQnWSCwNMsoY/MfJY8nHp2CzlNdtZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-	<script src="/js/common/common.js"></script>
-	<script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
-  
-    <script src="/js/attendance/attendance.js"></script>
+<script src="/js/attendance/attendance.js"></script>
 
-    <!-- jquery autoComplete -->
-	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
-
-</head>
-
-<body>
-    <header>
-        <div class="header-container" style="width: 100%;">
-            <i class="fas fa-arrow-left" onclick="history.back();"></i>
-            <i class="fas fa-home" onclick="location.href='/board/list'"></i>
-        </div>
-    </header>
-
-    <section>
-        <nav class="nav flex-column" style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
-            <a class="nav-link disabled" href="#">시스템</a>
-            <hr>
-            <a class="nav-link active" href="/commoncode/list">공통 코드 관리</a>
-            <hr>
-            <a class="nav-link disabled" href="#">근태</a>
-            <hr>
-            <a class="nav-link active " href="/attendance/list" >근태 목록</a>
-            <hr>
-            <a class="nav-link disabled" href="#">직원</a>
-            <hr>
-            <a class="nav-link active" href="/employee/list">직원 목록</a>
-            <hr>
-        </nav>
-    </section>
+<th:block th:replace="manager/section">
+</th:block>
 
     <div class="select-div" style="top: 100px;">
         <div class="search-attendance-div" style="padding: 20px;">
@@ -67,7 +20,7 @@
             <input type="date" class="form-control endDay"  style="width: 170px; margin-right: 15px;" th:value="${param.endDay}">
             <div class="input-group mb-3" style="width: 350px">
                 <p class="input-group-text" >검색어</p>
-                <input type="search" class="form-control memberName" placeholder="이메일 또는 이름을 입력해주세요;." th:value="${param.name}" th:if="${not #strings.equals(param.name, 'null')}">
+                <input type="search" class="form-control memberName" placeholder="이메일 또는 이름을 입력해주세요." th:value="${param.name}" th:if="${not #strings.equals(param.name, 'null')}">
                 <input type="search" class="form-control memberName" placeholder="이메일 또는 이름을 입력해주세요."  th:if="${#strings.equals(param.name, 'null')}">
             </div>
             <div class="form-check" style="margin-left: 20px; margin-right: 20px;">

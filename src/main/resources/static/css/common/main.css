@@ -223,6 +223,7 @@ nav ul {
 	padding-top: 15px;
 	font-size: 18px;
 	cursor: pointer;
+	z-index: 100;
 }
 
 .manager-menu {

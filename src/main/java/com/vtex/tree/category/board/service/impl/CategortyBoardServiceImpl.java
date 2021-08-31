@@ -42,8 +42,8 @@ public class CategortyBoardServiceImpl implements CategoryBoardService{
 	}
 	
 	@Override
-	public int deleteCategoryBoard(String categoryNo) throws Exception{
-		return categoryBoardMapper.deleteCategoryBoard(categoryNo);
+	public int deleteCategoryBoard(Map<String, Object> param) throws Exception{
+		return categoryBoardMapper.deleteCategoryBoard(param);
 	}
 
 }

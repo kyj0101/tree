@@ -377,8 +377,9 @@ $(function() {
 							alert("삭제하였습니다.");
 							location.href = "/commoncode/list";
 
-						} else {
-							alert("삭제를 실패하였습니다.");
+						}else {
+						
+							alert(result.resultMsg);
 							return;
 						}
 					},

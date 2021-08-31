@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>게시판</title>
+  
+	<script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.4.1.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+	<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+	  
+  	<link rel="preconnect" href="https://fonts.googleapis.com">
+  	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  	<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap" rel="stylesheet">
+
+	<!-- WebSocket:sock.js CDN -->	
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.3.0/sockjs.js"></script>
+	<!-- stomp -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.js" integrity="sha512-tL4PIUsPy+Rks1go4kQG8M8/ItpRMvKnbBjQm4d2DQnFwgcBYRRN00QdyQnWSCwNMsoY/MfJY8nHp2CzlNdtZA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>	
+
+	<link rel="stylesheet" href="/css/common/main.css">
+
+	<script src="/js/common/common.js"></script>
+  	<script src="/js/common/main.js"></script>
+  	<script src="/js/category/boardCategory.js"></script>
+	<script src="/js/category/chatCategory.js"></script>
+  	<script src="/js/attendance/attendanceRecord.js"></script>
+  	<script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
+   
+</head>
+
+<body>
+  <header>
+    <aside class="menu-container">
+      <div class="logo">
+        <i class="fas fa-tree" onclick="location.href='/'"></i>
+        <p>VTEX</p>
+      </div>
+      <hr>
+      <div class="plus-board">
+        <p>프로젝트 게시판 추가</p>
+        <i class="fas fa-plus add-board" data-toggle="modal" data-target="#addModal"></i>
+      </div>
+      <hr class="plus-hr" >
+      <ul class="board-list-ul">
+        <li>
+        	<a href="/board/list">전체 공지사항</a>
+        </li>
+        <li th:each="category : ${categoryBoardMapList}" style="display: flex; justify-content: space-between;">
+        	<a th:href="@{/board/list(category=${category.categoryNo})}" th:text="${category.categoryName}" ></a>
+        	<i class="fas fa-times categoryDelete" style="padding-right: 15px;"></i>
+        </li>
+        
+      </ul>
+      <hr>
+      <div class="plus-board">
+        <p>채팅 추가</p>
+        <i class="fas fa-plus add-chat" onclick="getLoginMemberList();"></i>
+      </div>
+      <hr class="plus-hr">
+      <ul class="chat-list-ul">
+        <li>
+        	<a href="/chat/room">전체 회의실</a>
+        </li>
+        <li th:each="chat : ${categoryChatMapList}" style="display: flex; justify-content: space-between;">
+        	<a th:href="@{/chat/room(category=${chat.chatRoomNumber})}" th:text="${chat.chatRoomTitle}"></a>
+        	<i class="fas fa-times chatDelete" style="padding-right: 15px;" onclick="chatLeave(this);"></i>
+        </li>
+      </ul>
+    </aside>
+
+    <div class="header-container">
+      <ul class="info-ul">
+        <li th:text="${categoryMap.categoryName}">
+        </li>
+        <li>
+          <button type="button" style="appearance: none; border: none; background: none;" data-toggle="tooltip"
+            data-placement="top" title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">
+            <i class="fas fa-info-circle "></i>
+          </button>
+
+        </li>
+      </ul>
+
+    </div>
+
+
+    <aside>
+      <div class="manager-menu-container">
+        <ul style="display: flex; flex-direction: column; padding:20px;">
+          <li>
+            <i class="fas fa-bars"></i>
+          </li>
+        </ul>
+
+        <ul style="display: flex; flex-direction: column; padding:20px;">
+          <li style="margin-top: 500px; font-size: 25px;">
+              <i class="fas fa-user-circle"></i>
+          </li>
+        </ul>
+
+        <div id="manager-menu" class="manager-menu-hidden">
+          <ul class="list-group">
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item">
+              <a href="/commoncode/list">관리자 메뉴</a>
+            </li>
+            <li class="list-group-item">
+              <a href="/member/mypage/update/view">마이페이지</a>
+            </li>
+          </ul>
+        </div>
+
+        <div id="user-profile" class="user-profile-hidden">
+          <h5 th:text='${session.loginMember.name}'></h5>
+          <ul>
+            <li>
+              <label for="email" class="visually-hidden">이메일</label>
+              <input class="form-control" id="email" type="email" th:value='${session.loginMember.email}' readonly>
+            </li>
+            <li>
+              <label for="position" class="visually-hidden">부서</label>
+              <input class="form-control" id="position" type="text" th:value='${session.loginMember.departmentName}' readonly> 
+            </li>
+            <li>
+              <label for="department" class="visually-hidden">직급</label>
+       <input class="form-control" id="department" type="text" th:value='${session.loginMember.positionName}'  readonly> 
+            </li>
+          </ul>
+          <ul class="btn-ul">
+            <li>
+            	<!-- 출근전 -->
+            	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${!isIn and !isOut}">출근</button>
+            	<button type="button" class="btn btn-success attendanceOutBtn" style="margin-left: 15px;" th:if="${!isIn and !isOut}">퇴근</button>    
+            	
+            	<!-- 출근후 -->
+              	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${isIn and !isOut}" >출근</button>
+	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and !isOut}" style="margin-left: 15px;">퇴근</button>
+	            
+	            <!-- 퇴근후 --> 
+	            <button type="button" class="btn btn-primary attendanceInBtn"  th:if="${isIn and isOut}" >출근</button>
+	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and isOut}" style="margin-left: 15px;">퇴근</button>
+	               
+            </li>
+            <li>
+            </li>
+          </ul>
+          <button type="button" class="btn btn-warning btnLogout">로그아웃</button>
+          <form id="logoutForm"></form>
+        </div>
+      </div>
+    </aside>
+
+  </header>

@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.project.mapper.ProjectMapper">
+
+	<insert id="insertProeject">
+		/* ProjectMapper.insertProeject */
+		
+		INSERT INTO
+			TB_PROJECT
+				(
+					PROJECT_ID,
+					PROJECT_NM,
+					PROJECT_MANAGER,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					USE_AT,
+					START_DATE,
+					END_DATE,
+					NOTE
+				)
+			VALUES
+				(
+					SEQ_TB_PROJECT.NEXTVAL,
+					#{projectNm},
+					#{projectManager},
+					SYSDATE,
+					#{frstRegisterId},
+					SYSDATE,
+					#{lastUpdusrId},
+					DEFAULT,
+					#{startDate},
+					#{endDate},
+					#{note}
+				)
+		<selectKey resultType="string" keyProperty="projectId" order="AFTER">
+			SELECT
+				SEQ_TB_PROJECT.CURRVAL
+			FROM
+				DUAL
+		</selectKey>
+	</insert>
+	
+	<insert id="insertProjectMember">
+		/* ProjectMapper.insertProjectMember */
+		
+		INSERT INTO
+			TB_PROJECT_USER
+				(
+					PROJECT_ID,
+					ESNTL_ID,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT,
+					PROJECT_ROLE
+				)
+			VALUES
+				(
+					#{projectId},
+					#{esntlId},
+					SYSDATE,
+					#{loginEsntlId},
+					SYSDATE,
+					#{loginEsntlId},
+					'N',
+					#{projectRole}
+				)
+	
+	</insert>
+	
+	<select id="getProjectList" resultType="projectVO">
+		/* ProjectMapper.getProjectList */
+		
+		SELECT
+			A.PROJECT_ID,
+			A.PROJECT_NM,
+			A.PROJECT_MANAGER,
+			A.START_DATE,
+			A.END_DATE,
+			A.NOTE,
+			B.NAME AS PROJECT_MANAGER_NM 
+		FROM
+			TB_PROJECT A
+			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID = A.PROJECT_MANAGER
+		WHERE
+			USE_AT = 'Y'
+	</select>
+	
+	<select id="getTotalProject" resultType="int">
+		/* ProjectMapper.getTotalProject */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_PROJECT
+		WHERE
+			USE_AT = 'Y'
+	</select>
+	
+	<select id="selectOneProject" resultType="projectVO">
+		/* ProjectMapper.selectOneProject */
+		
+		SELECT
+			PROJECT_ID,
+			PROJECT_NM,
+			PROJECT_MANAGER,
+			START_DATE,
+			END_DATE,
+			NOTE
+		FROM
+			TB_PROJECT
+		WHERE
+			PROJECT_ID = #{projectId}
+			AND USE_AT = 'Y'
+	</select>
+	
+	<select id="getMemberList" resultType="memberVO">
+		/* ProjectMapper.getMemberList */
+		
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			A.PHONE,
+			A.BIRTH,
+			A.PASSWORD,
+			A.DEPARTMENT,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.DEPARTMENT
+					
+			 ) AS DEPARTMENT_NAME,
+			A.POSITION,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.POSITION
+					
+			 ) AS POSITION_NAME,
+			A.EMAIL_KEY,
+			A.EMAIL_VERIFY_PNTTM,
+			A.QUIT_AT,
+			A.ROLE_CODE,
+			A.ZIP_CODE,
+			A.ADDRESS,
+			A.DETAIL_ADDRESS,
+			A.ESNTL_ID
+		FROM
+			TB_MEMBER A
+		WHERE
+			EMAIL_VERIFY_PNTTM IS NOT NULL
+			AND A.QUIT_AT = 'N'
+			AND A.ESNTL_ID NOT IN(
+										
+									SELECT
+										ESNTL_ID
+									FROM 
+										TB_PROJECT_USER
+									WHERE
+										PROJECT_ID = #{projectId}
+									)
+		ORDER BY
+			A.NAME									
+	</select>
+	
+	<select id="getProjectMemberList" resultType="memberVO">
+		/* ProjectMapper.getProjectMemberList */
+		
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			(
+				SELECT
+						DETAIL_CODE_NAME
+				FROM
+						TB_COMMON_CODE_DETAIL
+				WHERE
+						DETAIL_CODE = A.POSITION
+							
+			) AS POSITION_NAME,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.DEPARTMENT
+							
+			) AS DEPARTMENT_NAME,
+			B.PROJECT_ROLE,
+			A.ESNTL_ID
+		FROM
+			TB_MEMBER A
+			LEFT OUTER JOIN TB_PROJECT_USER B ON B.ESNTL_ID = A.ESNTL_ID
+		WHERE
+			B.PROJECT_ID = #{projectId}
+			AND B.PROJECT_ROLE = 'M'	
+			AND B.DELETE_AT = 'N'
+		UNION ALL		
+		
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			(
+				SELECT
+						DETAIL_CODE_NAME
+				FROM
+						TB_COMMON_CODE_DETAIL
+				WHERE
+						DETAIL_CODE = A.POSITION
+							
+			) AS POSITION_NAME,
+			(
+				SELECT
+					DETAIL_CODE_NAME
+				FROM
+					TB_COMMON_CODE_DETAIL
+				WHERE
+					DETAIL_CODE = A.DEPARTMENT
+							
+			) AS DEPARTMENT_NAME,
+			B.PROJECT_ROLE,
+			A.ESNTL_ID
+		FROM
+			TB_MEMBER A
+			LEFT OUTER JOIN TB_PROJECT_USER B ON B.ESNTL_ID = A.ESNTL_ID
+		WHERE
+			B.PROJECT_ID = #{projectId}
+			AND B.PROJECT_ROLE = 'U'
+			AND B.DELETE_AT = 'N'
+		ORDER BY NAME
+	</select>
+	
+	<select id="getTotalProjectMember" resultType="int">
+		/* ProjectMapper.getTotalProjectMember */
+		
+		SELECT
+			COUNT(*)
+		FROM
+			TB_PROJECT_USER 
+		WHERE
+			PROJECT_ID = #{projectId}	
+	</select>
+	
+	<update id="updateProjectRole">
+		/* ProjectMapper.updateProjectRole */
+		
+		UPDATE
+			TB_PROJECT_USER
+		SET
+			PROJECT_ROLE = #{role},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId}
+		WHERE
+			PROJECT_ID = #{projectId}
+			AND ESNTL_ID = #{esntlId}
+	</update>
+	
+	<update id="updateProjectManager">
+		/* ProjectMapper.updateProjectRoleManger */
+		
+		UPDATE
+			TB_PROJECT
+		SET
+			PROJECT_MANAGER = #{esntlId},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId}
+		WHERE
+			PROJECT_ID = #{projectId}
+	</update>
+	
+	<update id="updateProjectManagerToUser">
+		/* ProjectMapper.updateProjectManagerToUser */
+		
+		UPDATE
+			TB_PROJECT_USER
+		SET
+			PROJECT_ROLE = 'U'
+		WHERE
+			PROJECT_ID = #{projectId}
+			AND PROJECT_ROLE = 'M'
+	</update>
+
+</mapper>
