@@ -22,17 +22,19 @@
 					FRST_REGISTER_ID,
 					LAST_UPDT_PNTTM,
 					LAST_UPDUSR_ID,
-					DELETE_AT
+					DELETE_AT,
+					PROJECT_ID
 				)
 			VALUES
 				(
 					SEQ_TB_CATEGORY.NEXTVAL,
 					#{title},
 					SYSDATE,
-					#{email},
+					#{loginEsntlId},
 					SYSDATE,
-					#{email},
-					'N'
+					#{loginEsntlId},
+					'N',
+					#{projectId}
 				)
 		<selectKey resultType="_int" keyProperty="no" order="AFTER">
 			SELECT
@@ -48,7 +50,7 @@
 		INSERT INTO
 			TB_CATEGORY_USER
 				(
-					EMAIL,
+					ESNTL_ID,
 					CATEGORY_NO,
 					FRST_REGIST_PNTTM,
 					FRST_REGISTER_ID,
@@ -58,40 +60,16 @@
 				)
 			VALUES
 				(
-					#{userEmail},
+					#{esntlId},
 					#{categoryNo},
 					SYSDATE,
-					#{email},
+					#{loginEsntlId},
 					SYSDATE,
-					#{email},
+					#{loginEsntlId},
 					'N'
 				)
 	</insert>
-	
-	<select id="getMemberList" resultType="memberVO">
-		/* CategoryBoardMapper.getMemberList */
-		
-		SELECT
-		 	A.NAME,
-		 	A.EMAIL,
-		 	B.DETAIL_CODE_NAME AS DEPARTMENT_NAME,
-		 	(
-		 		SELECT
-		 			DETAIL_CODE_NAME
-		 		FROM
-		 			TB_COMMON_CODE_DETAIL C
-		 		WHERE
-		 			C.DETAIL_CODE = A.POSITION
-		 	)  AS POSITION_NAME
-		FROM
-			TB_MEMBER A
-			LEFT OUTER JOIN TB_COMMON_CODE_DETAIL B ON B.DETAIL_CODE = A.DEPARTMENT
-		WHERE
-			A.QUIT_AT = 'N'
-			AND A.EMAIL != #{email}
-		ORDER BY A.NAME
-	</select>
-	
+
 	<select id="getCategoryList" resultMap="categoryMap">
 		/* CategoryBoardMapper.getCategoryList */
 		
@@ -102,7 +80,7 @@
 			TB_CATEGORY A
 			LEFT OUTER JOIN TB_CATEGORY_USER B ON B.CATEGORY_NO = A.CATEGORY_NO
 		WHERE 
-			B.EMAIL = #{email}	
+			B.ESNTL_ID = #{esntlId}	
 			AND A.DELETE_AT = 'N'
 	</select>
 	

@@ -1,6 +1,10 @@
 package com.vtex.tree.project.vo;
 
 import java.sql.Date;
+import java.util.List;
+
+import com.vtex.tree.category.board.vo.CategoryBoardVO;
+import com.vtex.tree.chat.vo.ChatRoomVO;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -25,5 +29,6 @@ public class ProjectVO {
 	private String endDate;
 	private String note;
 	private String projectManagerNm;
-
+	private List<CategoryBoardVO> categoryBoardList;
+	private List<ChatRoomVO> chatRoomList;
 }

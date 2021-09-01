@@ -32,10 +32,10 @@
 	        <div style=" width: 85%; height: 60px; display: flex; justify-content: space-between; margin: 0 auto" >
 	        	<ul id="btn-ul">
 	        		<li>
-				        <button type="button" class="btn btn-outline-primary" style="width: 150px; height: 40px;" data-toggle="modal" data-target="#addMember" onclick="getMemberList();">회원추가</button>	        
+				        <button type="button" class="btn btn-outline-primary" style="width: 150px; height: 40px;" data-toggle="modal" onclick="getMemberList();">회원추가</button>	        
 	        		</li>
 	        		<li>
-			        	<button type="button" class="btn btn-outline-info" style="width: 150px; height: 40px;" data-toggle="modal" data-target="#addMember" onclick="getMemberList();">메모</button>	        		
+			        	<button type="button" class="btn btn-outline-info" style="width: 150px; height: 40px;" data-toggle="modal" onclick="getMemberList();">메모</button>	        		
 	        		</li>
 	        	</ul>
 	        
@@ -66,7 +66,7 @@
 					</tr>					
 				</tbody>
 	          </table>
-			<nav aria-label="Page navigation example" th:utext="${pageBar}"></nav> 
+			<nav aria-label="Page navigation" th:utext="${pageBar}"></nav> 
         </div>
 </section>
 </body>
@@ -91,18 +91,13 @@
 
 			<div class="modal-body member-modal-body">
 				<div class="mb-3" style="display: flex; justify-content: flex-end;">
-					<select class="custom-select" id="inputGroupSelect02"
-						style="width: 35%;">
-						<option selected>부서</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
-					</select> <select class="custom-select" id="inputGroupSelect02"
-						style="width: 35%">
-						<option selected>직급</option>
-						<option value="1">One</option>
-						<option value="2">Two</option>
-						<option value="3">Three</option>
+					<select class="custom-select" id="departmentSelect" style="width: 35%;" onchange="changeSelect();">
+						<option value="">부서</option>
+						<option th:each="department: ${departmentList}" th:value="${department.detailCode}" th:utext="${department.detailCodeName}"></option>
+					</select> 
+					<select class="custom-select" id="positionSelect" style="width: 35%" onchange="changeSelect();">
+						<option value="">직급</option>
+						<option  th:each="position: ${positionList}" th:value="${position.detailCode}" th:utext="${position.detailCodeName}"></option>
 					</select>
 				</div>
 				<div class="list-group"></div>
@@ -156,6 +151,35 @@
 			<div class="modal-footer" style="display: block;">
 				<button type="button" class="btn btn-primary" id="addMemberBtn"
 					onclick="updateRole();">변경</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!-- 프로젝트 메모 modal -->
+<div class="modal fade" id="updateNote" data-backdrop="static"
+	data-keyboard="false" tabindex="-1"
+	aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg">
+		<div class="modal-content">
+			<input type="hidden" class="form-control" id="insertEmail" readonly>
+			<div class="modal-header">
+				<h5 class="modal-title" id="add-modal-label">메모</h5>
+
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close" onclick="reset();">
+					<span aria-hidden="true">&times;</span>
+				</button>
+
+			</div>
+
+			<div class="modal-body member-modal-body">
+				<textarea rows="10" cols="92" id="note" th:text="${project.note}"></textarea>
+			</div>
+
+			<div class="modal-footer" style="display: block;">
+				<button type="button" class="btn btn-primary" id="addMemberBtn"
+					onclick="addNote();">작성</button>
 			</div>
 		</div>
 	</div>

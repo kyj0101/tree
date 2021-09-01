@@ -56,7 +56,6 @@
 					FRST_REGISTER_ID,
 					LAST_UPDT_PNTTM,
 					LAST_UPDUSR_ID,
-					DELETE_AT,
 					PROJECT_ROLE
 				)
 			VALUES
@@ -67,7 +66,6 @@
 					#{loginEsntlId},
 					SYSDATE,
 					#{loginEsntlId},
-					'N',
 					#{projectRole}
 				)
 	
@@ -161,15 +159,22 @@
 		WHERE
 			EMAIL_VERIFY_PNTTM IS NOT NULL
 			AND A.QUIT_AT = 'N'
-			AND A.ESNTL_ID NOT IN(
+			AND A.ESNTL_ID NOT IN (
 										
-									SELECT
-										ESNTL_ID
-									FROM 
-										TB_PROJECT_USER
-									WHERE
-										PROJECT_ID = #{projectId}
-									)
+										SELECT
+											ESNTL_ID
+										FROM 
+											TB_PROJECT_USER
+										WHERE
+											PROJECT_ID = #{projectId}
+										)
+			<if test="department != null and department != ''">
+				AND A.DEPARTMENT = #{department}
+			</if>
+			<if test="position != null and position != ''">
+				AND A.POSITION = #{position}
+			</if>
+			
 		ORDER BY
 			A.NAME									
 	</select>
@@ -205,41 +210,9 @@
 			LEFT OUTER JOIN TB_PROJECT_USER B ON B.ESNTL_ID = A.ESNTL_ID
 		WHERE
 			B.PROJECT_ID = #{projectId}
-			AND B.PROJECT_ROLE = 'M'	
-			AND B.DELETE_AT = 'N'
-		UNION ALL		
-		
-		SELECT
-			A.EMAIL,
-			A.NAME,
-			(
-				SELECT
-						DETAIL_CODE_NAME
-				FROM
-						TB_COMMON_CODE_DETAIL
-				WHERE
-						DETAIL_CODE = A.POSITION
-							
-			) AS POSITION_NAME,
-			(
-				SELECT
-					DETAIL_CODE_NAME
-				FROM
-					TB_COMMON_CODE_DETAIL
-				WHERE
-					DETAIL_CODE = A.DEPARTMENT
-							
-			) AS DEPARTMENT_NAME,
-			B.PROJECT_ROLE,
-			A.ESNTL_ID
-		FROM
-			TB_MEMBER A
-			LEFT OUTER JOIN TB_PROJECT_USER B ON B.ESNTL_ID = A.ESNTL_ID
-		WHERE
-			B.PROJECT_ID = #{projectId}
-			AND B.PROJECT_ROLE = 'U'
-			AND B.DELETE_AT = 'N'
-		ORDER BY NAME
+		ORDER BY 
+			PROJECT_ROLE, 
+			NAME
 	</select>
 	
 	<select id="getTotalProjectMember" resultType="int">
@@ -251,6 +224,32 @@
 			TB_PROJECT_USER 
 		WHERE
 			PROJECT_ID = #{projectId}	
+	</select>
+	
+	<select id="getMembersProject" resultType="projectVO">
+		/* ProjectMapper.getMembersProject */
+		
+		SELECT
+			A.PROJECT_ID,
+			A.PROJECT_NM,
+			A.PROJECT_MANAGER
+		FROM
+			TB_PROJECT A
+			LEFT OUTER JOIN TB_PROJECT_USER B ON B.PROJECT_ID = A.PROJECT_ID
+		WHERE
+			B.ESNTL_ID = #{esntlId}
+		ORDER BY
+			A.PROJECT_NM
+	</select>
+	
+	<select id="getProjectBoardList" resultType="categoryBoardVO">
+		/* ProjectMapper.getProjectBoardList */
+		
+<!-- 		SELECT
+		FROM
+			TB_PROJECT A
+			LEFT OUTER JO	 -->	
+
 	</select>
 	
 	<update id="updateProjectRole">
@@ -286,10 +285,46 @@
 		UPDATE
 			TB_PROJECT_USER
 		SET
-			PROJECT_ROLE = 'U'
+			PROJECT_ROLE = 'U',
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId}
 		WHERE
 			PROJECT_ID = #{projectId}
 			AND PROJECT_ROLE = 'M'
 	</update>
+	
+	<update id="insertProjectNote">
+		/* ProjectMapper.insertProjectMemo */
+		
+		UPDATE
+			TB_PROJECT
+		SET
+			NOTE = #{note},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId}		
+		WHERE
+			PROJECT_ID = #{projectId}
+	</update>
+	
+	<update id="deleteProject">
+		/* ProjectMapper.deleteProject */
+		
+		UPDATE
+			TB_PROJECT
+		SET
+			USE_AT = 'N'
+		WHERE
+			PROJECT_ID = #{projectId}
+	</update>
+	
+	<delete id="deleteProjectMember">
+		/* ProjectMapper.deleteProjectMember */
+		
+		DELETE FROM
+			TB_PROJECT_USER
+		WHERE
+			PROJECT_ID = #{projectId}
+			AND ESNTL_ID = #{esntlId}
+	</delete>
 
 </mapper>

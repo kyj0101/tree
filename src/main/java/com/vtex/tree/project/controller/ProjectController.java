@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vtex.tree.common.util.AttendanceUtil;
+import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
@@ -33,6 +34,9 @@ public class ProjectController {
 	
 	@Autowired
 	private ProjectService projectService;
+	
+	@Autowired
+	private CommonCodeService commonCodeService;
 	
 	@RequestMapping("/list")
 	public String projectList(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model) throws Exception {
@@ -113,22 +117,34 @@ public class ProjectController {
 		int totalContents = projectService.getTotalProjectMember(projectId);
 		String url = request.getRequestURI() + "?projectId=" + projectId;
 		String pageBar = getPageBar(totalContents, cPage, MEMBER_NUMPERPAGE, url);
-		
 		model.addAttribute("pageBar", pageBar);
 		
 		List<MemberVO> memberList = projectService.getProjectMemberList(projectId, rowBounds);
 		model.addAttribute("memberList", memberList);
-	
+		
+		Map<String, String> codeParam = new HashMap<>();
+		codeParam.put("searchCode", "COM001");
+		List<Map<String, String>> departmentList = commonCodeService.selectCmmnCodeList(codeParam);
+		model.addAttribute("departmentList",departmentList);
+		
+		codeParam.put("searchCode", "COM002");
+		List<Map<String, String>> positionList = commonCodeService.selectCmmnCodeList(codeParam);
+		model.addAttribute("positionList", positionList);
+		
 		return "manager/projectSetting";
 	}
 	
 	@ResponseBody
 	@RequestMapping("/memberList")
-	public List<MemberVO> getMemberList(String projectId) throws Exception{
+	public List<MemberVO> getMemberList(String projectId, 
+										@RequestParam(required = false) String department,
+										@RequestParam(required = false) String position) throws Exception{
 		
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("projectId", projectId);
+		param.put("department", department);
+		param.put("position", position);
 		
 		List<MemberVO> memberList = projectService.getMemberList(param); 
 		
@@ -156,6 +172,21 @@ public class ProjectController {
 		}
 
 		return resultCnt == esntlIdList.size() ? "ok" : "fail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/insert/note")
+	public String insertProjectNote(String projectId, String note, @AuthenticationPrincipal MemberVO member) throws Exception {
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("projectId", projectId);
+		param.put("note", note);
+		param.put("loginEsntlId", member.getEsntlId());
+		
+		int resultCnt = projectService.insertProjectNote(param);
+		
+		return resultCnt > 0 ? "ok" : "fail";
 	}
 	
 	@ResponseBody
@@ -195,5 +226,29 @@ public class ProjectController {
 		resultCnt += projectService.updateProjectRole(param);
 		
 		return resultCnt > 1 ? "ok" : "fail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/delete/member")
+	public String deleteProjectMember(String projectId, String esntlId, @AuthenticationPrincipal MemberVO member) throws Exception {
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("projectId", projectId);
+		param.put("esntlId", esntlId);
+		param.put("loginEsntlId", member.getEsntlId());
+		
+		int resultCnt = projectService.deleteProjectMember(param);
+		
+		return resultCnt > 0 ? "ok" : "fail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/delete/project")
+	public String deleteProject(String projectId, @AuthenticationPrincipal MemberVO member) throws Exception {
+		
+		int resultCnt = projectService.deleteProject(projectId);
+		
+		return resultCnt > 0 ? "ok" : "fail";
 	}
 }

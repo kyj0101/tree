@@ -1,35 +1,14 @@
 function getMemberList(){
+	
 	$.ajax({
 
 		type: "post",
 		url: "/project/memberList",
 		data:{"projectId":projectId},
 		success(result) {
-			
-			$(".list-group").empty();
-			
-			result.forEach(function(member){
-				
-				var html = '<a href="#" class="list-group-item list-group-item-action" onclick="memberClick(this);"';
-				html += 'data-esntlId="';
-				html += member.name + ","+member.esntlId + "," + member.email + "," + member.departmentName + "," + member.positionName;
-				html += '"';
-				html += '>';
-				html += member.name;
-				html += '('
-				html += member.email;
-				html += ')';
-				html += '<span class="badge badge-pill badge-primary">'
-				html += member.departmentName;
-				html += '</span>'
-				html += '<span class="badge badge-pill badge-info">'
-				html += member.positionName;
-				html += '</span>'				
-				html += '</a>'
-				
-				$(".list-group").append(html);
-			});
+			insertListGroup(result);
 		},
+		
 	});
 }
 
@@ -42,7 +21,7 @@ function memberClick(e){
 	html += '<i class="fas fa-times" onclick="nameCloseClick(this);"></i>';
 	html += '</p>' 
 
-	$(e).css("display","none");
+	$(e).remove();
 	$(".card-body").append(html);
 }
 
@@ -128,7 +107,7 @@ function updateRole(){
 	var selectVar = $(".updateSelect option:selected").val();
 	var role = $("#roleInput").val();
 	var esntlId = $("#esntlInput").val();
-	console.log(esntlId);
+
 	if(selectVar === 'selectM'){
 
 		if(role === "매니저"){
@@ -148,6 +127,8 @@ function updateRole(){
 		}else{
 			updateRoleUser(esntlId);			
 		}
+	}else{
+		confirm("프로젝트에서 탈퇴시키겠습니까?") && deleteMember(esntlId);
 	}
 }
 
@@ -187,6 +168,106 @@ function updateRoleUser(esntlId){
 			result == "fail" && alert("수정을 실패했습니다");
 
 			location.replace("/project/setting/view?projectId=" + projectId);
+		},
+	});
+}
+
+function deleteMember(esntlId){
+	
+	$.ajax({
+
+		type: "post",
+		url: "/project/delete/member",
+		data: {
+			"projectId": projectId,
+			"esntlId": esntlId
+		},
+		success(result) {
+			result == "ok" && alert("탈퇴되었습니다.");
+			result == "fail" && alert("탈퇴를 실패했습니다");
+
+			location.replace("/project/setting/view?projectId=" + projectId);
+		},
+	});
+}
+
+function changeSelect(){
+	
+	var department = $("#departmentSelect option:selected").val()
+	var position = $("#positionSelect option:selected").val();
+	
+	$.ajax({
+
+		type: "post",
+		url: "/project/memberList",
+		data: {
+			"projectId":projectId,
+			"department": department,
+			"position" : position 
+			},
+		success(result) {
+			insertListGroup(result)
+		},
+	});
+}
+
+function insertListGroup(result){
+	console.log(result.length);
+	
+	$(".list-group").empty();
+	
+	if(result.length == 0){
+		$("#addMemberBtn").css("display","none");
+		$(".list-group").append('<p class="center">'+noMsg+'</p>');
+		
+	}else{
+		$("#addMemberBtn").css("display","inline-block");
+	}
+
+	result.forEach(function(member) {
+
+		var html = '<a href="#" class="list-group-item list-group-item-action" onclick="memberClick(this);"';
+		html += 'data-esntlId="';
+		html += member.name + "," + member.esntlId + "," + member.email + "," + member.departmentName + "," + member.positionName;
+		html += '"';
+		html += '>';
+		html += member.name;
+		html += '('
+		html += member.email;
+		html += ')';
+		html += '<span class="badge badge-pill badge-primary">'
+		html += member.departmentName;
+		html += '</span>'
+		html += '<span class="badge badge-pill badge-info">'
+		html += member.positionName;
+		html += '</span>'
+		html += '</a>'
+
+		$(".list-group").append(html);
+	});
+	
+	return new Promise(function(resolve, reject) {
+		$('#addMember').modal('show');
+	});
+}
+
+function addNote(){
+	
+	var note = $("#note").val();
+	
+	$.ajax({
+
+		type: "post",
+		url: "/project/insert/note",
+		data:{
+			"projectId":projectId,
+			"note":note
+			},
+		success(result) {
+			result == "ok" && alert("작성되었습니다.");
+			result == "fail" && alert("작성을 실패했습니다.");
+
+			location.replace("/project/setting/view?projectId=" + projectId);			
 		},
 	});
 }

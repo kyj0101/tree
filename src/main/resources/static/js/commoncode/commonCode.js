@@ -2,7 +2,6 @@ var cPage = 1; //페이지바 현재 페이지
 var pageCode = ""; //페이지바 이동시 코드 저장할 변수
 var total = 0;
 var commonCodeClickNum = 0; //연속으로 공통코드 테이블 누르면 pageCode 공백대입
-var noMsg = 'No Data.';
 
 $(function() {
 	

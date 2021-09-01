@@ -7,6 +7,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.vtex.tree.category.board.vo.CategoryBoardVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.mapper.ProjectMapper;
 import com.vtex.tree.project.service.ProjectService;
@@ -49,6 +50,11 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
+	public int insertProjectNote(Map<String, Object> param) throws Exception {
+		return projectMapper.insertProjectNote(param);
+	}
+	
+	@Override
 	public List<MemberVO> getProjectMemberList(String projectId, RowBounds rowBounds) throws Exception {
 		return projectMapper.getProjectMemberList(projectId, rowBounds);
 	}
@@ -72,4 +78,25 @@ public class ProjectServiceImpl implements ProjectService {
 	public int updateProjectManangerToUser(Map<String, Object> param) throws Exception {
 		return projectMapper.updateProjectManagerToUser(param);
 	}
+	
+	@Override
+	public int deleteProjectMember(Map<String, Object> param) throws Exception {
+		return projectMapper.deleteProjectMember(param);
+	}
+	
+	@Override
+	public int deleteProject(String projectId) throws Exception {
+		return projectMapper.deleteProject(projectId);
+	}
+	
+	@Override
+	public List<ProjectVO> getMembersProject(String esntlId) throws Exception {
+		return projectMapper.getMembersProject(esntlId);
+	}
+	
+	@Override
+	public List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param) throws Exception {
+		return projectMapper.getProjectBoardList(param);
+	}
+
 }

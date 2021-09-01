@@ -36,31 +36,7 @@ public class CategoryChatController {
 	@Autowired
 	private CategoryBoardService categoryBoardService;
 	
-	@RequestMapping("/memberlist")
-	public void getmemberList(HttpServletResponse response, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-		
-		response.setContentType("text/html;charset=UTF-8");
-		
-		List<MemberVO> memberList = categoryBoardService.getMemberList(member.getEmail());
-		List<MemberVO> loginMemberList = new ArrayList<>();
-		
-		for(MemberVO m : memberList) {
-			
-			for(MemberVO loginMember : SocketHandler.loginMemberList) {
-				
-				if(m.getEmail().equals(loginMember.getEmail())){				
-					m.setLoginAt("Y");
-				}				
-			}
-			
-			loginMemberList.add(m);
-		}
-		
-		new Gson().toJson(loginMemberList, response.getWriter());
-	}
+
 	
 	@RequestMapping("/insert")
 	public String insertCategoryChat(@RequestParam(value="emailList[]") List<String> emailList, 

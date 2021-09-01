@@ -1,5 +1,6 @@
 var ip = "192.168.1.206";
 var port = "9090";
+var noMsg = 'No Data.';
 
 function nullCheck(obj){
 	console.log(obj);

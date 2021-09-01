@@ -38,11 +38,14 @@ import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
 import com.vtex.tree.category.board.service.CategoryBoardService;
+import com.vtex.tree.category.board.vo.CategoryBoardVO;
 import com.vtex.tree.category.chat.service.CategoryChatService;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.project.service.ProjectService;
+import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.socket.handler.SocketHandler;
 @RequestMapping("/board")
 @Controller
@@ -62,6 +65,9 @@ public class BoardController {
 	
 	@Autowired
 	private CategoryChatService categoryChatService;
+
+	@Autowired
+	private ProjectService projectService;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
@@ -108,6 +114,14 @@ public class BoardController {
 		//카테고리 리스트
 		HttpSession session = request.getSession();
 		session.setAttribute("loginMember", member);
+		
+		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
+		model.addAttribute("projectList", projectList);
+	
+		for(ProjectVO project : projectList) {
+			List<CategoryBoardVO> categoryBoardList = projectService.getProjectBoardList();
+			
+		}
 		
 		//1. 게시판
 		List<Map<String, Object>> categoryBoardMapList = categoryBoardService.getCategoryList(member.getEmail());

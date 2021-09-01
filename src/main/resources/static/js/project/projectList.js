@@ -83,3 +83,30 @@ function addProject(){
 		});		
 	}	
 }
+
+function deleteProject(e){
+	
+	var projectId = $($(e).parent().next().children()).text();
+	
+	if(confirm("삭제하시겠습니까?")){
+		
+		$.ajax({
+			type: "POST",
+			url: "/project/delete/project",
+			data: {
+				"projectId": projectId
+			},
+			success(result) {
+
+				if (result == "ok") {
+					
+					alert("삭제되었습니다.");
+					location.replace("/project/list");
+					
+				} else {
+					alert("삭제를 실패했습니다.");
+				}
+			}
+		});		
+	}
+}

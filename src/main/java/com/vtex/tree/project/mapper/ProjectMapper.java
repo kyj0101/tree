@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.vtex.tree.category.board.vo.CategoryBoardVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.vo.ProjectVO;
 
@@ -33,5 +34,15 @@ public interface ProjectMapper {
 	int updateProjectManager(Map<String, Object> param) throws Exception;
 
 	int updateProjectManagerToUser(Map<String, Object> param) throws Exception;
+
+	int deleteProjectMember(Map<String, Object> param) throws Exception;
+
+	int insertProjectNote(Map<String, Object> param) throws  Exception;
+
+	int deleteProject(String projectId) throws Exception;
+
+	List<ProjectVO> getMembersProject(String esntlId) throws Exception;
+
+	List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param);
 
 }

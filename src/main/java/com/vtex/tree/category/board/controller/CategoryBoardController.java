@@ -30,18 +30,6 @@ public class CategoryBoardController {
 	@Autowired
 	private CategoryBoardService categoryBoardService;
 	
-	//카테고리에 선택할 직원목록 
-	@RequestMapping("/memberlist")
-	public void getMemberList(HttpServletRequest request,HttpServletResponse response) throws Exception{
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");		
-		List<MemberVO> memberList = categoryBoardService.getMemberList(member.getEmail());
-		
-		response.setContentType("text/html;charset=UTF-8");
-		new Gson().toJson(memberList, response.getWriter());
-	}
-	
 	/**
 	 * 카테고리 insert
 	 * @param emailList
@@ -50,14 +38,15 @@ public class CategoryBoardController {
 	 * @return
 	 */
 	@RequestMapping("/insert")
-	public String insertCategoryBoard(@RequestParam(value="emailList[]") List<String> emailList, 
+	public String insertCategoryBoard(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
 										String title,
+										String projectId,
 										HttpServletRequest request) {
 		
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
-		emailList.add(member.getEmail());
+		esntlIdList.add(member.getEsntlId());
 
 		int resultCnt = 0;
 		int categoryNo = 0;
@@ -65,14 +54,16 @@ public class CategoryBoardController {
 		Map<String,Object> param = new HashMap<>();
 		
 		param.put("title", title);
-		param.put("email", member.getEmail());
+		param.put("loginEsntlId", member.getEsntlId());
 		
 		resultCnt = categoryBoardService.insertCategoryBoard(param);
 		categoryNo = Integer.parseInt(param.get("no") + "");
 
 		param.put("categoryNo", categoryNo);
-		for(String email : emailList) {
-			param.put("userEmail", email);
+		
+		for(String esntlId : esntlIdList) {
+			
+			param.put("esntlId", esntlId);
 			resultCnt = categoryBoardService.insertCategoryBoardUser(param);
 		}
 		

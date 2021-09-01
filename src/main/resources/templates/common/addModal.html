@@ -16,6 +16,7 @@
         <div class="input-group">
           <input type="input" class="form-control bg-light border-0 small title-input" list="datalistOptions" 
             placeholder="제목을 입력하세요." aria-label="Search" aria-describedby="basic-addon2">
+          <input type="hidden" id="projectId">
         </div>
 
         <hr />
@@ -27,8 +28,7 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 650px;">생성</button>
-          <button type="button" class="btn btn-primary add-chat-btn" style="margin-left: 650px;" onclick="addChatRoom();">생성</button>
+          <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 650px;" onclick="addCategoryBoard();">생성</button>
         </div>
 
       </div>

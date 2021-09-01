@@ -78,7 +78,7 @@
 			TB_CHAT_ROOM A
 			LEFT OUTER JOIN TB_CHAT_USER B ON B.CHAT_ROOM_NUMBER = A.CHAT_ROOM_NUMBER
 		WHERE
-			B.EMAIL = #{email}
+			B.ESNTL_ID = #{esntlId}	
 			AND A.DELETE_AT = 'N'
 			AND B.DELETE_AT = 'N'
 	</select>

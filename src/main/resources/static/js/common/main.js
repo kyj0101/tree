@@ -1,12 +1,6 @@
 
 $(function(){
 
-
-    $(".add-chat-btn").on('click', function(){
-        const title = $(".title-input").val(); 
-        $(".chat-list-ul").append("<li><a href='#'>"+ title + "</a></li>")
-    });
-
     $(".fa-bars").click(function(){
         $("#manager-menu").toggleClass("manager-menu");
         $("#manager-menu").toggleClass("manager-menu-hidden");

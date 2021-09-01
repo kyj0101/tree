@@ -45,48 +45,7 @@ $(function(){
 	//게시판 생성 이벤트
 	$(".add-board-btn").click(function(){
 		
-		var checkedArr = $(".categoryAddMemberCheck:checked");
-		var emailList = [];
-		var title = $(".title-input").val();
-		console.log(title);
-		console.log($(".title-input"));
 		
-		//체크박스에 있는 email value를 array에 넣음
-		$.each(checkedArr, function(index, elem){
-			emailList.push($(elem).val());
-		});
-		
-		if(title.length <= 0){
-			alert("제목을 입력하세요.");
-
-			
-		}else if(emailList.length <= 0){
-			alert("회원을 선택하세요.");
-	
-		}else{
-			$.ajax({
-				type: "POST",
-				url: "/category/board/insert",
-				data: {
-					"title":title,
-					"emailList": emailList
-				},
-				success(result) {
-					console.log(result);
-					if(result == "ok"){
-						alert("게시판이 생성되었습니다.");
-						$('#addModal').modal('hide');
-						location.replace("/board/list");
-					}else{
-						alert("게시판 생성을 실패했습니다.");
-					}
-				},
-				
-				error(xhr, status, err) {
-					console.log(xhr, status, err);
-				}
-			});			
-		}
 	});
 	
 	//카테고리 삭제
@@ -120,3 +79,49 @@ $(function(){
 		}
 	});
 });
+
+
+
+function addCategoryBoard(){
+	
+	var checkedArr = $(".categoryAddMemberCheck:checked");
+	var esntlIdList = [];
+	var title = $(".title-input").val();
+	var projectId = $("#projectId").val();
+		
+	//체크박스에 있는 email value를 array에 넣음
+	$.each(checkedArr, function(index, elem){
+		esntlIdList.push($(elem).val());
+	});
+
+	if(title.length <= 0){
+		alert("제목을 입력하세요.");
+
+			
+	}else if(esntlIdList.length <= 0){
+		alert("회원을 선택하세요.");
+	
+	}else{
+		$.ajax({
+			type: "POST",
+			url: "/category/board/insert",
+			data: {
+				"title" : title,
+				"esntlIdList" : esntlIdList,
+				"projectId" : projectId
+			},
+			success(result) {
+
+				if(result == "ok"){
+						
+					alert("게시판이 생성되었습니다.");
+					$('#addModal').modal('hide');
+					location.replace("/board/list");
+						
+				}else{
+					alert("게시판 생성을 실패했습니다.");
+				}
+			}
+		});			
+	}
+}

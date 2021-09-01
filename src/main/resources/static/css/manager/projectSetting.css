@@ -4,7 +4,6 @@ ul{
 }
 table{
 	width: 1400px !important;
-	height: 200px;
 	text-align: left;
 	margin: 0 auto;
 }
@@ -53,8 +52,17 @@ tr{
 #btn-ul{
 	display: flex;
 	justify-content: flex-start;
+	padding: 0;
 }
 
 #btn-ul li{
 	margin-right: 10px;
+}
+
+nav{
+	margin-top: 50px;
+}
+
+.center{
+	text-align: center;
 }
