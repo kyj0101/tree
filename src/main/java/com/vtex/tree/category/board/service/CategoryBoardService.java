@@ -17,4 +17,6 @@ public interface CategoryBoardService {
 	Map<String, Object> getCategory(int category);
 
 	int deleteCategoryBoard(Map<String, Object> param) throws Exception;
+
+	int outBoard(Map<String, Object> param) throws Exception;
 }

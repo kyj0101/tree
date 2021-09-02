@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.vtex.tree.category.board.vo.CategoryBoardVO;
+import com.vtex.tree.category.chat.vo.ChatRoomVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.vo.ProjectVO;
 
@@ -19,13 +20,13 @@ public interface ProjectMapper {
 
 	int getTotalProject() throws Exception;
 
-	ProjectVO selectOneProject(String projectId) throws Exception;
+	ProjectVO selectOneProject(Map<String, Object> param) throws Exception;
 
 	List<MemberVO> getMemberList(Map<String, Object> param) throws Exception;
 
 	int insertProjectMember(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getProjectMemberList(String projectId, RowBounds rowBounds) throws Exception;
+	List<MemberVO> getProjectMemberList(Map<String, Object> param, RowBounds rowBounds) throws Exception;
 
 	int getTotalProjectMember(String projectId) throws Exception;
 
@@ -43,6 +44,9 @@ public interface ProjectMapper {
 
 	List<ProjectVO> getMembersProject(String esntlId) throws Exception;
 
-	List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param);
+	List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param) throws Exception;
 
+	List<ChatRoomVO> getProjectChatRoomList(Map<String, Object> param) throws Exception;
+
+	int updateProject(Map<String, Object> param) throws Exception;
 }

@@ -23,9 +23,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.board.service.CategoryBoardService;
+import com.vtex.tree.category.board.vo.CategoryBoardVO;
 import com.vtex.tree.category.chat.service.CategoryChatService;
+import com.vtex.tree.category.chat.vo.ChatRoomVO;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.project.service.ProjectService;
+import com.vtex.tree.project.vo.ProjectVO;
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/chat")
@@ -44,6 +48,9 @@ public class ChatController {
 	@Autowired
 	private CategoryChatService categoryChatService;
 	
+	@Autowired
+	private ProjectService projectService;
+	
 	@Value("${empty.msg}")
 	private String emptyMsg;
 	
@@ -57,6 +64,24 @@ public class ChatController {
 		HttpSession session = request.getSession();
 		session.setAttribute("loginMember", member);
 		
+		Map<String, Object> param = new HashMap<>();
+		
+		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
+		model.addAttribute("projectList", projectList);
+	
+		for(ProjectVO project : projectList) {
+
+			param.put("projectId", project.getProjectId());
+			param.put("esntlId", member.getEsntlId());
+			
+			List<CategoryBoardVO> categoryBoardList = projectService.getProjectBoardList(param);
+			project.setCategoryBoardList(categoryBoardList);
+
+			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
+			project.setChatRoomList(chatRoomList);
+			
+		}
+		
 		//현재 카테고리
 		Map<String, Object> categoryMap = new HashMap<>();
 		String categoryName = categoryChatService.getChatRoomName(category);
@@ -65,16 +90,6 @@ public class ChatController {
 		categoryMap.put("category", category);
 		
 		model.addAttribute("categoryMap", categoryMap);
-		
-		//카테고리 리스트
-
-		//1. 게시판
-		List<Map<String, Object>> categoryBoardMapList = categoryBoardService.getCategoryList(member.getEmail());
-		model.addAttribute("categoryBoardMapList", categoryBoardMapList);
-		
-		//2. 채팅
-		List<Map<String, Object>> categoryChatMapList = categoryChatService.getChatRoomList(member.getEmail());
-		model.addAttribute("categoryChatMapList", categoryChatMapList);;
 		
 		//출퇴근 여부
 		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;

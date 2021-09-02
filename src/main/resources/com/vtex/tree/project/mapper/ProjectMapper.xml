@@ -210,6 +210,9 @@
 			LEFT OUTER JOIN TB_PROJECT_USER B ON B.ESNTL_ID = A.ESNTL_ID
 		WHERE
 			B.PROJECT_ID = #{projectId}
+			<if test="searchKeyword != null and searchKeyword != ''">
+				AND (A.NAME LIKE '%' || #{searchKeyword} || '%' OR A.EMAIL LIKE '%' || #{searchKeyword} || '%')
+			</if>
 		ORDER BY 
 			PROJECT_ROLE, 
 			NAME
@@ -238,6 +241,7 @@
 			LEFT OUTER JOIN TB_PROJECT_USER B ON B.PROJECT_ID = A.PROJECT_ID
 		WHERE
 			B.ESNTL_ID = #{esntlId}
+			AND A.USE_AT = 'Y'
 		ORDER BY
 			A.PROJECT_NM
 	</select>
@@ -245,11 +249,35 @@
 	<select id="getProjectBoardList" resultType="categoryBoardVO">
 		/* ProjectMapper.getProjectBoardList */
 		
-<!-- 		SELECT
+		SELECT
+			A.CATEGORY_NO,
+			A.CATEGORY_NAME,
+			A.PROJECT_ID
 		FROM
-			TB_PROJECT A
-			LEFT OUTER JO	 -->	
-
+			TB_CATEGORY A
+			LEFT OUTER JOIN TB_CATEGORY_USER B ON B.CATEGORY_NO = A.CATEGORY_NO 
+		WHERE
+			A.PROJECT_ID = #{projectId}
+			AND B.ESNTL_ID = #{esntlId}
+			AND A.DELETE_AT = 'N'
+			AND B.DELETE_AT = 'N'
+	</select>
+	
+	<select id="getProjectChatRoomList" resultType="chatRoomVO">
+		/* ProjectMapper.getProjectChatRoomList */
+		
+		SELECT
+			A.CHAT_ROOM_NUMBER,
+			A.CHAT_ROOM_TITLE,
+			A.PROJECT_ID
+		FROM
+			TB_CHAT_ROOM A
+			LEFT OUTER JOIN TB_CHAT_USER B ON B.CHAT_ROOM_NUMBER = A.CHAT_ROOM_NUMBER
+		WHERE
+			A.PROJECT_ID = #{projectId}
+			AND B.ESNTL_ID = #{esntlId}
+			AND A.DELETE_AT = 'N'
+			AND B.DELETE_AT = 'N'
 	</select>
 	
 	<update id="updateProjectRole">
@@ -312,7 +340,24 @@
 		UPDATE
 			TB_PROJECT
 		SET
-			USE_AT = 'N'
+			USE_AT = 'N',
+			LAST_UPDUSR_ID = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId}
+		WHERE
+			PROJECT_ID = #{projectId}
+	</update>
+	
+	<update id="updateProject">
+		/* ProjectMapper.updateProject */
+		
+		UPDATE
+			TB_PROJECT
+		SET
+			PROJECT_NM = #{projectNm},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId},
+			START_DATE = #{startDate},
+			END_DATE = #{endDate}
 		WHERE
 			PROJECT_ID = #{projectId}
 	</update>

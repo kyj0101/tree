@@ -4,7 +4,7 @@ import java.sql.Date;
 import java.util.List;
 
 import com.vtex.tree.category.board.vo.CategoryBoardVO;
-import com.vtex.tree.chat.vo.ChatRoomVO;
+import com.vtex.tree.category.chat.vo.ChatRoomVO;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

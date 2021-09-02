@@ -39,30 +39,34 @@ public class CategoryChatController {
 
 	
 	@RequestMapping("/insert")
-	public String insertCategoryChat(@RequestParam(value="emailList[]") List<String> emailList, 
+	public String insertCategoryChat(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
 									String title,
+									String projectId,
 									HttpServletRequest request) throws Exception {
 		
 		HttpSession session = request.getSession();
 		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-		
-		emailList.add(member.getEmail());
-		
+		String loginEsntlId = member.getEsntlId(); 
+				
 		int resultCnt = 0;
 		int categoryNo = 0;
 		
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("title", title);
-		param.put("email", member.getEmail());
+		param.put("projectId", projectId);
+		param.put("loginEsntlId", loginEsntlId);
 		
 		resultCnt = categoryChatService.insertCategoryChat(param);
 		categoryNo = Integer.parseInt(param.get("no") + "");
 		
 		param.put("categoryNo", categoryNo);
+
+		esntlIdList.add(loginEsntlId);
 		
-		for(String email : emailList) {
-			param.put("userEmail", email);
+		for(String esntlId : esntlIdList) {
+			
+			param.put("esntlId", esntlId);
 			resultCnt = categoryChatService.insertCategoryChatUser(param);
 		}
 		

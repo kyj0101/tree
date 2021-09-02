@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vtex.tree.category.board.vo.CategoryBoardVO;
+import com.vtex.tree.category.chat.vo.ChatRoomVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.mapper.ProjectMapper;
 import com.vtex.tree.project.service.ProjectService;
@@ -35,8 +36,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public ProjectVO selectOneProject(String id) throws Exception {
-		return projectMapper.selectOneProject(id);
+	public ProjectVO selectOneProject(Map<String, Object> param) throws Exception {
+		return projectMapper.selectOneProject(param);
 	}
 	
 	@Override
@@ -55,8 +56,8 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public List<MemberVO> getProjectMemberList(String projectId, RowBounds rowBounds) throws Exception {
-		return projectMapper.getProjectMemberList(projectId, rowBounds);
+	public List<MemberVO> getProjectMemberList(Map<String, Object> param, RowBounds rowBounds) throws Exception {
+		return projectMapper.getProjectMemberList(param, rowBounds);
 	}
 	
 	@Override
@@ -97,6 +98,16 @@ public class ProjectServiceImpl implements ProjectService {
 	@Override
 	public List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param) throws Exception {
 		return projectMapper.getProjectBoardList(param);
+	}
+	
+	@Override
+	public List<ChatRoomVO> getProjectChatRoomList(Map<String, Object> param) throws Exception {
+		return projectMapper.getProjectChatRoomList(param);
+	}
+	
+	@Override
+	public int updateProject(Map<String, Object> param) throws Exception {
+		return projectMapper.updateProject(param);
 	}
 
 }

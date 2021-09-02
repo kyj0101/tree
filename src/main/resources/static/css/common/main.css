@@ -37,6 +37,7 @@ header {
 
 .logo {
 	cursor: pointer;
+	height: 65px;
 }
 
 .header-container {
@@ -93,7 +94,6 @@ header {
 }
 
 .logo {
-	height: 50px;
 	text-align: center;
 	display: flex;
 }
@@ -378,4 +378,13 @@ nav ul {
 
 .hidden{
 	display: none;
+}
+
+.deleteMenu{
+	color: red;
+}
+
+
+.deleteMember{
+	text-align: right;
 }

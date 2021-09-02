@@ -40,6 +40,7 @@ import com.vtex.tree.board.vo.BoardVO;
 import com.vtex.tree.category.board.service.CategoryBoardService;
 import com.vtex.tree.category.board.vo.CategoryBoardVO;
 import com.vtex.tree.category.chat.service.CategoryChatService;
+import com.vtex.tree.category.chat.vo.ChatRoomVO;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.home.service.HomeService;
@@ -106,7 +107,6 @@ public class BoardController {
 		String url = request.getRequestURI();
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
 		
-		
 		List<BoardVO> boardList = boardService.getBoardList(category, rowBounds);
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pageBar", pageBar);
@@ -119,18 +119,18 @@ public class BoardController {
 		model.addAttribute("projectList", projectList);
 	
 		for(ProjectVO project : projectList) {
-			List<CategoryBoardVO> categoryBoardList = projectService.getProjectBoardList();
+
+			param.put("projectId", project.getProjectId());
+			param.put("esntlId", member.getEsntlId());
+			
+			List<CategoryBoardVO> categoryBoardList = projectService.getProjectBoardList(param);
+			project.setCategoryBoardList(categoryBoardList);
+
+			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
+			project.setChatRoomList(chatRoomList);
 			
 		}
-		
-		//1. 게시판
-		List<Map<String, Object>> categoryBoardMapList = categoryBoardService.getCategoryList(member.getEmail());
-		model.addAttribute("categoryBoardMapList", categoryBoardMapList);
-		
-		//2. 채팅
-		List<Map<String, Object>> categoryChatMapList = categoryChatService.getChatRoomList(member.getEmail());
-		model.addAttribute("categoryChatMapList", categoryChatMapList);
-		
+
 		//현재 카테고리 
 		Map<String, Object> categoryMap = categoryBoardService.getCategory(category);
 		
@@ -409,7 +409,15 @@ public class BoardController {
 		}else {
 			return "fail";
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping("/member/list")
+	public List<MemberVO> getBoardMemberList(String categoryNo) throws Exception{
 		
+		List<MemberVO> memberList = boardService.getBoardMemberList(categoryNo);
+		
+		return memberList;
 	}
 	
 

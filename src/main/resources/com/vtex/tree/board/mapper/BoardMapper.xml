@@ -304,6 +304,39 @@
 			AND FILE_SN = #{fileSn}
 	</select>
 	
+	<select id="getBoardMemberList" resultType="memberVO">
+		/* BoardMapper.getBoardMemberList */
+		
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			A.DEPARTMENT,
+					(
+						SELECT
+							DETAIL_CODE_NAME
+						FROM
+							TB_COMMON_CODE_DETAIL
+						WHERE
+							DETAIL_CODE = A.DEPARTMENT
+							
+					 ) AS DEPARTMENT_NAME,
+			A.POSITION,
+					(
+						SELECT
+							DETAIL_CODE_NAME
+						FROM
+							TB_COMMON_CODE_DETAIL
+						WHERE
+							DETAIL_CODE = A.POSITION
+							
+					 ) AS POSITION_NAME
+		FROM 
+			TB_MEMBER A
+			LEFT OUTER JOIN TB_CATEGORY_USER B ON  B.ESNTL_ID = A.ESNTL_ID
+		WHERE
+			B.CATEGORY_NO = #{categoryNo}
+	</select>
+	
 	<update id="addViewNum">
 		/* BoardMapper.addViewNum */
 		

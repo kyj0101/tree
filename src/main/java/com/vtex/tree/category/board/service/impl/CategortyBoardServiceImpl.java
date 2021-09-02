@@ -45,5 +45,10 @@ public class CategortyBoardServiceImpl implements CategoryBoardService{
 	public int deleteCategoryBoard(Map<String, Object> param) throws Exception{
 		return categoryBoardMapper.deleteCategoryBoard(param);
 	}
+	
+	@Override
+	public int outBoard(Map<String, Object> param) throws Exception {
+		return categoryBoardMapper.outBoard(param);
+	}
 
 }

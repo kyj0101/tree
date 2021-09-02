@@ -100,14 +100,25 @@ public class ProjectController {
 	@RequestMapping("/setting/view")
 	public String settingView(String projectId, 
 								Model model, 
-								@RequestParam(defaultValue = "1") int cPage, 
+								@RequestParam(defaultValue = "1") int cPage,
+								@RequestParam(required = false) String searchKeyword,
 								HttpServletRequest request) throws Exception {
 		
-		ProjectVO project = projectService.selectOneProject(projectId);
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("projectId", projectId);
+		param.put("searchKeyword", searchKeyword);
+		
+		ProjectVO project = projectService.selectOneProject(param);
+		
+		//프로젝트 날짜 포멧을 변경함 ex 00000000 -> 0000-00-00
+		SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+		project.setStartDate(AttendanceUtil.updateDayFormat(project.getStartDate(), dayFormat));
+		project.setEndDate(AttendanceUtil.updateDayFormat(project.getEndDate(), dayFormat));
 		model.addAttribute("project", project);
 		
-		Map<String, Object> param = new HashMap<>();
-
+		//페이징 처리
 		param.put("numPerPage", MEMBER_NUMPERPAGE);
 		param.put("cPage", cPage);
 		
@@ -119,9 +130,11 @@ public class ProjectController {
 		String pageBar = getPageBar(totalContents, cPage, MEMBER_NUMPERPAGE, url);
 		model.addAttribute("pageBar", pageBar);
 		
-		List<MemberVO> memberList = projectService.getProjectMemberList(projectId, rowBounds);
+		//프로젝트에 소속된 멤버리스트 
+		List<MemberVO> memberList = projectService.getProjectMemberList(param, rowBounds);
 		model.addAttribute("memberList", memberList);
 		
+		//직급, 부서 리스트 
 		Map<String, String> codeParam = new HashMap<>();
 		codeParam.put("searchCode", "COM001");
 		List<Map<String, String>> departmentList = commonCodeService.selectCmmnCodeList(codeParam);
@@ -226,6 +239,27 @@ public class ProjectController {
 		resultCnt += projectService.updateProjectRole(param);
 		
 		return resultCnt > 1 ? "ok" : "fail";
+	}
+	
+	@ResponseBody
+	@RequestMapping("/update/project")
+	public String updateProject(String projectId, 
+									String projectNm, 
+									String startDate, 
+									String endDate,
+									@AuthenticationPrincipal MemberVO member) throws Exception {
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("projectNm", projectNm);
+		param.put("projectId", projectId);
+		param.put("startDate", startDate.replaceAll("-", ""));
+		param.put("endDate", endDate.replaceAll("-", ""));
+		param.put("loginEsntlId", member.getEsntlId());
+		
+		int resultCnt = projectService.updateProject(param);
+		
+		return resultCnt > 0 ? "ok" : "fail";
 	}
 	
 	@ResponseBody

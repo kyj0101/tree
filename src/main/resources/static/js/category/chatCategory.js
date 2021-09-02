@@ -109,3 +109,52 @@ function chatLeave(e){
 		});
 	}
 }
+
+function showAddCategoryChatModal(e){
+	
+	$(".modal-title").text("채팅방 추가");
+	$(".add-board-btn").addClass("hidden");
+	$(".add-chat-btn").removeClass("hidden");
+	
+	var projectId = $($(e).parent().parent().parent()).attr("id").replace("id_","");
+	
+	$("#projectId").val(projectId);
+	showAddCategoryModal(projectId);
+}
+
+function addChatRoom(){
+		
+	var esntlIdList = getEsntlId();
+	var title = $(".title-input").val();
+	var projectId = $("#projectId").val();
+
+	if(title.length <= 0){
+		alert("제목을 입력하세요.");
+			
+	}else if(esntlIdList.length <= 0){
+		alert("회원을 선택하세요.");
+	
+	}else{
+		$.ajax({
+			type: "POST",
+			url: "/category/chat/insert",
+			data: {
+				"title" : title,
+				"esntlIdList" : esntlIdList,
+				"projectId" : projectId
+			},
+			success(result) {
+
+				if(result == "ok"){
+						
+					alert("채팅방이 생성되었습니다.");
+					$('#addModal').modal('hide');
+					location.replace("/board/list");
+						
+				}else{
+					alert("채팅방 생성을 실패했습니다.");
+				}
+			}
+		});			
+	}
+}

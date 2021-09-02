@@ -14,8 +14,12 @@
     <div class="content-container">
 
       <figure>
-        <figcaption>
-          <p class="category-p"  th:text="${categoryMap.categoryName}"></p>
+        <figcaption style="display: flex; justify-content: space-between; margin-top: 20px;">
+        	<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
+			<p class="category-p"  th:text="${categoryMap.categoryName}"></p>
+			<a class="btn" data-toggle="modal" data-target="#boardInfo" style="margin-right: 120px; height: 50px; margin-top: 30px; text-decoration: underline;">
+			  게시판 정보
+			</a>
         </figcaption>
       </figure>
       <table class="table table-striped board-list-table">
@@ -91,15 +95,15 @@
 </div>
 
 
-<!-- 게시글 작성 Modal -->
-<div class="modal fade" id="write-board-modal" data-backdrop="static"
+<!-- 게시판 정보 Modal -->
+<div class="modal fade" id="boardInfo" data-backdrop="static"
 	data-keyboard="false" tabindex="-1"
 	aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg">
 		<div class="modal-content">
 			<input type="hidden" id="boardNo" />
 			<div class="modal-header">
-				<h5 class="modal-title" id="add-modal-label">게시글 작성</h5>
+				<h5 class="modal-title" id="add-modal-label">게시판 정보</h5>
 				<button type="button" class="close" data-dismiss="modal"
 					aria-label="Close">
 					<span aria-hidden="true">&times;</span>
@@ -107,42 +111,26 @@
 			</div>
 
 				<div class="modal-body member-modal-body ">
-					<div class="input-group titleDiv">
-						<input type="input"
-							class="form-control bg-light border-0 small title-input"
-							id="title"
-							list="datalistOptions" placeholder="제목을 입력하세요."
-							aria-label="Search" aria-describedby="basic-addon2">
-						<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
-						<div>
-							<input class="form-check-input" type="checkbox" value="Y" id="noticeAt" name="noticeAt">
-							<label class="form-check-label" for="noticeAt"> 공지사항 </label>
-						</div>
+					<ul class="nav nav-tabs">
+					  <li class="nav-item">
+					    <a class="nav-link active boardInfo" href="#" onclick="showBoardInfo();">정보</a>
+					  </li>
+					  <li class="nav-item">
+					    <a class="nav-link boardMember" href="#" onclick="showBoardMember();">멤버</a>
+					  </li>
+					</ul>
+					<div class="list-group boardInfoDiv">
+					  <button type="button" class="list-group-item list-group-item-action" th:text="|생성자 : ${categoryMap.name}|"> </button>
+					  <button type="button" class="list-group-item list-group-item-action" th:text="|만든 날짜 : ${categoryMap.frstRegistPnttm}|"> </button>
+					  <button type="button" class="list-group-item list-group-item-action deleteMenu" th:if="${session.loginMember.esntlId} == ${categoryMap.esntlId}" onclick="deleteBoard();">게시판 삭제</button>
+					  <button type="button" class="list-group-item list-group-item-action deleteMenu" th:if="${session.loginMember.esntlId} != ${categoryMap.esntlId}" onclick="outBoard();">게시판 나가기</button>
 					</div>
 					
-					<div id="editor" name="content" class="board-content-textarea"></div>
-
-					<div class="modal-footer">
-						<span>*파일은 최대 5개까지 첨부할 수 있습니다.</span>
-						<div class="boardBtnDiv" role="group" aria-label="Basic example">
-							<button type="button" class="btn btn-info add-file-input">파일첨부추가</button>
-							<button type="button" class="btn btn-primary boardBtn">글쓰기</button>
-						</div>
-
-						<div class='input-group input-file'>
-
-							<div class='custom-file'>
-								<label class='custom-file-label file1'> 파일을 첨부하세요. </label>
-								<input	type='file' class='custom-file-input file-input' name='uploadFile'>
-								<hr />
-							</div>
-							<div class='input-group-append'>
-								<button class='btn btn-outline-secondary' type='button'
-									id='inputGroupFileAddon04'>파일삭제</button>
-							</div>
-						</div>
+					
+					<div class="boardMemberDiv" style="display: none">
+						<ul class="list-group boardMemberUl" >
+						</ul>
 					</div>
-				</div>
 		</div>
 	</div>
 </div>

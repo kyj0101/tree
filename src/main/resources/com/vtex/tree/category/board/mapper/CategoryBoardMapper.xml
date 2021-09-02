@@ -8,6 +8,9 @@
 		<id column="category_no" property="categoryNo"/>
 		
 		<result column="category_name" property="categoryName"/>
+		<result column="name" property="name"/>
+		<result column="FRST_REGIST_PNTTM" property="frstRegistPnttm"/>
+		<result column="ESNTL_ID" property="esntlId"/>
 	</resultMap>
 	
 	<insert id="insertCategoryBoard">
@@ -88,13 +91,17 @@
 		/* CategoryBoardMapper.getCategoryName */
 		
 		SELECT
-			CATEGORY_NO,
-			CATEGORY_NAME
+			A.CATEGORY_NO,
+			A.CATEGORY_NAME,
+			A.FRST_REGIST_PNTTM,
+			B.NAME,
+			B.ESNTL_ID
 		FROM
-			TB_CATEGORY
+			TB_CATEGORY A
+			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID =  A.FRST_REGISTER_ID
 		WHERE
 			CATEGORY_NO = #{categoryNo}
-			AND DELETE_AT = 'N'
+			AND A.DELETE_AT = 'N'
 	</select>
 	
 	<update id="deleteCategoryBoard">
@@ -103,10 +110,23 @@
 		UPDATE
 			TB_CATEGORY
 		SET
+			DELETE_AT = 'Y',
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{loginEsntlId}
+		WHERE
+			CATEGORY_NO = #{categoryNo}
+	</update>
+	
+	<update id="outBoard">
+		/* CategoryBoardMapper.outBoard */
+		
+		UPDATE
+			TB_CATEGORY_USER
+		SET
 			DELETE_AT = 'Y'
 		WHERE
 			CATEGORY_NO = #{categoryNo}
-			AND FRST_REGISTER_ID = #{email}
+			AND ESNTL_ID = #{esntlId}
 	</update>
 
 </mapper>

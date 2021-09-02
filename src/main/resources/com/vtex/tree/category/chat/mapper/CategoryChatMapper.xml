@@ -22,17 +22,19 @@
 					FRST_REGISTER_ID,
 					LAST_UPDT_PNTTM,
 					LAST_UPDUSR_ID,
-					DELETE_AT
+					DELETE_AT,
+					PROJECT_ID
 				)
 			VALUES
 				(
 					SEQ_TB_CHAT_ROOM.NEXTVAL,
 					#{title},
 					SYSDATE,
-					#{email},
+					#{loginEsntlId},
 					SYSDATE,
-					#{email},
-					'N'
+					#{loginEsntlId},
+					'N',
+					#{projectId}
 				)
 		<selectKey resultType="_int" keyProperty="no" order="AFTER">
 			SELECT
@@ -49,7 +51,7 @@
 			TB_CHAT_USER
 				(
 					CHAT_ROOM_NUMBER,
-					EMAIL,
+					ESNTL_ID,
 					FRST_REGIST_PNTTM,
 					FRST_REGISTER_ID,
 					LAST_UPDT_PNTTM,
@@ -59,11 +61,11 @@
 			VALUES
 				(
 					#{categoryNo},
-					#{userEmail},					
+					#{esntlId},					
 					SYSDATE,
-					#{email},
+					#{loginEsntlId},
 					SYSDATE,
-					#{email},
+					#{loginEsntlId},
 					'N'
 				)
 	</insert>

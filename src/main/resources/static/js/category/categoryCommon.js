@@ -1,9 +1,5 @@
-function showAddCategoryBoardModal(e){
-	
-	var projectId = $($(e).parent().parent().parent()).attr("id").replace("id_","");
-	
-	$("#projectId").val(projectId);
-	
+function showAddCategoryModal(projectId){
+
 	$.ajax({
 		type: "POST",
 		url: "/category/memberlist",
@@ -40,4 +36,17 @@ function showAddCategoryBoardModal(e){
 			});
 		},
 	});
+}
+
+function getEsntlId(){
+	
+	var checkedArr = $(".categoryAddMemberCheck:checked");
+	var esntlIdList = [];
+	
+	//체크박스에 있는 email value를 array에 넣음
+	$.each(checkedArr, function(index, elem){
+		esntlIdList.push($(elem).val());
+	});
+	
+	return esntlIdList;
 }

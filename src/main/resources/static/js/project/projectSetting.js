@@ -1,3 +1,11 @@
+$(function(){
+	$("#searchKeyword").keydown(function(key) {
+		if (key.keyCode == 13) {
+			$("#searchForm").submit();
+		}
+	});
+})
+
 function getMemberList(){
 	
 	$.ajax({
@@ -38,13 +46,13 @@ function nameCloseClick(e){
 	html += '('
 	html += valueArr[2];
 	html += ')';
-	html += '<span class="badge badge-pill badge-primary">'
+	html += '<span class="badge badge-pill badge-primary">';
 	html += valueArr[3];
-	html += '</span>'
-	html += '<span class="badge badge-pill badge-info">'
+	html += '</span>';
+	html += '<span class="badge badge-pill badge-info">';
 	html += valueArr[4];
-	html += '</span>'
-	html += '</a>'
+	html += '</span>';
+	html += '</a>';
 	
 	$(".list-group").append(html);
 	$($(e).parent()).remove();
@@ -270,4 +278,34 @@ function addNote(){
 			location.replace("/project/setting/view?projectId=" + projectId);			
 		},
 	});
+}
+
+function updateProject(){
+	
+	var projectNm = $("#projectName").val();
+	var startDate = $("#startDate").val();
+	var endDate = $("#endDate").val();
+	
+	$.ajax({
+
+		type: "post",
+		url: "/project/update/project",
+		data:{
+			"projectId" : projectId,
+			"projectNm": projectNm,
+			"startDate": startDate,
+			"endDate" : endDate
+			},
+		success(result) {
+			result == "ok" && alert("수정되었습니다.");
+			result == "fail" && alert("수정을 실패했습니다.");
+
+			location.replace("/project/setting/view?projectId=" + projectId);			
+		},
+	});
+}
+
+function search(){
+	var searchKeyword = $("#searchInput").val();
+	
 }

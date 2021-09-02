@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.vtex.tree.board.vo.BoardVO;
+import com.vtex.tree.member.vo.MemberVO;
 
 public interface BoardService {
 	int insertBoard(Map<String, Object> param) throws Exception;
@@ -36,4 +37,6 @@ public interface BoardService {
 	int deleteBoard(String boardNo) throws Exception;
 
 	Map<String, Object> getFile(Map<String, Object> param) throws Exception;
+
+	List<MemberVO> getBoardMemberList(String categoryNo) throws Exception;
 }

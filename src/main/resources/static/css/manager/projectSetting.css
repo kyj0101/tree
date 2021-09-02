@@ -66,3 +66,19 @@ nav{
 .center{
 	text-align: center;
 }
+
+.underline{
+	text-decoration: underline;
+}
+
+form{
+	display: flex;
+}
+
+#searchBtn{
+	width: 80px;
+}
+
+#searchKeyword{
+	width: 420px;
+}

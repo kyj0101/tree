@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -55,6 +56,7 @@ public class CategoryBoardController {
 		
 		param.put("title", title);
 		param.put("loginEsntlId", member.getEsntlId());
+		param.put("projectId", projectId);
 		
 		resultCnt = categoryBoardService.insertCategoryBoard(param);
 		categoryNo = Integer.parseInt(param.get("no") + "");
@@ -82,7 +84,7 @@ public class CategoryBoardController {
 		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		Map<String, Object> param = new HashMap<>();
 		
-		param.put("email", member.getEmail());
+		param.put("loginEsntlId", member.getEsntlId());
 		param.put("categoryNo", categoryNo);
 		
 		int resultCnt = categoryBoardService.deleteCategoryBoard(param);
@@ -93,6 +95,25 @@ public class CategoryBoardController {
 		}else {
 			return "fail";
 		}
+	}
+	
+	@RequestMapping("/out")
+	public String outBoard(String categoryNo, @AuthenticationPrincipal MemberVO member) throws Exception {
+		return outBoard(categoryNo, member.getEsntlId(), member);
+	}
+	
+	@RequestMapping("/out/manager")
+	public String outBoard(String categoryNo, String esntlId, @AuthenticationPrincipal MemberVO member) throws Exception {
+		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("loginEsntlId", member.getEsntlId());
+		param.put("categoryNo", categoryNo);
+		param.put("esntlId", esntlId);
+		
+		int resultCnt = categoryBoardService.outBoard(param);
+		
+		return resultCnt > 0 ? "ok" : "fail";
 	}
 	
 }

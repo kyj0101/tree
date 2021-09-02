@@ -372,7 +372,7 @@ function returnFormData(inputFile){
   	
 	var formData = new FormData();
 	var haveFile = false;
-	console.log(inputFile);
+
 	$.each(inputFile, function(index, elem) {
 
 		if (elem.files.length > 0) {
@@ -388,3 +388,60 @@ function returnFormData(inputFile){
 		return null;
 	}
 }
+
+
+function showBoardMember(){
+	
+	$(".boardInfoDiv").css("display","none");
+	$(".boardMemberDiv").css("display","block");
+	
+	$(".boardMember").addClass("active");
+	$(".boardInfo").removeClass("active");
+	
+	var categoryNo = $("#categoryNo").val();
+	
+	$.ajax({
+		type: "POST",
+		url: "/board/member/list",
+		data: {
+			"categoryNo": categoryNo,
+		},
+		success(result) {
+			
+			$(".boardMemberUl").empty();
+			
+			$.each(result, function(index, elem) {
+				
+				
+				var html = '<li class="list-group-item" data-esntlid="';
+				html += elem.esntlId;
+				html += '">';
+				html += elem.name;
+				html += '(';
+				html += elem.email;
+				html += ')';
+				html += '<span class="badge badge-pill badge-primary">';
+				html += elem.departmentName;
+				html += '</span>';
+				html += '<span class="badge badge-pill badge-info">';
+				html += elem.positionName;
+				html += '</span>';
+				html += '<button type="button" class="btn btn-light deleteMember">';
+				html += '<i class="fas fa-times"></i></li>';
+				
+				$(".boardMemberUl").append(html);				
+			});
+		},
+	});
+}
+
+function showBoardInfo(){
+	
+	$(".boardInfoDiv").css("display","block");
+	$(".boardMemberDiv").css("display","none");
+	
+	$(".boardMember").removeClass("active");
+	$(".boardInfo").addClass("active");
+	
+}
+
