@@ -1,7 +1,12 @@
-
+var userIsManager = $("#frstRegisterId").val() === $("#loginEsntlId").val();
 
 $(function() {
+	
 	var categoryNo = $("#categoryNo").val();
+
+	if(!userIsManager){
+		$(".boardAddMember").css("display","none");
+	}
 	
 	$(".boardBtn").click(function() {
 
@@ -166,8 +171,7 @@ $(function() {
 				"boardNo":boardNo
 			},
 			success(result){
-				
-				console.log(result);
+
 				var board = result.board;
 				var fileListMap = result.fileListMap;
 				
@@ -273,6 +277,7 @@ $(function() {
 			},
 		});
 	});
+	
 });
 
 function insertBoard(board, result) {
@@ -287,7 +292,7 @@ function insertBoard(board, result) {
 			"categoryNo":board.categoryNo
 		},
 		success(result) {
-			console.log(result);
+	
 			if (result == "ok") {
 				alert("작성되었습니다.");
 				location.replace('/board/list?category=' + board.categoryNo)
@@ -392,11 +397,13 @@ function returnFormData(inputFile){
 
 function showBoardMember(){
 	
-	$(".boardInfoDiv").css("display","none");
 	$(".boardMemberDiv").css("display","block");
+	$(".boardAddMemberDiv").css("display","none");
+	$(".boardInfoDiv").css("display","none");
 	
-	$(".boardMember").addClass("active");
 	$(".boardInfo").removeClass("active");
+	$(".boardAddMember").removeClass("active");
+	$(".boardMember").addClass("active");
 	
 	var categoryNo = $("#categoryNo").val();
 	
@@ -412,6 +419,9 @@ function showBoardMember(){
 			
 			$.each(result, function(index, elem) {
 				
+				if(elem.esntlId === $("#loginEsntlId").val()){
+					return true;
+				}
 				
 				var html = '<li class="list-group-item" data-esntlid="';
 				html += elem.esntlId;
@@ -426,8 +436,14 @@ function showBoardMember(){
 				html += '<span class="badge badge-pill badge-info">';
 				html += elem.positionName;
 				html += '</span>';
-				html += '<button type="button" class="btn btn-light deleteMember">';
-				html += '<i class="fas fa-times"></i></li>';
+
+				if(userIsManager){
+					
+					html += '<button type="button" class="btn btn-light deleteMember" onclick="outBoardManager(this);">';
+					html += '<i class="fas fa-times"></i>';					
+				}
+				
+				html += '</li>';
 				
 				$(".boardMemberUl").append(html);				
 			});
@@ -439,9 +455,94 @@ function showBoardInfo(){
 	
 	$(".boardInfoDiv").css("display","block");
 	$(".boardMemberDiv").css("display","none");
+	$(".boardAddMemberDiv").css("display","none");
 	
+	$(".boardAddMember").removeClass("active");
 	$(".boardMember").removeClass("active");
-	$(".boardInfo").addClass("active");
-	
+	$(".boardInfo").addClass("active");	
 }
 
+function showAddMember(){
+	
+	
+	$(".boardInfoDiv").css("display","none");
+	$(".boardMemberDiv").css("display","none");
+	$(".boardAddMemberDiv").css("display","block");
+	
+	$(".boardInfo").removeClass("active");
+	$(".boardMember").removeClass("active");
+	$(".boardAddMember").addClass("active");
+	
+	$.ajax({
+		type: "POST",
+		url: "/category/board/memberlist",
+		data:{"categoryNo":$("#categoryNo").val()},
+		dataType: "json",
+		success(result) {
+			
+			$(".boardAddMemberUl").empty();
+			
+			if(result.length > 0){
+				
+				var html = '<li class="list-group-item">';
+				html += '<div class="form-check">';
+				html += '<input class="form-check-input" type="checkbox" value="" id="checkedAll2" onchange="changeCheck(this);">';
+		  		html += '<label class="form-check-label" for="checkedAll2" id="checkedAllLabel">';
+		    	html += '전체 선택';
+				html += '</label>';
+				html += '</div>';
+				html += '</li>';
+				
+				$(".boardAddMemberUl").append(html);
+			}
+			
+			$.each(result, function(index, elem) {
+				
+				var html = '<li class="list-group-item">';
+
+				html += '<p>' ;
+				html += elem.name; 
+				html += '('; 
+				html += elem.email
+				html += ')';
+				html += '<input class="categoryAddMemberCheck" type="checkbox" value="' + elem.esntlId + '">';
+				html += '</p>';
+				html += '</li>';
+
+				$(".boardAddMemberUl").append(html);
+			});
+		},
+	});
+}
+
+function addBoardMember(){
+	
+	var esntlIdList = getEsntlId();
+	
+	if(esntlIdList.length == 0){
+		alert("회원을 선택하세요.");
+		return false;
+	}
+
+	var categoryNo = $("#categoryNo").val();
+	
+	$.ajax({
+		type: "POST",
+		url: "/category/board/add/member",
+		data: {
+			"esntlIdList": esntlIdList,
+			"categoryNo": categoryNo
+		},
+		success(result) {
+
+			if (result == "ok") {
+
+				alert("추가되었습니다.");
+				location.replace("/board/list?category=" + categoryNo);
+
+			} else {
+				alert("추가를 실패했습니다.");
+			}
+		}
+	});		
+}

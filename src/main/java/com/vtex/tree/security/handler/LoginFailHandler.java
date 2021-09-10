@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
@@ -28,7 +29,10 @@ public class LoginFailHandler implements AuthenticationFailureHandler {
 		
 		}else if (exception instanceof BadCredentialsException) {
 			msg =  "아이디 또는 비밀번호가 다릅니다.";
-		}	
+			
+		}else if (exception instanceof OAuth2AuthenticationException) {
+			msg = "해당 아이디로 연동된 계정을 찾을 수 없습니다.";
+		}
 		
 		request.setAttribute("msg", msg);
 		request.getRequestDispatcher("/login").forward(request, response);

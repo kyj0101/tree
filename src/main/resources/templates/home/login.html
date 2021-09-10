@@ -29,8 +29,10 @@
 				    로그인 상태 유지
 				  </label>
 				</div>
-
-				<button type="submit" class="btn btn-primary" >로그인</button>
+				<div class="btnDiv">
+					<button type="submit" class="btn btn-primary" >로그인</button>
+					<button type="button" class="btn btn-success" onclick='location.href="/oauth2/authorization/naver"'>NAVER</button>				
+				</div>
             </form>
             <div class="text-right">
 				<a class="small" href="/find/password/view">비밀번호 찾기 </a>
@@ -49,4 +51,3 @@ if(msg != "" && msg != null ){
 }
 
 </script>
-

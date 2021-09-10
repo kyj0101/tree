@@ -32,6 +32,11 @@ dependencies {
   	testImplementation 'org.springframework.boot:spring-boot-starter-test'
   	testImplementation 'org.springframework.security:spring-security-test'
 	implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+	
+	// https://mvnrepository.com/artifact/com.github.scribejava/scribejava-apis
+	implementation group: 'com.github.scribejava', name: 'scribejava-apis', version: '8.3.1'
+
 	
 	//websocket
 	implementation 'org.springframework.boot:spring-boot-starter-websocket'

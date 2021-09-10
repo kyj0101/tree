@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<script type="text/javascript">
+	var email = '[[${email}]]';
+	var name = '[[${name}]]';
+	var category = '[[${categoryMap.categoryNo}]]';
+	var chatName = name + "(" + email + ")";
+	var connect = false;
+</script>
+
 <th:block th:replace="common/addModal">
 </th:block>
 
@@ -21,7 +29,9 @@
 
                 </li>
             </ul>
-	       	<button type="button" class="btn" id="chatLeave" onclick="chatLeave();">나가기</button>
+	       	<button type="button" class="btn" id="chatLeave" data-toggle="modal" data-target="#chatMenu">
+	       		<i class="far fa-caret-square-down"></i>
+	       	</button>
         </div>
 
         <div class="chat-send-div">
@@ -32,14 +42,81 @@
 </body>
 </html>
 
+<!-- menu modal -->
+<div class="modal fade" id="chatMenu" data-backdrop="static"
+	data-keyboard="false" tabindex="-1"
+	aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-scrollable modal-lg">
+		<div class="modal-content">
+			<input type="hidden" id="boardNo" />
+			<div class="modal-header">
+				<h5 class="modal-title" id="add-modal-label">게시판 정보</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+
+			<div class="modal-body member-modal-body ">
+				<ul class="nav nav-tabs">
+					<li class="nav-item">
+						<a class="nav-link active chatInfo" href="#" onclick="showChatInfo();">정보</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link chatMember" href="#" onclick="showChatMember();">멤버 목록</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link chatAddMember" href="#" onclick="showChatAddMember();">멤버 추가</a>
+					</li>
+				</ul>
+
+				<div class="list-group chatInfoDiv">
+					<button type="button"
+						class="list-group-item list-group-item-action"
+						th:text="|생성자 : ${categoryMap.name}|"></button>
+					<button type="button"
+						class="list-group-item list-group-item-action"
+						th:text="|만든 날짜 : ${categoryMap.frstRegistPnttm}|"></button>
+					<button type="button"
+						class="list-group-item list-group-item-action deleteMenu"
+						th:if="${session.loginMember.esntlId} == ${categoryMap.frstRegisterId}"
+						onclick="chatDelete()">채팅방 삭제</button>
+					<button type="button"
+						class="list-group-item list-group-item-action deleteMenu"
+						th:if="${session.loginMember.esntlId} != ${categoryMap.frstRegisterId}"
+						onclick="chatOut();">채팅방 나가기</button>
+				</div>
+
+				<div class="chatMemberDiv" style="display: none">
+					<ul class="list-group chatMemberUl">
+					</ul>
+				</div>
+
+				<div class="boardAddMemberDiv" style="display: none">
+					<ul class="list-group boardAddMemberUl">
+
+					</ul>
+
+					<button type="button" class="btn btn-primary"
+						style="margin-left: 680px; margin-top: 10px;"
+						onclick="">추가</button>
+				</div>
+				
+				<div class="chatAddMemberDiv" style="display: none">
+					<ul class="list-group chatAddMemberUl">
+
+					</ul>
+
+					<button type="button" class="btn btn-primary"
+						style="margin-left: 680px; margin-top: 10px;"
+						onclick="addChatMember();">추가</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
 <th:block th:replace="common/addModal">
 </th:block>
 
-<script type="text/javascript">
-//사용자 구분을 위한 memberId 상수 선언
-var email = '[[${email}]]';
-var name = '[[${name}]]';
-var category = '[[${categoryMap.category}]]';
-var chatName = name + "(" + email + ")";
-var connect = false;
-</script>
+

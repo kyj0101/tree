@@ -124,6 +124,34 @@ function outBoard(){
 	}
 }
 
+//매니저가 게시판에서 회원 강제 퇴장시키는 함수
+function outBoardManager(e){
+	var esntlId = $($(e).parent()).data("esntlid");
+	var categoryNo = $("#categoryNo").val();
+	
+	if (confirm("회원을 게시판에서 내보냅니다.")) {
+		$.ajax({
+			type: "POST",
+			url: "/category/board/out/manager",
+			data: {
+				"esntlId": esntlId,
+				"categoryNo":categoryNo
+			},
+			success(result) {
+
+				if (result == "ok") {
+					location.replace("/board/list?category=" + categoryNo);
+
+				} else {
+					alert("내보내기를 실패했습니다.");
+				}
+			}
+		});
+	}
+	
+}
+
+
 function showAddCategoryBoardModal(e){
 	
 	var projectId = $($(e).parent().parent().parent()).attr("id").replace("id_","");

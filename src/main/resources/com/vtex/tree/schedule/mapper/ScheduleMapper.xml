@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.schedule.mapper.ScheduleMapper">
+	
+	<resultMap type="scheduleVO" id="scheduleMap">
+		<id column="SCHEDULE_ID" property="id"/>
+		
+		<result column="START_DATE" property="start"/>
+		<result column="END_DATE" property="end"/>
+	</resultMap>
+	
+	<insert id="insertSchedule">
+		/* ScheduleMapper".insertSchedule */
+		
+		INSERT INTO	
+			TB_SCHEDULE
+				(
+					SCHEDULE_ID,
+					PROJECT_ID,
+					TITLE,
+					START_DATE,
+					END_DATE,
+					ALLDAY,
+					COLOR,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID,
+					DELETE_AT					
+				)
+			VALUES
+				(
+					SEQ_TB_SCHEDULE.NEXTVAL,
+					#{projectId},
+					#{title},
+					#{start},
+					#{end},
+					#{allDay},
+					#{color},
+					SYSDATE,
+					#{frstRegisterId},
+					SYSDATE,
+					#{lastUpdusrId},
+					'N'
+				)
+	</insert>
+	
+	<select id="getScheduleList" resultMap="scheduleMap">
+		/* ScheduleMapper".getScheduleList */
+		
+		SELECT
+			SCHEDULE_ID,
+			TITLE,
+			START_DATE,
+			END_DATE,
+			ALLDAY,
+			COLOR
+		FROM
+			TB_SCHEDULE
+		WHERE
+			PROJECT_ID = #{projectId}
+			AND DELETE_AT = 'N'
+	</select>
+	
+	<update id="updateSchedule">
+		/* ScheduleMapper.updateSchedule */
+		
+		UPDATE
+			TB_SCHEDULE
+		SET
+			TITLE = #{title},
+			START_DATE = #{start},
+			END_DATE = #{end},
+			ALLDAY = #{allDay},
+			LAST_UPDT_PNTTM = SYSDATE,
+			LAST_UPDUSR_ID = #{lastUpdusrId},
+			COLOR = #{color}
+		WHERE
+			SCHEDULE_ID = #{id}
+			AND DELETE_AT = 'N'
+	</update>
+	
+	<update id="deleteSchedule">
+		/* ScheduleMapper.deleteSchedule */
+		
+		UPDATE
+			TB_SCHEDULE
+		SET
+			DELETE_AT = 'Y'
+		WHERE
+			SCHEDULE_ID = #{id}
+			AND DELETE_AT = 'N'		
+	</update>
+
+</mapper>

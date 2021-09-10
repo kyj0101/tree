@@ -67,6 +67,7 @@ function addMember(){
 	var esntlIdArr = [];
 	
 	$.each(memberArr, function(index, elem){
+		
 		var valueArr = $(elem).data('esntlid').split(",");
 		var esntlId = valueArr[1];
 		
@@ -305,7 +306,3 @@ function updateProject(){
 	});
 }
 
-function search(){
-	var searchKeyword = $("#searchInput").val();
-	
-}

@@ -310,6 +310,7 @@
 		SELECT
 			A.EMAIL,
 			A.NAME,
+			A.ESNTL_ID,
 			A.DEPARTMENT,
 					(
 						SELECT
@@ -335,6 +336,7 @@
 			LEFT OUTER JOIN TB_CATEGORY_USER B ON  B.ESNTL_ID = A.ESNTL_ID
 		WHERE
 			B.CATEGORY_NO = #{categoryNo}
+			AND DELETE_AT = 'N'
 	</select>
 	
 	<update id="addViewNum">

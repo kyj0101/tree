@@ -87,6 +87,8 @@
 			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID = A.PROJECT_MANAGER
 		WHERE
 			USE_AT = 'Y'
+		ORDER BY 
+			A.FRST_REGIST_PNTTM
 	</select>
 	
 	<select id="getTotalProject" resultType="int">
@@ -341,7 +343,7 @@
 			TB_PROJECT
 		SET
 			USE_AT = 'N',
-			LAST_UPDUSR_ID = SYSDATE,
+			LAST_UPDT_PNTTM = SYSDATE,
 			LAST_UPDUSR_ID = #{loginEsntlId}
 		WHERE
 			PROJECT_ID = #{projectId}

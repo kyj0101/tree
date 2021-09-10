@@ -122,6 +122,7 @@ public class EmployeeController {
 		param.put("name", member.getName());
 		param.put("department", member.getDepartment());
 		param.put("position", member.getPosition());
+		param.put("esntlId", member.getEsntlId());
 		
 		int resultCnt = employeeService.updateEmployee(param);
 		

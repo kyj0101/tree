@@ -63,9 +63,6 @@ public class BoardController {
 	
 	@Autowired
 	private CategoryBoardService categoryBoardService;
-	
-	@Autowired
-	private CategoryChatService categoryChatService;
 
 	@Autowired
 	private ProjectService projectService;
@@ -93,6 +90,11 @@ public class BoardController {
 								Model model,
 								@AuthenticationPrincipal MemberVO member) throws Exception {
 		
+		HttpSession session = request.getSession();
+		
+		if(member == null) {
+			member = (MemberVO) session.getAttribute("loginMember");
+		}
 		
 		//게시판리스트
 		Map<String, Object> param = new HashMap<>();
@@ -111,10 +113,9 @@ public class BoardController {
 		model.addAttribute("boardList", boardList);
 		model.addAttribute("pageBar", pageBar);
 		
-		//카테고리 리스트
-		HttpSession session = request.getSession();
+		//카테고리 리스트 
 		session.setAttribute("loginMember", member);
-		
+				
 		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
 		model.addAttribute("projectList", projectList);
 	

@@ -10,7 +10,9 @@
 		<result column="category_name" property="categoryName"/>
 		<result column="name" property="name"/>
 		<result column="FRST_REGIST_PNTTM" property="frstRegistPnttm"/>
+		<result column="FRST_REGISTER_ID" property="frstRegisterId"/>
 		<result column="ESNTL_ID" property="esntlId"/>
+		<result column="PROJECT_ID" property="projectId"/>
 	</resultMap>
 	
 	<insert id="insertCategoryBoard">
@@ -47,8 +49,8 @@
 		</selectKey>
 	</insert>
 	
-	<insert id="insertCategoryBoardUser">
-		/* CategoryBoardMapper.insertCategoryBoardUser */
+	<insert id="insertCategoryBoardMember">
+		/* CategoryBoardMapper.insertCategoryBoardMember */
 		
 		INSERT INTO
 			TB_CATEGORY_USER
@@ -95,13 +97,40 @@
 			A.CATEGORY_NAME,
 			A.FRST_REGIST_PNTTM,
 			B.NAME,
-			B.ESNTL_ID
+			B.ESNTL_ID,
+			A.FRST_REGISTER_ID,
+			A.PROJECT_ID
 		FROM
 			TB_CATEGORY A
 			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID =  A.FRST_REGISTER_ID
 		WHERE
 			CATEGORY_NO = #{categoryNo}
 			AND A.DELETE_AT = 'N'
+	</select>
+	
+	<select id="getMemberListToInvite" resultType="memberVO">
+		/* CategoryBoardMapper.getMemberListToInvite */
+		
+		SELECT
+			C.NAME,
+			C.EMAIL,
+			C.ESNTL_ID
+		FROM
+			TB_CATEGORY A
+			LEFT OUTER JOIN TB_PROJECT_USER B ON B.PROJECT_ID  = A.PROJECT_ID
+			LEFT OUTER JOIN TB_MEMBER C ON C.ESNTL_ID = B.ESNTL_ID
+		WHERE
+			A.CATEGORY_NO = #{categoryNo}
+		MINUS
+		SELECT
+			B.NAME,
+			B.EMAIL,
+			B.ESNTL_ID
+		FROM
+			TB_CATEGORY_USER A
+			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID = A.ESNTL_ID 
+		WHERE
+			A.CATEGORY_NO = #{categoryNo}
 	</select>
 	
 	<update id="deleteCategoryBoard">
@@ -117,16 +146,14 @@
 			CATEGORY_NO = #{categoryNo}
 	</update>
 	
-	<update id="outBoard">
+	<delete id="outBoard">
 		/* CategoryBoardMapper.outBoard */
 		
-		UPDATE
+		DELETE FROM
 			TB_CATEGORY_USER
-		SET
-			DELETE_AT = 'Y'
 		WHERE
 			CATEGORY_NO = #{categoryNo}
 			AND ESNTL_ID = #{esntlId}
-	</update>
+	</delete>
 
 </mapper>

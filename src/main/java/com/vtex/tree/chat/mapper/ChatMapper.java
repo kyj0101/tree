@@ -5,10 +5,12 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.vtex.tree.member.vo.MemberVO;
+
 @Mapper
 public interface ChatMapper {
-
-	int deleteChatUser(Map<String, Object> param) throws Exception;
+	
+	List<MemberVO> getChatMemberList(String categoryNo) throws Exception;
 
 	
 }

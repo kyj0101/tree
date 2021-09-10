@@ -6,13 +6,15 @@ $(function(){
 //수정버튼 눌렸을 때 팝업 값 설정
 function clickPopup(e){
 	
-	var positionName = $($($(e).parents()[0]).prevAll()[1]).text();
-	var departmentName = $($($(e).parents()[0]).prevAll()[2]).text();
-	var name = $($($(e).parents()[0]).prevAll()[3]).text();
-	var email = $($($(e).parents()[0]).prevAll()[4]).text();
+	var esntlId = $($($(e).parents()[0]).prevAll()[1]).text();
+	var positionName = $($($(e).parents()[0]).prevAll()[2]).text();
+	var departmentName = $($($(e).parents()[0]).prevAll()[3]).text();
+	var name = $($($(e).parents()[0]).prevAll()[4]).text();
+	var email = $($($(e).parents()[0]).prevAll()[5]).text();
 	
 	$('#updateEmail').val(email);
 	$('#updateName').val(name);
+	$('#esntlId').val(esntlId);
 	
 	$.each($('.positionNameOption'), function(k,v){
 		var text = $(v).text();
@@ -38,7 +40,8 @@ function clickUpdateBtn(){
 		email:$("#updateEmail").val(),
 		name:$("#updateName").val(),
 		department:$('#department option:selected').val(),
-		position:$('#position option:selected').val()		
+		position:$('#position option:selected').val(),		
+		esntlId:$('#esntlId').val()
 	}
 	
 	var isNull = nullCheck(member);
@@ -61,8 +64,9 @@ function clickUpdateBtn(){
 			"email": member.email,
 			"name":member.name,
 			"department":member.department,
-			"position":member.position
-		},
+			"position":member.position,
+			"esntlId":member.esntlId
+			},
 		success(result) {
 
 			if (result == "ok") {

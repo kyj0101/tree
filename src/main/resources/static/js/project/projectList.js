@@ -63,7 +63,8 @@ function addProject(){
 				"projectNm": project.name,
 				"projectManager" : $("#projectManagerEsntlId").val(),
 				"startDate" : project.startDate,
-				"endDate" : project.endDate
+				"endDate" : project.endDate,
+				"note" : $("#note").val()
 			},
 			success(result) {
 

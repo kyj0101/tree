@@ -4,17 +4,40 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.chat.mapper.ChatMapper">
 	
-	<update id="deleteChatUser">
-		/* ChatMapper.deleteChatUser */
+	<select id="getChatMemberList" resultType="memberVO">
+		/* CategoryChatMapper.getChatMemberList */
 		
-		UPDATE
-			TB_CHAT_USER
-		SET
-			DELETE_AT = 'Y'
+		SELECT
+			A.EMAIL,
+			A.NAME,
+			A.ESNTL_ID,
+			A.DEPARTMENT,
+					(
+						SELECT
+							DETAIL_CODE_NAME
+						FROM
+							TB_COMMON_CODE_DETAIL
+						WHERE
+							DETAIL_CODE = A.DEPARTMENT
+							
+					 ) AS DEPARTMENT_NAME,
+			A.POSITION,
+					(
+						SELECT
+							DETAIL_CODE_NAME
+						FROM
+							TB_COMMON_CODE_DETAIL
+						WHERE
+							DETAIL_CODE = A.POSITION
+							
+					 ) AS POSITION_NAME
+		FROM 
+			TB_MEMBER A
+			LEFT OUTER JOIN TB_CHAT_USER B ON  B.ESNTL_ID = A.ESNTL_ID
 		WHERE
-			EMAIL = #{email}
-			AND CHAT_ROOM_NUMBER = #{category}					
-	</update>
+			B.CHAT_ROOM_NUMBER = #{categoryNo}
+			AND B.DELETE_AT = 'N'		
+	</select>
 
 
 </mapper>

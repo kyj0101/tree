@@ -41,10 +41,7 @@ public class ChatController {
 	
 	@Autowired
 	private AttendanceService attendanceService;
-	
-	@Autowired
-	private CategoryBoardService categoryBoardService;
-	
+
 	@Autowired
 	private CategoryChatService categoryChatService;
 	
@@ -57,12 +54,11 @@ public class ChatController {
 	
 	@RequestMapping("/room")
 	public String getChatRoom(HttpServletRequest request,
-								@AuthenticationPrincipal MemberVO member,
 								Model model,
 								@RequestParam(defaultValue = "1") int category) throws Exception {
 		
 		HttpSession session = request.getSession();
-		session.setAttribute("loginMember", member);
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -83,12 +79,9 @@ public class ChatController {
 		}
 		
 		//현재 카테고리
-		Map<String, Object> categoryMap = new HashMap<>();
-		String categoryName = categoryChatService.getChatRoomName(category);
-		
-		categoryMap.put("categoryName", categoryName);
-		categoryMap.put("category", category);
-		
+		Map<String, Object> categoryMap = categoryChatService.getChatRoom(category);
+
+		categoryMap.put("categoryMap", categoryMap);
 		model.addAttribute("categoryMap", categoryMap);
 		
 		//출퇴근 여부
@@ -111,22 +104,14 @@ public class ChatController {
 	}
 	
 	@ResponseBody
-	@RequestMapping("/leave")
-	public String deleteChatUser(String category, @AuthenticationPrincipal MemberVO member) throws Exception {
+	@RequestMapping("/member/list")
+	public List<MemberVO> getChatMemberList(String categoryNo) throws Exception{
 		
-		Map<String, Object> param = new HashMap<>();
+		List<MemberVO> memberList = chatService.getChatMemberList(categoryNo);
 		
-		param.put("category", category);
-		param.put("email", member.getEmail());
-		
-		int result = chatService.deleteChatUser(param);
-		
-		if(result > 0) {
-			return "ok";
-		}
-		
-		return "fail";
+		return memberList;
 	}
+
 	
 
 }

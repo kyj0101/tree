@@ -45,8 +45,9 @@
                         <li th:text="${member.name}"></li>
                         <li th:text="${member.departmentName}"></li>
                         <li th:text="${member.positionName}"></li> 
+                        <li th:text="${member.esntlId}" style="display: none"></li> 
                         <li th:if="${member.quitAt == 'N'}">회원</li>
-                        <li th:if="${member.quitAt == 'Y'}">탈퇴 회원</li>
+                        <li th:if="${member.quitAt == 'Y'}">탈퇴 회원</li>                 
                         <li><a th:if="${member.quitAt == 'N'}" href="#" class="btn btn-primary employeeUpdateBtn" onclick="clickPopup(this);" data-toggle="modal" data-target="#update-member-modal">수정</a></li>
                     </ul>
                 </div>
@@ -81,23 +82,27 @@
                 </div>
     
                 <div class="modal-body member-modal-body ">
+                	<div class="mb-3">
+                        <label for="esntlId" class="form-label">고유 아이디</label>
+                        <input type="text" class="form-control" id="esntlId" name="esntlId" readonly="readonly">
+                    </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">이메일</label>
+                        <label for="updateEmail" class="form-label">이메일</label>
                         <input type="email" class="form-control" id="updateEmail" name="updateEmail" readonly="readonly">
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputEmail1" class="form-label">이름</label>
+                        <label for="updateName" class="form-label">이름</label>
                         <input type="text" class="form-control" id="updateName" name="updateName" onchange="changeName();">
                         <div id="nameHelp" class="form-text help hide">올바른 이름이 아닙니다.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">부서</label>
+                        <label for="department" class="form-label">부서</label>
                         <select class="custom-select" id="department" name="department">
                      		<option class="departmentNameOption" th:each="department: ${departmentList}" th:value="${department.detailCode}" th:utext="${department.detailCodeName}"></option>
                      	</select>     
                     </div>
                     <div class="mb-3">
-                        <label for="exampleInputPassword1" class="form-label">직급</label>
+                        <label for="position" class="form-label">직급</label>
     					<select class="custom-select" id="position" name="position">
                      		<option class="positionNameOption" th:each="position: ${positionList}" th:value="${position.detailCode}" th:utext="${position.detailCodeName}"></option>
                      	</select> 

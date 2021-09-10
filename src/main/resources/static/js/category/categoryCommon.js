@@ -50,3 +50,19 @@ function getEsntlId(){
 	
 	return esntlIdList;
 }
+
+function changeCheck(e){
+	
+	var label = $("#checkedAllLabel");
+
+	if($(e).prop("checked")){
+
+		$(".categoryAddMemberCheck").attr("checked", true);
+		$(label).text("전체 해제")
+	
+	}else{
+		console.log("?????");
+		$(".categoryAddMemberCheck").attr("checked", false);
+		$(label).text("전체 선택")
+	}
+}

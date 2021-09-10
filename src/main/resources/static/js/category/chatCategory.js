@@ -46,70 +46,6 @@ function getLoginMemberList(){
 	});
 }
 
-function addChatRoom(){
-	
-	var checkedArr = $(".categoryAddMemberCheck:checked");
-	var emailList = [];
-	var title = $(".title-input").val();
-
-	//체크박스에 있는 email value를 array에 넣음
-	$.each(checkedArr, function(index, elem) {
-		emailList.push($(elem).val());
-	});
-
-	if (title.length <= 0) {
-		alert("제목을 입력하세요.");
-
-
-	} else if (emailList.length <= 0) {
-		alert("회원을 선택하세요.");
-
-	} else {
-
-		$.ajax({
-			type: "POST",
-			url: "/category/chat/insert",
-			data: {
-				"title": title,
-				"emailList": emailList
-			},
-			success(result) {
-				console.log(result);
-				if (result == "ok") {
-					alert("채팅방이 생성되었습니다.");
-					$('#addModal').modal('hide');
-					location.replace("/board/list");
-				} else {
-					alert("채팅방 생성을 실패했습니다.");
-				}
-			},
-
-			error(xhr, status, err) {
-				console.log(xhr, status, err);
-			}
-		});
-	}
-}
-
-//채팅방 나가기(x버튼)
-function chatLeave(e){
-	
-	if(confirm("채팅방을 나가시겠습니까?")){
-		var url = $($(e).prev()).attr("href");
-		var indexCategory = url.indexOf("?category=");
-		var category = url.substring(indexCategory).replace("?category=","");
-		
-		$.ajax({
-			type: "POST",
-			url: "/chat/leave",
-			data: {"category":category},
-			success(result) {
-				location.replace("/board/list");
-			},
-		});
-	}
-}
-
 function showAddCategoryChatModal(e){
 	
 	$(".modal-title").text("채팅방 추가");
@@ -156,5 +92,31 @@ function addChatRoom(){
 				}
 			}
 		});			
+	}
+}
+
+//매니저가 채팅방에서 회원 강제 퇴장시키는 함수
+function outChatManager(e){
+	
+	var esntlId = $($(e).parent()).data("esntlid");
+
+	if (confirm("회원을 게시판에서 내보냅니다.")) {
+		$.ajax({
+			type: "POST",
+			url: "/category/chat/out/manager",
+			data: {
+				"esntlId": esntlId,
+				"category":category
+			},
+			success(result) {
+
+				if (result == "ok") {
+					location.replace("/chat/room?category=" + category);
+
+				} else {
+					alert("내보내기를 실패했습니다.");
+				}
+			}
+		});
 	}
 }

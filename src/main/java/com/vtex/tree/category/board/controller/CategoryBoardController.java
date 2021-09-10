@@ -66,7 +66,7 @@ public class CategoryBoardController {
 		for(String esntlId : esntlIdList) {
 			
 			param.put("esntlId", esntlId);
-			resultCnt = categoryBoardService.insertCategoryBoardUser(param);
+			resultCnt = categoryBoardService.insertCategoryBoardMember(param);
 		}
 		
 		if(resultCnt > 0) {
@@ -98,12 +98,21 @@ public class CategoryBoardController {
 	}
 	
 	@RequestMapping("/out")
-	public String outBoard(String categoryNo, @AuthenticationPrincipal MemberVO member) throws Exception {
-		return outBoard(categoryNo, member.getEsntlId(), member);
+	public String outBoard(String categoryNo, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
+		return outBoard(categoryNo, member.getEsntlId(), request);
 	}
 	
 	@RequestMapping("/out/manager")
-	public String outBoard(String categoryNo, String esntlId, @AuthenticationPrincipal MemberVO member) throws Exception {
+	public String outBoard(String categoryNo, 
+							String esntlId, 
+							HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -114,6 +123,35 @@ public class CategoryBoardController {
 		int resultCnt = categoryBoardService.outBoard(param);
 		
 		return resultCnt > 0 ? "ok" : "fail";
+	}
+	
+	@RequestMapping("/memberlist")
+	public List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception {
+		return categoryBoardService.getMemberListToInvite(categoryNo);
+	}
+	
+	
+	@RequestMapping("/add/member")
+	public String addMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList,
+								String categoryNo,
+								HttpServletRequest request) {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
+		int resultCnt = 0;
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("categoryNo", categoryNo);
+		param.put("loginEsntlId", member.getEsntlId());
+		
+		for(String esntlId : esntlIdList) {
+		
+			param.put("esntlId", esntlId);
+			resultCnt += categoryBoardService.insertCategoryBoardMember(param);
+		}
+		
+		return resultCnt == esntlIdList.size() ? "ok" : "fail";
 	}
 	
 }

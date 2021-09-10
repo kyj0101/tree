@@ -3,11 +3,6 @@
     margin-top: 100px;
     width: 500px;
 }
-   
-.btn-primary{
-	margin-left: 30%;
-}
-
 .form-check{
 	width: 100%;
 	text-align: right;
@@ -20,4 +15,23 @@
 #cpasLockSpan{
 	color: red;
 	display: none;
+}
+
+.btn-success {
+    background-color: #03c75a;
+    color: white;
+    width: 150px;
+	height: 50px;
+}
+
+.btn{
+	width: 400px;
+	margin-bottom: 10px;
+}
+
+.btnDiv{
+	display: flex;
+	flex-direction:column;
+	justify-content:center;
+	text-align:center;
 }

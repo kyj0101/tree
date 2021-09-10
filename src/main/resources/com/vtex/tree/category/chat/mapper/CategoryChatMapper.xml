@@ -5,9 +5,12 @@
 <mapper namespace="com.vtex.tree.category.chat.mapper.CategoryChatMapper">
 	
 	<resultMap type="map" id="chatRoomMap">
-		<id column="chat_room_number" property="chatRoomNumber"/>
+		<id column="chat_room_number" property="categoryNo"/>
 		
-		<result column="chat_room_title" property="chatRoomTitle"/>
+		<result column="chat_room_title" property="categoryName"/>
+		<result column="FRST_REGIST_PNTTM" property="frstRegistPnttm"/>
+		<result column="FRST_REGISTER_ID" property="frstRegisterId"/>
+		<result column="NAME" property="name"/>
 	</resultMap>
 	
 	<insert id="insertCategoryChat">
@@ -44,8 +47,8 @@
 		</selectKey>
 	</insert>
 	
-	<insert id="insertCategoryChatUser">
-		/* CategoryChatMapper.insertCategoryChatUser */
+	<insert id="insertCategoryChatMember">
+		/* CategoryChatMapper.insertCategoryChatMember */
 		
 		INSERT INTO
 			TB_CHAT_USER
@@ -85,16 +88,71 @@
 			AND B.DELETE_AT = 'N'
 	</select>
 	
-	<select id="getChatRoomName" resultType="string">
+	<select id="getChatRoom" resultMap="chatRoomMap">
 		/* CategoryChatMapper.getChatRoomName */
 
 		SELECT
-			CHAT_ROOM_TITLE
+			A.CHAT_ROOM_NUMBER,
+			A.CHAT_ROOM_TITLE,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			B.NAME
 		FROM
-			TB_CHAT_ROOM
+			TB_CHAT_ROOM A
+			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID = A.FRST_REGISTER_ID
 		WHERE
 			CHAT_ROOM_NUMBER = #{category}		
 	</select>
 	
+	<select id="getMemberListToInvite" resultType="memberVO">
+		/* CategoryChatMapper.getMemberListToInvite */
+			
+		SELECT
+			C.NAME,
+			C.EMAIL,
+			C.ESNTL_ID
+		FROM
+			TB_CHAT_ROOM A
+			LEFT OUTER JOIN TB_PROJECT_USER B ON B.PROJECT_ID  = A.PROJECT_ID
+			LEFT OUTER JOIN TB_MEMBER C ON C.ESNTL_ID = B.ESNTL_ID
+		WHERE
+			A.CHAT_ROOM_NUMBER = #{categoryNo}
+		MINUS
+		SELECT
+			B.NAME,
+			B.EMAIL,
+			B.ESNTL_ID
+		FROM
+			TB_CHAT_USER A
+			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID = A.ESNTL_ID 
+		WHERE
+			A.CHAT_ROOM_NUMBER = #{categoryNo}			
+	</select>
+	
+	
+	<update id="deleteChatRoom">
+		/* CategoryChatMapper.deleteChatRoom */
+		
+		UPDATE
+			TB_CHAT_ROOM
+		SET
+			DELETE_AT = 'Y',
+			LAST_UPDUSR_ID = #{loginEsntlId},
+			LAST_UPDT_PNTTM = SYSDATE
+		WHERE
+			CHAT_ROOM_NUMBER = #{category}	
+	</update>
+	
+	<delete id="outChatRoom">
+		/* CategoryChatMapper.outChatRoom */
+		
+		DELETE FROM
+			TB_CHAT_USER
+		WHERE
+			ESNTL_ID = #{esntlId}
+			AND CHAT_ROOM_NUMBER = #{category}					
+	</delete>
+	
+
 	
 </mapper>

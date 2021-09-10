@@ -18,6 +18,12 @@
             placeholder="제목을 입력하세요." aria-label="Search" aria-describedby="basic-addon2">
           <input type="hidden" id="projectId">
         </div>
+        <div class="form-check">
+		  <input class="form-check-input" type="checkbox" value="" id="checkedAll" onchange="changeCheck(this);">
+		  <label class="form-check-label" for="checkedAll" id="checkedAllLabel">
+		    전체 선택
+		  </label>
+		</div>
 
         <hr />
 

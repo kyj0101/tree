@@ -4,8 +4,7 @@ $(function(){
 	
 	//근태 등록할때 이름 자동완성
 	$("#searchName").autocomplete({
-		
-		
+			
 		source: function(request, response) {
 		
 			$.ajax({

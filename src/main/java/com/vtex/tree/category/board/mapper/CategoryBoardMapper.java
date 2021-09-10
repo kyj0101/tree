@@ -14,7 +14,7 @@ public interface CategoryBoardMapper {
 	
 	int insertCategoryBoard(Map<String, Object> param);
 	
-	int insertCategoryBoardUser(Map<String, Object> param);
+	int insertCategoryBoardMember(Map<String, Object> param);
 	
 	List<Map<String, Object>> getCategoryList(String email);
 	
@@ -23,4 +23,6 @@ public interface CategoryBoardMapper {
 	int deleteCategoryBoard(Map<String, Object> param) throws Exception;
 
 	int outBoard(Map<String, Object> param) throws Exception;
+
+	List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception;
 }

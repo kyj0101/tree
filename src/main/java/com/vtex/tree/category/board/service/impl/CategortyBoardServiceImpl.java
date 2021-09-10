@@ -27,8 +27,8 @@ public class CategortyBoardServiceImpl implements CategoryBoardService{
 	}
 	
 	@Override
-	public int insertCategoryBoardUser(Map<String, Object> param) {
-		return categoryBoardMapper.insertCategoryBoardUser(param);
+	public int insertCategoryBoardMember(Map<String, Object> param) {
+		return categoryBoardMapper.insertCategoryBoardMember(param);
 	}
 	
 	@Override
@@ -49,6 +49,11 @@ public class CategortyBoardServiceImpl implements CategoryBoardService{
 	@Override
 	public int outBoard(Map<String, Object> param) throws Exception {
 		return categoryBoardMapper.outBoard(param);
+	}
+	
+	@Override
+	public List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception {
+		return categoryBoardMapper.getMemberListToInvite(categoryNo);
 	}
 
 }
