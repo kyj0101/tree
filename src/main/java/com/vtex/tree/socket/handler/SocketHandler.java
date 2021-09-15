@@ -10,9 +10,14 @@ import org.springframework.security.oauth2.client.authentication.OAuth2Authentic
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
+import org.springframework.web.socket.TextMessage;
+import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.nimbusds.jose.shaded.json.JSONObject;
+import com.nimbusds.jose.shaded.json.parser.JSONParser;
 import com.vtex.tree.member.vo.MemberVO;
 
 
@@ -33,7 +38,8 @@ public class SocketHandler extends TextWebSocketHandler{
 			
 			UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken)p;
 			member = (MemberVO) token.getPrincipal();
-		
+			member.setSessionId(session.getId());
+			
 		}else if(p instanceof OAuth2AuthenticationToken) {
 			
 			OAuth2AuthenticationToken token = (OAuth2AuthenticationToken) p;
@@ -49,8 +55,6 @@ public class SocketHandler extends TextWebSocketHandler{
 		
 		loginMemberList.add(member);
 		sessionList.add(session);
-		
-		System.out.println(loginMemberList.toString());
 	}
 
 	@Override
@@ -79,8 +83,35 @@ public class SocketHandler extends TextWebSocketHandler{
 
 		loginMemberList.remove(member);		
 		sessionList.remove(session);
-		
-		System.out.println(loginMemberList.toString());
 	}
-
+	@Override
+	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
+		
+		String payload = (String)message.getPayload();
+		Map<String, Object> msgMap = new ObjectMapper().readValue(payload, Map.class);
+		
+		String esntlId = (String) msgMap.get("esntlId");
+		String sessionId = "";
+		
+		for(MemberVO m : loginMemberList) {
+			
+			if(esntlId.equals(m.getEsntlId())) {
+				
+				sessionId = m.getSessionId();
+				break;
+			}
+		}
+		
+		for(WebSocketSession s : sessionList) {
+			
+			if(sessionId.equals(s.getId())) {
+				
+				JSONObject json = new JSONObject(msgMap);
+				
+				s.sendMessage(new TextMessage(json.toJSONString()));
+				break;
+			}
+		}
+	}
+	
 }

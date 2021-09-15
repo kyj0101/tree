@@ -65,7 +65,6 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey());
     }
 
-
     private MemberVO saveOrUpdate(OAuthAttributes attributes) {
     
     	MemberVO user = mapper.login(attributes.getEmail());

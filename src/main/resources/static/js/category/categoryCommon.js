@@ -61,7 +61,6 @@ function changeCheck(e){
 		$(label).text("전체 해제")
 	
 	}else{
-		console.log("?????");
 		$(".categoryAddMemberCheck").attr("checked", false);
 		$(label).text("전체 선택")
 	}

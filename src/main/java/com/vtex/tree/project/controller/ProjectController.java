@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,8 @@ import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
+import com.vtex.tree.schedule.service.ScheduleService;
+import com.vtex.tree.schedule.vo.ScheduleVO;
 
 @RequestMapping("/project")
 @Controller
@@ -37,6 +40,9 @@ public class ProjectController {
 	
 	@Autowired
 	private CommonCodeService commonCodeService;
+	
+	@Autowired
+	private ScheduleService scheduleService;
 	
 	@RequestMapping("/list")
 	public String projectList(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model) throws Exception {
@@ -71,14 +77,21 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertProject(ProjectVO project, @AuthenticationPrincipal MemberVO member) throws Exception {
+	public String insertProject(ProjectVO project, HttpServletRequest request) throws Exception {
 		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
+		String startDate = project.getStartDate(); 
+		String endDate = project.getEndDate();
+		
+		//프로젝트 insert
 		String loginEsntlId = member.getEsntlId();
 		
 		project.setFrstRegisterId(loginEsntlId);
 		project.setLastUpdusrId(loginEsntlId);
-		project.setStartDate(project.getStartDate().replaceAll("-", ""));
-		project.setEndDate(project.getEndDate().replaceAll("-", ""));
+		project.setStartDate(startDate.replaceAll("-", ""));
+		project.setEndDate(endDate.replaceAll("-", ""));
 		
 		int resultCnt = projectService.insertProject(project);
 		
@@ -90,7 +103,37 @@ public class ProjectController {
 		
 		resultCnt += projectService.insertProjectMember(param);
 		
-		if(resultCnt > 1) {
+		//프로젝트 시작일, 종료일 일정 insert
+		//String lastUpdusrId, String deleteAt, String color)
+		ScheduleVO scheduleStart = new ScheduleVO(null, 
+													project.getProjectId(),
+													project.getProjectNm() + " 시작일", 
+													startDate,
+													startDate,
+													"Y",
+													null,
+													member.getEsntlId(),
+													null,
+													member.getEsntlId(),
+													null,
+													"#007bff");
+		ScheduleVO scheduleEnd = new ScheduleVO(null, 
+													project.getProjectId(),
+													project.getProjectNm() + " 종료일", 
+													endDate,
+													endDate,
+													"Y",
+													null,
+													member.getEsntlId(),
+													null,
+													member.getEsntlId(),
+													null,
+													"#007bff");
+		
+		resultCnt += scheduleService.insertSchedule(scheduleStart);
+		resultCnt += scheduleService.insertSchedule(scheduleEnd);
+		
+		if(resultCnt > 3) {
 			return "ok";
 		}
 		
@@ -167,8 +210,11 @@ public class ProjectController {
 	@ResponseBody
 	@RequestMapping("/insert/member")
 	public String insertProjectMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
-										@AuthenticationPrincipal MemberVO member,
+										HttpServletRequest request,
 										String projectId) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -189,7 +235,10 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/insert/note")
-	public String insertProjectNote(String projectId, String note, @AuthenticationPrincipal MemberVO member) throws Exception {
+	public String insertProjectNote(String projectId, String note, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -207,7 +256,10 @@ public class ProjectController {
 	public String updateProjectRole(String projectId, 
 									String esntlId, 
 									String role, 
-									@AuthenticationPrincipal MemberVO member) throws Exception {
+									HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -226,7 +278,11 @@ public class ProjectController {
 	public String updateProjectRoleManager(String projectId, 
 											String esntlId, 
 											String role, 
-											@AuthenticationPrincipal MemberVO member) throws Exception{
+											HttpServletRequest request) throws Exception{
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("projectId", projectId);
@@ -247,7 +303,10 @@ public class ProjectController {
 									String projectNm, 
 									String startDate, 
 									String endDate,
-									@AuthenticationPrincipal MemberVO member) throws Exception {
+									HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -264,7 +323,10 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/delete/member")
-	public String deleteProjectMember(String projectId, String esntlId, @AuthenticationPrincipal MemberVO member) throws Exception {
+	public String deleteProjectMember(String projectId, String esntlId, HttpServletRequest request) throws Exception {
+		
+		HttpSession session = request.getSession();
+		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -279,7 +341,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/delete/project")
-	public String deleteProject(String projectId, @AuthenticationPrincipal MemberVO member) throws Exception {
+	public String deleteProject(String projectId) throws Exception {
 		
 		int resultCnt = projectService.deleteProject(projectId);
 		

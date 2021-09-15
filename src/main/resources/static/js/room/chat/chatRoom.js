@@ -50,6 +50,7 @@ function showAddCategoryChatModal(e){
 	
 	$(".modal-title").text("채팅방 추가");
 	$(".add-board-btn").addClass("hidden");
+	$(".add-meeting-btn").addClass("hidden");
 	$(".add-chat-btn").removeClass("hidden");
 	
 	var projectId = $($(e).parent().parent().parent()).attr("id").replace("id_","");

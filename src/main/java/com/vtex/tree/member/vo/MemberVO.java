@@ -50,6 +50,7 @@ public class MemberVO implements Serializable, UserDetails{
 	private String loginAt;
 	private String esntlId;
 	private String projectRole;
+	private String sessionId;
 	
 	public static long getSerialversionuid() {
 		return serialVersionUID;

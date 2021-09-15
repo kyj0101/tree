@@ -8,7 +8,8 @@ $(function(){
 		$(".add-chat-btn").css("display", "none")
 		$(".add-board-btn").css("display", "inline-block")
 		$(".form-check").css("display", "block")
-		
+		$(".add-meeting-btn").addClass("hidden");
+	
 		var boardNo = $("#boardNo").val();	
 		
 		//멤버 목록 가져옴
