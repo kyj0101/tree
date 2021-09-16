@@ -31,9 +31,7 @@
   + 네아로( 네이버 아이디로 로그인 )
 + ETC
   + WebRTC
-  
   + STOMP
-  
   + Google SMTP
   
     
