@@ -31,5 +31,23 @@
   + 네아로( 네이버 아이디로 로그인 )
 + ETC
   + WebRTC
+  
   + STOMP
+  
   + Google SMTP
+  
+    
+
+## 💻 기능 목록
+
++ 1:1 화상통화
++ 채팅
++ 게시판
++ 회원 관리
++ 근태 관리
++ 공통 코드 관리
++ 일정 관리
+
+## 👇 아래 노션 링크를 클릭하시면 더 자세한 정보를 보실 수 있습니다.
+
+[자세히 보기](https://lucky-continent-f31.notion.site/Tree-1eb851df2a814b5a9ae2faadb8eea231)
