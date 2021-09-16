@@ -18,34 +18,15 @@ import com.vtex.tree.videocall.vo.CallSessionVO;
 
 @Component
 public class WebRTCHandler extends TextWebSocketHandler{
-	
-	private List<WebSocketSession> sessionList = new ArrayList<>();
-	
-	private List<CallSessionVO> callSessionList = new ArrayList<>();
-	
-	@Override
-	public void afterConnectionEstablished(WebSocketSession session) throws Exception { 
-		sessionList.add(session);
-		
-		System.out.println("add====================");
-		System.out.println(sessionList.toString());
-	}
 
-	@Override
-	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-		sessionList.remove(session);
-		
-		System.out.println("remove===================");
-		System.out.println(sessionList.toString());
-	}	
+	private List<CallSessionVO> callSessionList = new ArrayList<>();
 	
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
 		
 		ObjectMapper objectMapper = new ObjectMapper();
 		TextMessage text = (TextMessage) message;
-		System.out.println(text.getPayload());
-		
+
 		Map<String, Object> msgMap = new ObjectMapper().readValue(text.getPayload(), Map.class);
 		
 		String type = (String) msgMap.get("type");
@@ -61,11 +42,19 @@ public class WebRTCHandler extends TextWebSocketHandler{
 				CallSessionVO callSessionJoin = new CallSessionVO(videoCallId, session);
 				callSessionList.add(callSessionJoin);
 				
-				Map<String, Object> tmp = new HashMap<>();
-				tmp.put("type", "join");
-				JSONObject jsonObj = new JSONObject(tmp);
+				Map<String, Object> joinMap = new HashMap<>();
+				joinMap.put("type", "join");
+				JSONObject joinObj = new JSONObject(joinMap);
 				
-				text = new TextMessage(jsonObj.toJSONString());
+				text = new TextMessage(joinObj.toJSONString());
+				break;
+			
+			case "hangup":
+				Map<String, Object> hangUpMap = new HashMap<>();
+				hangUpMap.put("type", "hangUp");
+				JSONObject hangUpObj = new JSONObject(hangUpMap);
+				
+				text = new TextMessage(hangUpObj.toJSONString());
 				break;
 				
 			case "offer":
@@ -77,9 +66,7 @@ public class WebRTCHandler extends TextWebSocketHandler{
 		}
 		
 		try {
-			System.out.println(callSessionList.toString());
 			WebSocketSession sendSession = findWebSocketSession(videoCallId, session);
-			System.out.println(sendSession);
 			sendSession.sendMessage(text);	
 		} catch (Exception e) {
 			System.out.println(e.getStackTrace());

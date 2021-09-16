@@ -24,7 +24,7 @@ public class DataSourceConfig {
 
         SqlSessionFactoryBean sqlSessionFactoryBean = new SqlSessionFactoryBean();
         sqlSessionFactoryBean.setDataSource(firstDataSource);
-        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:mapper/*.xml"));//xml파일의 위치, src/main/resources아래에 위치
+        sqlSessionFactoryBean.setMapperLocations(applicationContext.getResources("classpath:**/mapper/*.xml"));//xml파일의 위치, src/main/resources아래에 위치
         
         SqlSessionFactory sqlSessionFactory = sqlSessionFactoryBean.getObject(); 
         sqlSessionFactory.getConfiguration().setJdbcTypeForNull(JdbcType.NULL); 

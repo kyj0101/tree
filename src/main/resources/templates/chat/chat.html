@@ -65,7 +65,7 @@
 					<li class="nav-item">
 						<a class="nav-link chatMember" href="#" onclick="showChatMember();">멤버 목록</a>
 					</li>
-					<li class="nav-item">
+					<li class="nav-item" th:if="${session.loginMember.esntlId} == ${categoryMap.frstRegisterId}">
 						<a class="nav-link chatAddMember" href="#" onclick="showChatAddMember();">멤버 추가</a>
 					</li>
 				</ul>
@@ -119,4 +119,5 @@
 <th:block th:replace="common/addModal">
 </th:block>
 
-
+<th:block th:replace="common/toast">
+</th:block>

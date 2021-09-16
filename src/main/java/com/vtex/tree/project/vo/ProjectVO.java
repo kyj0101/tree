@@ -3,8 +3,8 @@ package com.vtex.tree.project.vo;
 import java.sql.Date;
 import java.util.List;
 
-import com.vtex.tree.category.board.vo.CategoryBoardVO;
-import com.vtex.tree.category.chat.vo.ChatRoomVO;
+import com.vtex.tree.category.vo.CategoryVO;
+import com.vtex.tree.chat.room.vo.ChatRoomVO;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
@@ -32,6 +32,6 @@ public class ProjectVO {
 	private String endDate;
 	private String note;
 	private String projectManagerNm;
-	private List<CategoryBoardVO> categoryBoardList;
+	private List<CategoryVO> categoryBoardList;
 	private List<ChatRoomVO> chatRoomList;
 }

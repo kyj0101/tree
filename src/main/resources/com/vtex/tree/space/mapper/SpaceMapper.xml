@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.vtex.tree.space.mapper.SpaceMapper">
+
+	<select id="getMemberList" resultType="memberVO">
+		/* SpaceMapper.getMemberList */
+		
+		SELECT
+		 	A.NAME,
+		 	A.EMAIL,
+		 	B.DETAIL_CODE_NAME AS DEPARTMENT_NAME,
+		 	(
+		 		SELECT
+		 			DETAIL_CODE_NAME
+		 		FROM
+		 			TB_COMMON_CODE_DETAIL C
+		 		WHERE
+		 			C.DETAIL_CODE = A.POSITION
+		 	)  AS POSITION_NAME,
+		 	A.ESNTL_ID
+		FROM
+			TB_MEMBER A
+			LEFT OUTER JOIN TB_COMMON_CODE_DETAIL B ON B.DETAIL_CODE = A.DEPARTMENT
+			LEFT OUTER JOIN TB_PROJECT_USER C ON C.ESNTL_ID = A.ESNTL_ID
+		WHERE
+			A.QUIT_AT = 'N'
+			AND A.EMAIL != #{email}
+			AND C.PROJECT_ID = #{projectId}
+		ORDER BY A.NAME
+	</select>
+
+</mapper>

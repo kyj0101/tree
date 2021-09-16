@@ -6,15 +6,25 @@ function showVideoCallModal(e){
 
 	$.ajax({
 		type: "POST",
-		url: "/category/onlinememberlist",
+		url: "/space/onlinememberlist",
 		data:{"projectId":projectId},
 		dataType: "json",
-		success(result) {
-
+		 success(result) {
+	
 			$("#videoCallMemberList").empty();
-
-			$.each(result, function(index, elem) {
 				
+
+			 if (result.length == 0) {
+
+				 var html = '<li class="list-group-item videoCallLi" style="display: flex">';
+				 html += "<p>현재 접속한 사용자가 없습니다.</p>";
+				 html += '</li>';
+
+				 $("#videoCallMemberList").append(html);
+			 }
+
+			 $.each(result, function(index, elem) {
+
 				var html = '<li class="list-group-item videoCallLi" style="display: flex">';
 				html += '<div>';
 				html += elem.name;
@@ -31,13 +41,13 @@ function showVideoCallModal(e){
 				html += '<a class="btn btn-primary" href="#" role="button" onclick="call(this);">';
 				html += '<i class="fas fa-phone-alt"></i>';
 				html += '</a>';
-				html += '</div>';	
+				html += '</div>';
 				html += '</li>';
 
 				$("#videoCallMemberList").append(html);
 			});
-
-			return new Promise(function(resolve, reject) {
+			
+			return new Promise(function(resolve, reject) {				
 				$("#addVideoCallModal").modal("show");
 			});
 		},

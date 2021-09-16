@@ -7,8 +7,8 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vtex.tree.category.board.vo.CategoryBoardVO;
-import com.vtex.tree.category.chat.vo.ChatRoomVO;
+import com.vtex.tree.category.vo.CategoryVO;
+import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.mapper.ProjectMapper;
 import com.vtex.tree.project.service.ProjectService;
@@ -96,7 +96,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param) throws Exception {
+	public List<CategoryVO> getProjectBoardList(Map<String, Object> param) throws Exception {
 		return projectMapper.getProjectBoardList(param);
 	}
 	

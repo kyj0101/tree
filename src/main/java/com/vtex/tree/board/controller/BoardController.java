@@ -37,10 +37,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
-import com.vtex.tree.category.board.service.CategoryBoardService;
-import com.vtex.tree.category.board.vo.CategoryBoardVO;
-import com.vtex.tree.category.chat.service.CategoryChatService;
-import com.vtex.tree.category.chat.vo.ChatRoomVO;
+import com.vtex.tree.category.service.CategoryService;
+import com.vtex.tree.category.vo.CategoryVO;
+import com.vtex.tree.chat.room.service.ChatRoomService;
+import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.common.util.FileUtil;
 import com.vtex.tree.home.service.HomeService;
@@ -62,7 +62,7 @@ public class BoardController {
 	private AttendanceService attendanceService;
 	
 	@Autowired
-	private CategoryBoardService categoryBoardService;
+	private CategoryService categoryBoardService;
 
 	@Autowired
 	private ProjectService projectService;
@@ -124,9 +124,9 @@ public class BoardController {
 			param.put("projectId", project.getProjectId());
 			param.put("esntlId", member.getEsntlId());
 			
-			List<CategoryBoardVO> categoryBoardList = projectService.getProjectBoardList(param);
+			List<CategoryVO> categoryBoardList = projectService.getProjectBoardList(param);
 			project.setCategoryBoardList(categoryBoardList);
-
+			
 			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
 			project.setChatRoomList(chatRoomList);
 			

@@ -50,11 +50,22 @@ public class SocketHandler extends TextWebSocketHandler{
 			member = new MemberVO();
 			member.setEmail((String)attributes.get("email"));
 			member.setName((String)attributes.get("name"));
-			member.setEsntlId((String)attributes.get("esntlId"));			
+			member.setEsntlId((String)attributes.get("esntlId"));
+			member.setPositionName((String)attributes.get("positionName"));
+			member.setDepartmentName((String)attributes.get("departmentName"));
+			member.setSessionId(session.getId());
 		}
 		
+		for(MemberVO m : loginMemberList) {
+			System.out.println(m.toString());
+		}
+		
+		
+		loginMemberList.remove(member);
 		loginMemberList.add(member);
 		sessionList.add(session);
+		
+		System.out.println(loginMemberList.toString());
 	}
 
 	@Override
@@ -76,13 +87,13 @@ public class SocketHandler extends TextWebSocketHandler{
 			Map<String, Object> attributes  = oAuthUser.getAttributes();
 			
 			member = new MemberVO();
-			member.setEmail((String)attributes.get("email"));
-			member.setName((String)attributes.get("name"));
-			member.setEsntlId((String)attributes.get("esntlId"));			
+			member.setEsntlId((String)attributes.get("esntlId"));
 		}
 
 		loginMemberList.remove(member);		
 		sessionList.remove(session);
+		
+		System.out.println(loginMemberList.toString());
 	}
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
@@ -103,7 +114,7 @@ public class SocketHandler extends TextWebSocketHandler{
 		}
 		
 		for(WebSocketSession s : sessionList) {
-			
+			System.out.println(sessionId);
 			if(sessionId.equals(s.getId())) {
 				
 				JSONObject json = new JSONObject(msgMap);

@@ -116,7 +116,7 @@ function addSchedule(){
 function getScheduleList(){
 	
 	$.ajax({
-		type: "POST",
+		type: "get",
 		url: "/schedule/get/schedulelist",
 		data: {
 			"projectId":$("#projectId").val()

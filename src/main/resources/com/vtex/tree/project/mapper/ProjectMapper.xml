@@ -248,10 +248,11 @@
 			A.PROJECT_NM
 	</select>
 	
-	<select id="getProjectBoardList" resultType="categoryBoardVO">
+	<select id="getProjectBoardList" resultType="categoryVO">
 		/* ProjectMapper.getProjectBoardList */
 		
 		SELECT
+			DISTINCT
 			A.CATEGORY_NO,
 			A.CATEGORY_NAME,
 			A.PROJECT_ID

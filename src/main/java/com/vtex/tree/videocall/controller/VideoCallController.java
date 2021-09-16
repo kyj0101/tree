@@ -16,9 +16,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.vtex.tree.attendance.service.AttendanceService;
-import com.vtex.tree.category.board.service.CategoryBoardService;
-import com.vtex.tree.category.board.vo.CategoryBoardVO;
-import com.vtex.tree.category.chat.vo.ChatRoomVO;
+import com.vtex.tree.category.service.CategoryService;
+import com.vtex.tree.category.vo.CategoryVO;
+import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
@@ -35,7 +35,7 @@ public class VideoCallController {
 	private ProjectService projectService;
 	
 	@Autowired
-	private CategoryBoardService categoryBoardService;
+	private CategoryService categoryBoardService;
 	
 	@Value("${empty.msg}")
 	private String emptyMsg;
@@ -62,7 +62,7 @@ public class VideoCallController {
 			param.put("projectId", project.getProjectId());
 			param.put("esntlId", member.getEsntlId());
 			
-			List<CategoryBoardVO> categoryBoardList = projectService.getProjectBoardList(param);
+			List<CategoryVO> categoryBoardList = projectService.getProjectBoardList(param);
 			project.setCategoryBoardList(categoryBoardList);
 
 			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
@@ -72,7 +72,7 @@ public class VideoCallController {
 
 		//현재 카테고리 
 		Map<String, Object> categoryMap = categoryBoardService.getCategory(1);
-		
+		categoryMap.put("categoryName", "화상통화");
 		model.addAttribute("categoryMap", categoryMap);
 		
 		//출퇴근 여부

@@ -26,12 +26,11 @@
 
 	<script src="/js/common/common.js"></script>
   	<script src="/js/common/main.js"></script>
-  	<script src="/js/category/boardCategory.js"></script>
-	<script src="/js/room/chat/chatRoom.js"></script>
+  	<script src="/js/category/category.js"></script>
+	<script src="/js/chatroom/chatRoom.js"></script>
 	<script src="/js/videocall/videoCall.js"></script>
-	<script src="/js/category/categoryCommon.js"></script>
+	<script src="/js/space/space.js"></script>
   	<script src="/js/attendance/attendanceRecord.js"></script>
-  	<script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
    
 </head>
 
@@ -82,6 +81,7 @@
 							  		th:each="chatRoom : ${project.chatRoomList}"
 							  		th:text="${chatRoom.chatRoomTitle}"
 							  		th:onclick="|location.href='/chat/room?category=${chatRoom.chatRoomNumber}'|"></button>
+							  	<a type="button" class="list-group-item list-group-item-action" th:href="|/schedule/view?projectId=${project.projectId}|">프로젝트 일정</a>
 							</div>
 						</div>
 					</div>
@@ -176,19 +176,3 @@
 
   </header>
   
-<div role="alert" aria-live="assertive" aria-atomic="true" class="toast" data-autohide="false" style="position: absolute; bottom: 0; right: 0; margin-right: 70px; margin-bottom: 50px; min-width: 300px;">
-  <div class="toast-header">
-    <strong class="mr-auto">화상 통화</strong>
-    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
-  </div>
-  <div class="toast-body">
-  	<input type="hidden" id="videoCallId"> 	
-  	<p id="callInfo"></p>
-  	<div class="mt-2 pt-2 border-top">
-      <button type="button" class="btn btn-primary btn-sm" onclick="pickUpCall();">받기</button>
-      <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="toast">거절</button>
-    </div>
-  </div>
-</div>

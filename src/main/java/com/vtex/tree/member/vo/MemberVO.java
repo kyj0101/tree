@@ -19,7 +19,6 @@ import lombok.ToString;
 
 
 @ToString
-@EqualsAndHashCode
 @Getter
 @Setter
 public class MemberVO implements Serializable, UserDetails{
@@ -92,4 +91,24 @@ public class MemberVO implements Serializable, UserDetails{
 		return true;
 	}
 
+	@Override
+	public int hashCode() {
+		return super.hashCode();
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		
+		if(obj instanceof MemberVO) {
+			
+			MemberVO otherMember = (MemberVO)obj;
+			String otherEsntlId = otherMember.getEsntlId(); 
+			
+			if(otherEsntlId.equals(this.esntlId)) {
+				return true;
+			}
+		}
+		
+		return false;
+	}
 }

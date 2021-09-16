@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
 
-import com.vtex.tree.category.board.vo.CategoryBoardVO;
-import com.vtex.tree.category.chat.vo.ChatRoomVO;
+import com.vtex.tree.category.vo.CategoryVO;
+import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.vo.ProjectVO;
 
@@ -42,7 +42,7 @@ public interface ProjectService {
 
 	List<ProjectVO> getMembersProject(String esntlId) throws Exception;
 
-	List<CategoryBoardVO> getProjectBoardList(Map<String, Object> param) throws Exception;
+	List<CategoryVO> getProjectBoardList(Map<String, Object> param) throws Exception;
 
 	List<ChatRoomVO> getProjectChatRoomList(Map<String, Object> param) throws Exception;
 

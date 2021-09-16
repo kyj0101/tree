@@ -3,6 +3,9 @@
 <th:block th:replace="common/header">
 </th:block>
 
+<th:block th:replace="common/toast">
+</th:block>
+
 <link href='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.css' rel='stylesheet' />
 <script src='https://cdn.jsdelivr.net/npm/fullcalendar@5.8.0/main.min.js'></script>
 <!-- fullcalendar 언어 CDN -->
@@ -19,14 +22,16 @@
     </section>
 </body>
 </html>
+<input type="hidden" id="projectId" th:value="${projectId}" />
 
 <!-- calendar modal -->
-<div class="modal fade" id="addDate" data-backdrop="static"
+<div th:if="${session.loginMember.esntlId} == ${categoryMap.esntlId}" 
+	class="modal fade" id="addDate" data-backdrop="static"
 	data-keyboard="false" tabindex="-1"
 	aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	<div class="modal-dialog modal-dialog-scrollable modal-lg">
 		<div class="modal-content">
-			<input type="hidden" id="projectId" th:value="${projectId}" />
+			
 			<div class="modal-header">
 				<h5 class="modal-title" id="add-modal-label">일정추가</h5>
 				<button type="button" class="close" data-dismiss="modal"
@@ -137,8 +142,8 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn btn-success" onclick="updateShedule();">수정</button>
-				<button type="button" class="btn btn-secondary" onclick="deleteSchedule();">삭제</button>
+				<button th:if="${session.loginMember.esntlId} == ${categoryMap.esntlId}"  type="button" class="btn btn-success" onclick="updateShedule();">수정</button>
+				<button th:if="${session.loginMember.esntlId} == ${categoryMap.esntlId}"  type="button" class="btn btn-secondary" onclick="deleteSchedule();">삭제</button>
 			</div>
 		</div>
 	</div>
@@ -146,3 +151,4 @@
 
 <th:block th:replace="common/addModal">
 </th:block>
+

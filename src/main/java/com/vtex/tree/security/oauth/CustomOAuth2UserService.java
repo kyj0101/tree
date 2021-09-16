@@ -6,6 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
+import javax.swing.text.Position;
 
 import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -58,6 +59,14 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
 		Map<String, Object> attributeMap = new HashMap<>();
 		attributeMap = attributes.getAttributes();
 		attributeMap.put("esntlId", member.getEsntlId());
+		attributeMap.put("name", member.getName());
+		attributeMap.put("phone", member.getPhone());
+		attributeMap.put("birth", member.getBirth());
+		attributeMap.put("department", member.getDepartment());
+		attributeMap.put("position", member.getPosition());
+		attributeMap.put("roleCode", member.getRoleCode());
+		attributeMap.put("departmentName", member.getDepartmentName());
+		attributeMap.put("positionName", member.getPositionName());
 		
         return new DefaultOAuth2User(
         		authorities,

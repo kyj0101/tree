@@ -92,8 +92,6 @@ public class AttendanceController {
 			attendance.setDay(AttendanceUtil.updateDayFormat(attendance.getDay(), new SimpleDateFormat("yyyy-MM-dd")));
 			attendance.setInTime(AttendanceUtil.updateInTimeFormat(attendance.getInTime(), new SimpleDateFormat("HH:mm")));
 			attendance.setOutTime(AttendanceUtil.updateOutTimeFormat(attendance.getOutTime(), new SimpleDateFormat("HH:mm")));
-			
-			System.out.println(attendance.getOutTime());
 		}
 		
 		model.addAttribute("attendanceList", attendanceList);

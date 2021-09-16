@@ -5,7 +5,7 @@
 <mapper namespace="com.vtex.tree.chat.mapper.ChatMapper">
 	
 	<select id="getChatMemberList" resultType="memberVO">
-		/* CategoryChatMapper.getChatMemberList */
+		/* ChatMapper.getChatMemberList */
 		
 		SELECT
 			A.EMAIL,
