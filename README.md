@@ -19,6 +19,7 @@
   + Thymeleaf
   + JavaScript
   + Jquery
+  + Bootstrap 4.6v
 + Framework
   + Spring Framework ( Spring boot )
   + Spring Security
@@ -30,9 +31,10 @@
   + DAUM 주소
   + 네아로( 네이버 아이디로 로그인 )
 + ETC
-  + WebRTC
-  + STOMP
-  + Google SMTP
+  + WebRTC ( 1:1 화상통화 )
+  + STOMP ( 채팅 )
+  + Google SMTP ( 이메일 인증 )
+  + Open SSL ( 브라우저 보안 )
   
     
 
