@@ -22,6 +22,7 @@ import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
+import com.vtex.tree.security.annotation.LoginUser;
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/videocall")
@@ -43,15 +44,10 @@ public class VideoCallController {
 	@RequestMapping("/view")
 	public String videoCallView(@RequestParam(required = true) String videoCallId, 
 								@RequestParam(required = true) String type,
-								HttpServletRequest request, 
+								@LoginUser MemberVO member, 
 								Model model) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+
 		//카테고리 리스트 
-		session.setAttribute("loginMember", member);
-				
 		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
 		model.addAttribute("projectList", projectList);
 		

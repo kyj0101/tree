@@ -26,7 +26,8 @@ import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.schedule.service.ScheduleService;
-import com.vtex.tree.schedule.vo.ScheduleVO; 
+import com.vtex.tree.schedule.vo.ScheduleVO;
+import com.vtex.tree.security.annotation.LoginUser; 
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/schedule")
@@ -51,11 +52,8 @@ public class ScheduleController {
 	@RequestMapping("/view")
 	public String calendarView(@RequestParam String projectId, 
 								Model model,
-								HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+								@LoginUser MemberVO member) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
 		
 		//메뉴에 있을 프로젝트 리스트
@@ -94,9 +92,6 @@ public class ScheduleController {
 		project.setStartDate(AttendanceUtil.updateDayFormat(project.getStartDate(), projectFormat));
 		project.setEndDate(AttendanceUtil.updateDayFormat(project.getEndDate(), projectFormat));
 		
-		System.out.println("=============================================");
-		System.out.println(project.toString());
-		
 		model.addAttribute("project", project);
 		model.addAttribute("emptyMsg", emptyMsg);
 		
@@ -105,10 +100,8 @@ public class ScheduleController {
 	
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertSchedule(ScheduleVO schedule, HttpServletRequest request) throws Exception {
+	public String insertSchedule(ScheduleVO schedule, @LoginUser MemberVO member) throws Exception {
 		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		String loginEsntlId = member.getEsntlId();
 		
 		schedule.setFrstRegisterId(loginEsntlId);

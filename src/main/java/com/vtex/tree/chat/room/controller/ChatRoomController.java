@@ -24,6 +24,7 @@ import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.chat.room.service.ChatRoomService;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 import com.vtex.tree.socket.handler.SocketHandler;
 
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -39,10 +40,8 @@ public class ChatRoomController {
 	public String insertCategoryChat(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
 									String title,
 									String projectId,
-									HttpServletRequest request) throws Exception {
+									@LoginUser MemberVO member) throws Exception {
 		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		String loginEsntlId = member.getEsntlId(); 
 				
 		int resultCnt = 0;
@@ -76,16 +75,12 @@ public class ChatRoomController {
 	}
 
 	@RequestMapping("/out")
-	public String outChatRoom(String category, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
-		return outChatRoomManager(category, member.getEsntlId(), request);
+	public String outChatRoom(String category, @LoginUser MemberVO member) throws Exception {
+		return outChatRoomManager(category, member.getEsntlId(), member);
 	}
 	
 	@RequestMapping("/out/manager")
-	public String outChatRoomManager(String category, String esntlId, HttpServletRequest request) throws Exception {
+	public String outChatRoomManager(String category, String esntlId, @LoginUser MemberVO member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -98,11 +93,8 @@ public class ChatRoomController {
 	}
 	
 	@RequestMapping("/delete")
-	public String deleteChat(String category, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+	public String deleteChat(String category, @LoginUser MemberVO member) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("category", category);
@@ -125,11 +117,8 @@ public class ChatRoomController {
 	
 	@RequestMapping("/add/member")
 	public String addMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList,
-								HttpServletRequest request,
+								@LoginUser MemberVO member,
 								String categoryNo) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		int resultCnt = 0;
 		Map<String, Object> param = new HashMap<>();

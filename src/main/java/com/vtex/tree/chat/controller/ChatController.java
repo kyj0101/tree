@@ -30,6 +30,7 @@ import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
+import com.vtex.tree.security.annotation.LoginUser;
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/chat")
@@ -61,12 +62,9 @@ public class ChatController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/room")
-	public String getChatRoom(HttpServletRequest request,
+	public String getChatRoom(@LoginUser MemberVO member,
 								Model model,
 								@RequestParam(defaultValue = "1") int category) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
 		

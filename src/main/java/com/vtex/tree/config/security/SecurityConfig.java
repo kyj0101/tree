@@ -16,6 +16,7 @@ import org.springframework.security.web.authentication.rememberme.JdbcTokenRepos
 import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import com.vtex.tree.security.handler.LoginFailHandler;
+import com.vtex.tree.security.handler.LoginSuccessHandler;
 import com.vtex.tree.security.oauth.CustomOAuth2UserService;
 import com.vtex.tree.security.service.SecurityDetails;
 
@@ -41,6 +42,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	public LoginFailHandler logInFailHandler() {
 		return new LoginFailHandler();
 	}
+	
+	@Bean
+	public LoginSuccessHandler logInSuccessHandler() {
+		return new LoginSuccessHandler();
+	}
 
 
 	@Override
@@ -56,6 +62,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.loginPage("/login")
 			.defaultSuccessUrl("/board/list")
 			.failureHandler(logInFailHandler())
+			.successHandler(logInSuccessHandler())
 			.and()
 			.logout()
 			.logoutUrl("/logout") // POST
@@ -68,7 +75,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()
 			.oauth2Login() //OAuth2 로그인 설정의 진입점
 			.loginPage("/login")
-			.failureHandler(logInFailHandler())			
+			.failureHandler(logInFailHandler())
+			.successHandler(logInSuccessHandler())
 			.userInfoEndpoint() //로그인 성공 이후 사용자 정보를 가져올 때의 설정들을 담당
 			.userService(service); //로그인 성공 이ㅣ후 후속 조치를 진행할 UserService인터페이스 구현체를 등록함
 	}

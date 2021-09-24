@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.employee.service.EmployeeService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/employee")
 @Controller
@@ -88,10 +89,7 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@RequestMapping("/withdraw")
-	public String withdrawEmployee(String email, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+	public String withdrawEmployee(String email, @LoginUser MemberVO member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -110,11 +108,8 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@RequestMapping("/update")
-	public String updateEmployee(MemberVO member, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO loginMember = (MemberVO)session.getAttribute("loginMember");
-		
+	public String updateEmployee(MemberVO member, @LoginUser MemberVO loginMember) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("adminEmail", loginMember.getEmail());

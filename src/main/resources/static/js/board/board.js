@@ -99,6 +99,10 @@ $(function() {
 				"boardNo":boardNo
 			},
 			success(result) {
+				
+				$(".textDiv").empty();
+				$(".file-download-ul").empty();
+				
 				var board = result.board;
 				var files = result.fileListMap;
 

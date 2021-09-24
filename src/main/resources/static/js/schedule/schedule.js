@@ -117,7 +117,7 @@ function addSchedule(){
 					getScheduleList();
 				}
 				
-				$("#addDate").modal('hide');
+				$("#addSchedule").modal('hide');
 				resetInput();
 				alert(msg);
 			}
@@ -158,22 +158,22 @@ function resetInput(){
 function updateShedule(){
 	
 	var schedule = {
-		"title":$(".updateTitle").val(),
+		"title":$("#updateTitle").val(),
 		"color":$("#updateColor").val(),
 		"id":$("#scheduleId").val()
 	}
 	
 	if(!$("#updateAllDay").prop("checked")){
 		
-		schedule.start = $(".updateStartDate").val() + ' '  + $(".updateStartTime").val();
-		schedule.end = $(".updateEndDate").val() + ' '  + $(".updateEndTime").val();
+		schedule.start = $("#updateStartDate").val() + ' '  + $("#updateStartTime").val();
+		schedule.end = $("#updateEndDate").val() + ' '  + $("#updateEndTime").val();
 
-		schedule.startTime = $(".updateStartTime").val();
-		schedule.endTime = $(".updateEndTime").val();
+		schedule.startTime = $("#updateStartTime").val();
+		schedule.endTime = $("#updateEndTime").val();
 		
 	}else{
-		schedule.start = $(".updateStartDate").val();
-		schedule.end = $(".updateEndDate").val();
+		schedule.start = $("#updateStartDate").val();
+		schedule.end = $("#updateEndDate").val();
 		schedule.allDay = 'Y';
 	}
 
@@ -208,7 +208,7 @@ function updateShedule(){
 					getScheduleList();
 				}
 				
-				$("#updateDate").modal('hide');
+				$("#updateSchedule").modal('hide');
 				alert(msg);
 			}
 		});
@@ -237,7 +237,7 @@ function deleteSchedule(){
 				getScheduleList();
 			}
 
-			$("#updateDate").modal('hide');
+			$("#updateSchedule").modal('hide');
 			alert(msg);
 		}
 	});

@@ -23,6 +23,7 @@ import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.service.MemberService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 @RequestMapping("/member")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -42,10 +43,8 @@ public class MemberController {
 	
 
 	@RequestMapping("/mypage/update/view")
-	public String myPageUpdateView(Model model, HttpServletRequest request) throws Exception {
+	public String myPageUpdateView(Model model, @LoginUser MemberVO member) throws Exception {
 		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		String birth = member.getBirth();
 		
 		if(!birth.contains("-")) {
@@ -137,11 +136,12 @@ public class MemberController {
 	@RequestMapping("/mypage/update/password")
 	public String myPageUpdatePassword(String password, 
 										String newPassword, 
-										HttpServletRequest request, 
-										RedirectAttributes redirectAttribute) {
+										HttpServletRequest request,
+										RedirectAttributes redirectAttribute,
+										@LoginUser MemberVO member) {
 		try {
+			
 			HttpSession session = request.getSession();
-			MemberVO member = (MemberVO)session.getAttribute("loginMember");
 
 			Map<String, String> param = new HashMap<>();
 			String encryptedPassword =  passwordEncoder.encode(newPassword);
@@ -163,10 +163,12 @@ public class MemberController {
 	
 	@ResponseBody
 	@RequestMapping("/mypage/withdraw")
-	public String myPageWithdraw(String password, String reasonCode, HttpServletRequest request) throws Exception {
+	public String myPageWithdraw(String password, 
+									String reasonCode, 
+									HttpServletRequest request,
+									@LoginUser MemberVO member) throws Exception {
 
 		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 	
 		if(passwordEncoder.matches(password, member.getPassword())) {
 			Map<String, Object> param = new HashMap<>();

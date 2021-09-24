@@ -26,6 +26,7 @@ import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.schedule.service.ScheduleService;
 import com.vtex.tree.schedule.vo.ScheduleVO;
+import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/project")
 @Controller
@@ -77,10 +78,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertProject(ProjectVO project, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+	public String insertProject(ProjectVO project, @LoginUser MemberVO member) throws Exception {
 		
 		String startDate = project.getStartDate(); 
 		String endDate = project.getEndDate();
@@ -180,12 +178,9 @@ public class ProjectController {
 	@ResponseBody
 	@RequestMapping("/insert/member")
 	public String insertProjectMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
-										HttpServletRequest request,
+										@LoginUser MemberVO member,
 										String projectId) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("loginEsntlId", member.getEsntlId());
@@ -205,10 +200,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/insert/note")
-	public String insertProjectNote(String projectId, String note, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+	public String insertProjectNote(String projectId, String note, @LoginUser MemberVO member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -226,10 +218,7 @@ public class ProjectController {
 	public String updateProjectRole(String projectId, 
 									String esntlId, 
 									String role, 
-									HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+									@LoginUser MemberVO member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -248,11 +237,8 @@ public class ProjectController {
 	public String updateProjectRoleManager(String projectId, 
 											String esntlId, 
 											String role, 
-											HttpServletRequest request) throws Exception{
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+											@LoginUser MemberVO member) throws Exception{
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("projectId", projectId);
@@ -273,11 +259,8 @@ public class ProjectController {
 									String projectNm, 
 									String startDate, 
 									String endDate,
-									HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+									@LoginUser MemberVO member) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("projectNm", projectNm);
@@ -293,11 +276,8 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/delete/member")
-	public String deleteProjectMember(String projectId, String esntlId, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+	public String deleteProjectMember(String projectId, String esntlId, @LoginUser MemberVO member) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("projectId", projectId);

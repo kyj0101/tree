@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 import com.vtex.tree.socket.handler.SocketHandler;
 import com.vtex.tree.space.service.SpaceService;
 
@@ -35,10 +36,7 @@ public class SpaceController {
 	
 	
 	@RequestMapping("/memberlist")
-	public void getMemberList(String projectId, HttpServletResponse response, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+	public void getMemberList(String projectId, HttpServletResponse response, @LoginUser MemberVO member) throws Exception {
 		
 		response.setContentType("text/html;charset=UTF-8");
 		
@@ -66,12 +64,11 @@ public class SpaceController {
 	}
 	
 	@RequestMapping("/onlinememberlist")
-	public List<MemberVO> getOnlineMemberList(HttpServletRequest request, HttpServletResponse response) throws JsonIOException, IOException {
+	public List<MemberVO> getOnlineMemberList(@LoginUser MemberVO member, HttpServletResponse response) throws JsonIOException, IOException {
 		
-		MemberVO member = (MemberVO) request.getSession().getAttribute("loginMember");
 		List<MemberVO> loginMemberList = SocketHandler.loginMemberList;
-		
 		List<MemberVO> cloneList = loginMemberList.stream().collect(Collectors.toList());
+		
 		cloneList.remove(member);
 		
 		return cloneList;

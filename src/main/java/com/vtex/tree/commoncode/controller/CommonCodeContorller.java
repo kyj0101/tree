@@ -29,6 +29,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/commoncode")
 @Controller
@@ -85,13 +86,13 @@ public class CommonCodeContorller {
 	 * @return
 	 */
 	@RequestMapping("/code/insert")
-	public ModelAndView insertCommonCode(String codeName, String code, String useAt
-			, HttpServletRequest request, Model model) throws Exception {
+	public ModelAndView insertCommonCode(String codeName, 
+											String code, 
+											String useAt, 
+											@LoginUser MemberVO member, 
+											Model model) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-
 		Map<String, String> param = new HashMap<>();
 
 		param.put("codeName", codeName);
@@ -146,12 +147,9 @@ public class CommonCodeContorller {
 	public ModelAndView updateCommonCode(String codeName, 
 											String code, 
 											String useAt, 
-											HttpServletRequest request) throws Exception {
+											@LoginUser MemberVO member) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-
 		Map<String, String> param = new HashMap<>();
 
 		param.put("codeName", codeName);
@@ -186,11 +184,9 @@ public class CommonCodeContorller {
 	 * @throws Exception 
 	 */
 	@RequestMapping("/code/delete")
-	public ModelAndView deleteCommonCode(String code, HttpServletRequest request) throws Exception {
+	public ModelAndView deleteCommonCode(String code, @LoginUser MemberVO member) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		Map<String, String> param = new HashMap<>();
 
 		param.put("email", member.getEmail());
@@ -235,7 +231,7 @@ public class CommonCodeContorller {
 		try {
 
 			Map<String, String> commonCodeMap = commonCodeService.selectOneCommonCode(code);
-			System.out.println(commonCodeMap);
+
 			response.setContentType("text/html;charset=UTF-8");
 			new Gson().toJson(commonCodeMap, response.getWriter());
 		
@@ -327,10 +323,8 @@ public class CommonCodeContorller {
 													String detailCodeName, 
 													String sortOrdr,
 													String detailCodeUseAt,
-													HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+													@LoginUser MemberVO member) throws Exception {
+
 		Map<String, String> param = new HashMap<>();
 
 		param.put("email", member.getEmail());
@@ -380,11 +374,8 @@ public class CommonCodeContorller {
 													String detailCodeName, 
 													String sortOrdr,
 													String detailCodeUseAt,
-													HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+													@LoginUser MemberVO member) throws Exception {
+
 		Map<String, String> param = new HashMap<>();
 		
 		param.put("email", member.getEmail());
@@ -406,10 +397,8 @@ public class CommonCodeContorller {
 	
 
 	@RequestMapping("/detail/code/delete")
-	public ResponseEntity<String> deleteDetailCode(String detailCode, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+	public ResponseEntity<String> deleteDetailCode(String detailCode, @LoginUser MemberVO member) throws Exception {
+
 		Map<String, String> param = new HashMap<>();
 
 		param.put("email", member.getEmail());

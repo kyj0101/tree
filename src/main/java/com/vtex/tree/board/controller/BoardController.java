@@ -47,6 +47,7 @@ import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
+import com.vtex.tree.security.annotation.LoginUser;
 import com.vtex.tree.socket.handler.SocketHandler;
 
 import groovy.lang.Category;
@@ -90,14 +91,10 @@ public class BoardController {
 								HttpServletRequest request, 
 								@RequestParam(defaultValue = "1") int category, 
 								Model model,
-								@AuthenticationPrincipal MemberVO member) throws Exception {
+								@LoginUser MemberVO member) throws Exception {
 		
 		HttpSession session = request.getSession();
-		
-		if(member == null) {
-			member = (MemberVO) session.getAttribute("loginMember");
-		}
-		
+
 		//게시판리스트
 		Map<String, Object> param = new HashMap<>();
 
@@ -172,11 +169,9 @@ public class BoardController {
 												String noticeAt,
 												String fileId,
 												String categoryNo,
-												HttpServletRequest request,
+												@LoginUser MemberVO member,
 												MultipartFile[] uploadFile) throws Exception {
-
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+		
 		Map<String, Object> param = new HashMap<>();
 
 		param.put("title", title);
@@ -239,10 +234,12 @@ public class BoardController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public String updateBoard(String title, String content, String boardNo, String noticeAt, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+	public String updateBoard(String title, 
+								String content, 
+								String boardNo, 
+								String noticeAt, 
+								@LoginUser MemberVO member) throws Exception {
+
 		Map<String, Object> param = new HashMap<String, Object>();
 		
 		param.put("title", title);

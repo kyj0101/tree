@@ -16,8 +16,6 @@ import org.springframework.security.web.authentication.AuthenticationFailureHand
 
 public class LoginFailHandler implements AuthenticationFailureHandler {
 	
-	private RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
-	
 	@Override
 	public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
 			 AuthenticationException exception) throws IOException, ServletException {

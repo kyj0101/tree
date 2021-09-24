@@ -29,6 +29,7 @@ import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.attendance.vo.AttendanceVO;
 import com.vtex.tree.common.util.AttendanceUtil;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 
 
 @RequestMapping("/attendance")
@@ -111,11 +112,10 @@ public class AttendanceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/in")
-	public String insertIn(HttpServletRequest request) throws Exception {
+	public String insertIn(HttpServletRequest request, @LoginUser MemberVO member) throws Exception {
 		
 		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-
+		
 		//출퇴근 여부
 		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
 		
@@ -149,11 +149,10 @@ public class AttendanceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/out")
-	public String updateOut(HttpServletRequest request) throws Exception {
+	public String updateOut(HttpServletRequest request, @LoginUser MemberVO member) throws Exception {
 		
 		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
-		
+	
 		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
 
 		if(isOut){
@@ -192,10 +191,8 @@ public class AttendanceController {
 	 */
 	@ResponseBody
 	@RequestMapping("/update")
-	public String updateAttendance(AttendanceVO attendanceVO, HttpServletRequest request) throws Exception {
+	public String updateAttendance(AttendanceVO attendanceVO, @LoginUser MemberVO member) throws Exception {
 		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("attendanceNo", attendanceVO.getAttendanceNo());
@@ -234,10 +231,8 @@ public class AttendanceController {
 	
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertAttendance(AttendanceVO attendanceVO, HttpServletRequest request) throws Exception {
+	public String insertAttendance(AttendanceVO attendanceVO, @LoginUser MemberVO member) throws Exception {
 		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("attendanceNo", attendanceVO.getAttendanceNo());
@@ -261,10 +256,7 @@ public class AttendanceController {
 	
 	@ResponseBody
 	@RequestMapping("/delete")
-	public String deleteAttendance(int attendanceNo, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO)session.getAttribute("loginMember");
+	public String deleteAttendance(int attendanceNo, @LoginUser MemberVO member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		

@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.google.gson.Gson;
 import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.security.annotation.LoginUser;
 import com.vtex.tree.socket.handler.SocketHandler;
 
 @ResponseBody
@@ -42,10 +43,7 @@ public class CategoryController {
 	public String insertCategoryBoard(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
 										String title,
 										String projectId,
-										HttpServletRequest request) {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+										@LoginUser MemberVO member) {
 		
 		esntlIdList.add(member.getEsntlId());
 
@@ -78,10 +76,8 @@ public class CategoryController {
 	}
 	
 	@RequestMapping("/delete")
-	public String deleteCategoryBoard(String categoryNo, HttpServletRequest request) throws Exception{
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
+	public String deleteCategoryBoard(String categoryNo, @LoginUser MemberVO member) throws Exception{
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("loginEsntlId", member.getEsntlId());
@@ -98,22 +94,15 @@ public class CategoryController {
 	}
 	
 	@RequestMapping("/out")
-	public String outBoard(String categoryNo, HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
-		return outBoard(categoryNo, member.getEsntlId(), request);
+	public String outBoard(String categoryNo, @LoginUser MemberVO member) throws Exception {
+		return outBoard(categoryNo, member.getEsntlId(), member);
 	}
 	
 	@RequestMapping("/out/manager")
 	public String outBoard(String categoryNo, 
 							String esntlId, 
-							HttpServletRequest request) throws Exception {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+							@LoginUser MemberVO member) throws Exception {
+
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("loginEsntlId", member.getEsntlId());
@@ -134,11 +123,8 @@ public class CategoryController {
 	@RequestMapping("/add/member")
 	public String addMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList,
 								String categoryNo,
-								HttpServletRequest request) {
-		
-		HttpSession session = request.getSession();
-		MemberVO member = (MemberVO) session.getAttribute("loginMember");
-		
+								@LoginUser MemberVO member) {
+
 		int resultCnt = 0;
 		Map<String, Object> param = new HashMap<>();
 		
