@@ -35,6 +35,7 @@
   + STOMP ( 채팅 )
   + Google SMTP ( 이메일 인증 )
   + Open SSL ( 브라우저 보안 )
+  + OAuth2.0 ( 간편 로그인 )
   
     
 
