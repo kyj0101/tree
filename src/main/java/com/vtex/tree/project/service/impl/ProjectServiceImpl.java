@@ -109,5 +109,10 @@ public class ProjectServiceImpl implements ProjectService {
 	public int updateProject(Map<String, Object> param) throws Exception {
 		return projectMapper.updateProject(param);
 	}
+	
+	@Override
+	public ProjectVO getProject(String projectId) {
+		return projectMapper.getProject(projectId);
+	}
 
 }

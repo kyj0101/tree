@@ -129,3 +129,19 @@ figcaption p{
 .commonCode, #detailCode{
 	background-color: #c0c0c0;
 }
+
+#sectionNav{
+	background-color: rgb(243, 243, 243); 
+	width: 290px; 
+	height: 100vh; 
+	margin: 0; 
+	margin-top: 10px;
+}
+
+.commonCodeAddBtn{
+	margin-left: 350px;
+}
+
+.emptyMsg{
+	text-align: center;
+}

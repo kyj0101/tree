@@ -10,21 +10,27 @@
 <th:block th:replace="common/toast">
 </th:block>
 
+<th:block th:replace="common/spaceCommonHeader">
+</th:block>
+		
+<th:block th:replace="common/profile">
+</th:block>
+
+<link rel="stylesheet" href="/css/board/board.css">
 
 <script src="/js/board/board.js"></script>
 
- 
   <section>
     <div class="content-container">
 
       <figure>
-        <figcaption style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <figcaption>
         	<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
         	<p th:if="${categoryMap.categoryNo} == 1" class="category-p"  th:text="${categoryMap.categoryName}"></p>
-			<p th:if="${categoryMap.categoryNo} != 1" class="category-p"  th:text="${categoryMap.categoryName}" data-toggle="modal" data-target="#boardInfo" style="text-decoration: underline; cursor: pointer;"></p>
-			
+			<p th:if="${categoryMap.categoryNo} != 1" class="category-p"  th:text="${categoryMap.categoryName}" data-toggle="modal" data-target="#boardInfo" id="boardInfoTitle"></p>			
         </figcaption>
       </figure>
+      
       <table class="table table-striped board-list-table">
 
         <thead>
@@ -56,16 +62,14 @@
     <nav aria-label="Page navigation example" th:utext="${pageBar}">
     </nav>
 
-    <div class="d-md-flex justify-content-md-end" style="margin-right: 170px;">
+    <div class="d-md-flex justify-content-md-end" id="writeBtnDiv">
       <button type="button" class="btn btn-primary justify-content-md-end btn-board" data-toggle="modal" data-target="#write-board-modal">
         글쓰기
       </button>
     </div>
 
   </section>
-
 </body>
-
 </html>
 
 <!-- 게시글 상세보기 Modal -->
@@ -150,8 +154,9 @@
 
 					</ul>
 
-					<button type="button" class="btn btn-primary"
-						style="margin-left: 680px; margin-top: 10px;"
+					<button type="button" 
+						class="btn btn-primary"
+						id="fileAddBtn"
 						onclick="addBoardMember();">추가</button>
 				</div>
 			</div>
@@ -178,7 +183,7 @@
 					<div class="input-group titleDiv">
 						<input type="input"
 							class="form-control bg-light border-0 small title-input"
-							id="title"
+							id="boardTitle"
 							list="datalistOptions" placeholder="제목을 입력하세요."
 							aria-label="Search" aria-describedby="basic-addon2">
 						<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
@@ -215,10 +220,8 @@
 	</div>
 </div>
 
-
-
 <!-- toast editor -->
-  <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
+<script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
 <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
 
 <script type="text/javascript">

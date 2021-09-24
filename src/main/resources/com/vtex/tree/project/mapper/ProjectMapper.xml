@@ -164,7 +164,7 @@
 			AND A.ESNTL_ID NOT IN (
 										
 										SELECT
-											ESNTL_ID
+											NVL(ESNTL_ID, 0)
 										FROM 
 											TB_PROJECT_USER
 										WHERE
@@ -211,7 +211,8 @@
 			TB_MEMBER A
 			LEFT OUTER JOIN TB_PROJECT_USER B ON B.ESNTL_ID = A.ESNTL_ID
 		WHERE
-			B.PROJECT_ID = #{projectId}
+			A.QUIT_AT = 'N'
+			AND B.PROJECT_ID = #{projectId}
 			<if test="searchKeyword != null and searchKeyword != ''">
 				AND (A.NAME LIKE '%' || #{searchKeyword} || '%' OR A.EMAIL LIKE '%' || #{searchKeyword} || '%')
 			</if>
@@ -281,6 +282,21 @@
 			AND B.ESNTL_ID = #{esntlId}
 			AND A.DELETE_AT = 'N'
 			AND B.DELETE_AT = 'N'
+	</select>
+	
+	<select id="getProject" resultType="projectVO">
+		/* ProjectMapper.getProject */
+		
+		SELECT
+			PROJECT_ID,
+			PROJECT_NM,
+			PROJECT_MANAGER,
+			START_DATE,
+			END_DATE
+		FROM
+			TB_PROJECT
+		WHERE
+			PROJECT_ID = #{projectId}		
 	</select>
 	
 	<update id="updateProjectRole">

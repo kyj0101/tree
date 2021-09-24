@@ -12,8 +12,7 @@
 <script src="/js/commonCode/commonCode.js"></script>
 
 	<section>
-		<nav class="nav flex-column"
-			style="background-color: rgb(243, 243, 243); width: 290px; height: 100vh; margin: 0; margin-top: 10px;">
+		<nav id="sectionNav" class="nav flex-column">
 			<a class="nav-link disabled" href="#">시스템</a>
 			<hr>
 			<a class="nav-link active" href="/commoncode/list">공통 코드 관리</a>
@@ -59,7 +58,7 @@
 									<td th:text="${map.useAt}"></td>
 								</tr>
 								<tr class="commonCodeTr" th:if="${commonCodeListMap.size() == 0}">
-									<td colspan="3" style="text-align: center" th:text="${emptyMsg}"></td>
+									<td class="emptyMsg" colspan="3" style="text-align: center" th:text="${emptyMsg}"></td>
 								</tr>
 							</tbody>
 						</table>
@@ -70,8 +69,7 @@
 					</li>
 					<li><i class="fas fa-chevron-right"></i></li>
 					<li>
-						<button type="button" class="btn btn-success commonCodeAddBtn"
-							style="margin-left: 350px;">저장</button>
+						<button type="button" class="btn btn-success commonCodeAddBtn">저장</button>
 						<button type="button" class="btn btn-secondary deleteCommonCode">삭제</button>
 						<form class="commonCodeForm">
 							<table class="table table-bordered"

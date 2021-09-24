@@ -17,5 +17,4 @@ public class CategoryVO extends SpaceVO{
 	
 	private long categoryNo;
 	private String categoryName;
-
 }

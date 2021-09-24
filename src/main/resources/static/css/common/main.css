@@ -393,3 +393,20 @@ nav ul {
 p > .categoryAddMemberCheck{
 	margin-left: 10px;
 }
+
+.on{
+	background-color: aliceblue;
+	font-weight: bold;
+}
+
+.projectMenuHeader {
+	font-weight: bold;
+}
+
+#title{
+	appearance: none; 
+	border: none; 
+	background: none;
+}
+
+

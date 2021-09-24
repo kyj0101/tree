@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+.videoCallLi{
+	justify-content: space-between;
+}
+
+.bg-primary{
+	color:white;
+}
+
+.callBtn{
+	border-radius: 10px;
+}
+
+.addBtn{
+	margin-left: 650px !important;	
+}

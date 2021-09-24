@@ -99,6 +99,7 @@ nav hr{
     right: 0;
     width: 87.5%; 
     height: 700px; 
+    top: 100px;
 }
 
 .search-attendance-div{
@@ -106,6 +107,7 @@ nav hr{
     justify-content: flex-end; 
     height: 80px;
     margin-right: 65px;
+    padding: 20px;
 }
 
 .attendance-search-btn{
@@ -130,9 +132,39 @@ tr{
     box-shadow: 1.5px 1.5px 1.5px 1.5px rgb(233, 233, 233);
 }
 
-.ui-autocomplete
-{
+.ui-autocomplete{
     position:absolute;
     cursor:default;
     z-index:100000000 !important
+}
+
+#wave{
+	margin-left: 15px; 
+	margin-right: 15px;
+}
+
+.startDay{
+	width: 170px;
+}
+
+.endDay{
+	width: 170px;
+	margin-right: 15px;
+}
+
+#searchDiv{
+	width: 350px;
+}
+
+#formDiv{
+	margin-left: 20px;
+	margin-right: 20px;
+}
+
+#inputText{
+	display: inline-block;
+}
+
+.emptyMsg{
+	text-align: center;
 }

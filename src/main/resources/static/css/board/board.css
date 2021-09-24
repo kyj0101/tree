@@ -1,0 +1,21 @@
+@charset "UTF-8";
+
+figcaption{
+	display: flex; 
+	justify-content: 
+	space-between; margin-top: 20px;
+}
+
+#boardInfoTitle{
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+#writeBtnDiv{
+	margin-right: 170px;
+}
+
+#fileAddBtn{
+	margin-left: 680px; 
+	margin-top: 10px;
+}

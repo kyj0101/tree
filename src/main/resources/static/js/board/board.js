@@ -11,7 +11,7 @@ $(function() {
 	$(".boardBtn").click(function() {
 
 		var board = new Object()
-		board.title = $("#title").val();
+		board.title = $("#boardTitle").val();
 		board.content = editor.getHTML();
 		board.categoryNo = $("#categoryNo").val();
 		
@@ -157,7 +157,7 @@ $(function() {
 	});
 	
 	$(".close").click(function(){
-		location.replace('/board/list?category=' + categoryNo)
+		//location.replace('/board/list?category=' + categoryNo)
 	});
 	
 	$(".board-update-btn").click(function(){
@@ -216,7 +216,6 @@ $(function() {
 		if ($(".boardBtn").text() == '수정' && confirm("파일을 삭제하시겠습니까? 취소할 수 없습니다.")) {
 
 			var value = ($($($($(this).parent().parent()).children()[0]).children()[1]).val()).split(",");
-			console.log(value);
 			$($(this).parent().parent()).empty();
 
 			$.ajax({

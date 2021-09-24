@@ -71,3 +71,30 @@ p{
     margin-bottom: 10px;
     margin-left: 5px;
 }
+
+#emailDiv{
+	display: flex; 
+	justify-content: space-around;
+}
+
+#email{
+	margin-right: 5px;
+}
+
+#domain{
+	height: 46px; 
+	margin-left: 5px
+}
+
+#zipCodeDiv{
+	display: flex; 
+}
+
+#zipCode{
+	width: 350px;
+}
+
+#address{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}

@@ -48,6 +48,8 @@ import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.socket.handler.SocketHandler;
+
+import groovy.lang.Category;
 @RequestMapping("/board")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -134,6 +136,11 @@ public class BoardController {
 
 		//현재 카테고리 
 		Map<String, Object> categoryMap = categoryBoardService.getCategory(category);
+		
+		if(categoryMap.get("projectId") == null) {
+			categoryMap.put("projectId", "notice");		
+			categoryMap.put("projectNm", "");		
+		}
 		
 		model.addAttribute("categoryMap", categoryMap);
 		

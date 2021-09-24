@@ -1,3 +1,5 @@
+<link rel="stylesheet" href="/css/common/addModal.css">
+
 <!-- 게시판 or 채팅방 추가 Modal -->
 <div class="modal fade" id="addModal" data-backdrop="static" data-keyboard="false" tabindex="-1"
   aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -34,8 +36,8 @@
         </div>
 
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary add-board-btn" style="margin-left: 650px;" onclick="addCategoryBoard();">생성</button>
-          <button type="button" class="btn btn-primary add-chat-btn hidden" style="margin-left: 650px;" onclick="addChatRoom();">생성</button>
+          <button type="button" class="btn btn-primary add-board-btn addBtn" onclick="addCategoryBoard();">생성</button>
+          <button type="button" class="btn btn-primary add-chat-btn addBtn hidden" onclick="addChatRoom();">생성</button>
         </div>
       </div>
     </div>
@@ -62,17 +64,3 @@
     </div>
   </div>
 </div>
-
-<style>
-.videoCallLi{
-	justify-content: space-between;
-}
-
-.bg-primary{
-	color:white;
-}
-
-.callBtn{
-	border-radius: 10px;
-}
-</style>

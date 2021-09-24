@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -68,10 +70,11 @@ public class SpaceController {
 		
 		MemberVO member = (MemberVO) request.getSession().getAttribute("loginMember");
 		List<MemberVO> loginMemberList = SocketHandler.loginMemberList;
-
-		loginMemberList.remove(member);
 		
-		return loginMemberList;
+		List<MemberVO> cloneList = loginMemberList.stream().collect(Collectors.toList());
+		cloneList.remove(member);
+		
+		return cloneList;
 	}
 	
 }

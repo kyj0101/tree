@@ -43,7 +43,7 @@ public class ChatController {
 	private AttendanceService attendanceService;
 
 	@Autowired
-	private ChatRoomService categoryChatService;
+	private ChatRoomService chatRoomSevice;
 	
 	@Autowired
 	private ProjectService projectService;
@@ -52,6 +52,14 @@ public class ChatController {
 	private String emptyMsg;
 	
 	
+	/**
+	 * 채팅방
+	 * @param request
+	 * @param model
+	 * @param category
+	 * @return
+	 * @throws Exception
+	 */
 	@RequestMapping("/room")
 	public String getChatRoom(HttpServletRequest request,
 								Model model,
@@ -79,9 +87,7 @@ public class ChatController {
 		}
 		
 		//현재 카테고리
-		Map<String, Object> categoryMap = categoryChatService.getChatRoom(category);
-
-		categoryMap.put("categoryMap", categoryMap);
+		Map<String, Object> categoryMap = chatRoomSevice.getChatRoom(category);
 		model.addAttribute("categoryMap", categoryMap);
 		
 		//출퇴근 여부

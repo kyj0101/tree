@@ -1,0 +1,69 @@
+<link rel="stylesheet" href="/css/common/profile.css">
+ 
+    <aside>
+      <div class="manager-menu-container">
+        <ul class="profileUl">
+          <li>
+            <i class="fas fa-bars"></i>
+          </li>
+        </ul>
+
+        <ul class="profileUl">
+          <li id="profileLi">
+              <i class="fas fa-user-circle"></i>
+          </li>
+        </ul>
+
+        <div id="manager-menu" class="manager-menu-hidden">
+          <ul class="list-group">
+            <li sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item">
+              <a href="/commoncode/list">관리자 메뉴</a>
+            </li>
+            <li class="list-group-item">
+              <a href="/member/mypage/update/view">마이페이지</a>
+            </li>
+            <li class="list-group-item">
+              <a href="#" onclick="showVideoCallModal(this)">화상통화</a>
+            </li>
+          </ul>
+        </div>
+
+        <div id="user-profile" class="user-profile-hidden">
+          <h5 th:text='${session.loginMember.name}' id="myName"></h5>
+          <ul>
+            <li>
+              <label for="email" class="visually-hidden">이메일</label>
+              <input class="form-control" id="email" type="email" th:value='${session.loginMember.email}' readonly>
+            </li>
+            <li>
+              <label for="position" class="visually-hidden">부서</label>
+              <input class="form-control" id="position" type="text" th:value='${session.loginMember.departmentName}' readonly> 
+            </li>
+            <li>
+              <label for="department" class="visually-hidden">직급</label>
+       		  <input class="form-control" id="department" type="text" th:value='${session.loginMember.positionName}'  readonly> 
+            </li>
+          </ul>
+          <ul class="btn-ul">
+            <li>
+            	<!-- 출근전 -->
+            	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${!isIn and !isOut}">출근</button>
+            	<button type="button" class="btn btn-success attendanceOutBtn" th:if="${!isIn and !isOut}">퇴근</button>    
+            	
+            	<!-- 출근후 -->
+              	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${isIn and !isOut}" >출근</button>
+	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and !isOut}">퇴근</button>
+	            
+	            <!-- 퇴근후 --> 
+	            <button type="button" class="btn btn-primary attendanceInBtn"  th:if="${isIn and isOut}" >출근</button>
+	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and isOut}" >퇴근</button>
+            </li>
+            <li>
+            </li>
+          </ul>
+          <button type="button" class="btn btn-warning btnLogout">로그아웃</button>
+          <form id="logoutForm"></form>
+        </div>
+      </div>
+    </aside>
+  </header>

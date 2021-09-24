@@ -67,7 +67,6 @@ function passwordCheckCheck(){
 	}
 }
 
-
 $(function(){
 	
 	$("#email").on("change", emailCheck);
@@ -79,7 +78,7 @@ $(function(){
 	
 	$("#password").on("change", passwordCheck);
 	$("#password-check").on("change", passwordCheckCheck);
-	
+
 	$(".btn-primary").click(function(){
 		
 		var member = new Object();

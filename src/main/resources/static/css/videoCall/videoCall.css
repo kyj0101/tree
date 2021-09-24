@@ -1,0 +1,104 @@
+@charset "UTF-8";
+
+body{
+	background-color:#343a40;
+}
+
+.content-container{
+	width: 100%; 
+	padding: 15px 0px;
+}
+
+#myVideoDiv{
+	display: flex; 
+	width: 100%;
+}
+
+.col{
+	width: 50% !important;
+}
+
+.call-animation {
+    background: #fff;
+    width: 135px;
+    height: 135px;
+    position: relative;
+    margin: 0 auto;
+    margin-top: 170px;
+    border-radius: 100%;
+    border: solid 5px #fff;
+    animation: play 2s ease infinite;
+    -webkit-backface-visibility: hidden;
+    -moz-backface-visibility: hidden;
+    -ms-backface-visibility: hidden;
+    backface-visibility: hidden;
+  
+}
+
+@keyframes play {
+
+    0% {
+        transform: scale(1);
+    }
+    15% {
+        box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.4);
+    }
+    25% {
+        box-shadow: 0 0 0 10px rgba(255, 255, 255, 0.4), 0 0 0 20px rgba(255, 255, 255, 0.2);
+    }
+    25% {
+        box-shadow: 0 0 0 15px rgba(255, 255, 255, 0.4), 0 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+}
+
+.fa-phone-alt{
+	font-size: 70;
+	color: gray;
+	margin-left: 30px;
+	margin-top: 25px;
+}
+
+#videoCallMyName{
+	position: absolute;
+    color: black;
+    background: #ffffff66;
+    border-radius: 5px;
+    padding: 2px;
+    bottom: 0;
+    left: 30;
+    display: none;
+}
+
+#videoCallOtherName{
+	position: absolute;
+    color: black;
+    background: #ffffff66;
+    border-radius: 5px;
+    padding: 2px;
+    bottom: 0;
+    left: 30;
+    display: none;
+}
+
+#btnDiv{
+	display: flex;
+	justify-content: flex-end;
+	padding-right: 15px;
+	bottom: 0;
+	position: absolute;
+	right: 0;
+	padding-bottom: 15px;
+}
+
+.btn-group{
+	margin-top: 16px !important;
+}
+
+#outBtn{
+	margin-top: 16px;
+	margin-left: 15px;
+}
+
+#remoteVideo{
+	display: none
+}

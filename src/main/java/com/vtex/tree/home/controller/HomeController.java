@@ -184,7 +184,7 @@ public class HomeController {
 		member.setFrstRegisterId(member.getEmail());
 		member.setLastUpdusrId(member.getEmail());
 
-		String url = "http://" + ip + ":" +  port + "/email/verify" + "?key=" + key + "&email=" + member.getEmail();
+		String url = "https://" + ip + ":" +  port + "/email/verify" + "?key=" + key + "&email=" + member.getEmail();
 
 		try {
 			homeService.insertMember(member);

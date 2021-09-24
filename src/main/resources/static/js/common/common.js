@@ -1,6 +1,6 @@
 //192.168.1.206
 //192.168.0.80
-var ip = "192.168.1.206";
+var ip = "192.168.0.80";
 var port = "9090";
 var noMsg = 'No Data.';
 
@@ -89,4 +89,14 @@ function findZipCode(){
         }
     }).open();
 }
+
+function openWindowPop(url, name){
+
+	$("#videoCallOtherName").val(name);
+
+    var options = 'top=10, left=10, width=1350, height=560,resizable=no';
+	window.open(url, name, options);
+}
+
+
 

@@ -4,12 +4,12 @@ import java.sql.Date;
 
 import com.vtex.tree.space.vo.SpaceVO;
 
-import groovy.transform.ToString;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @EqualsAndHashCode
 @ToString

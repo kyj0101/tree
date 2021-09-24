@@ -9,6 +9,10 @@ var myOffer;
 
 var peer = document.getElementById("remoteVideo");
 
+$("#videoCallMyName").text(opener.document.getElementById('myName').innerText);
+$("#titleVal").text(opener.document.getElementById('videoCallOtherName').value + "님과 통화중입니다.");
+$("#videoCallOtherName").text(opener.document.getElementById('videoCallOtherName').value);
+
 navigator.mediaDevices.getUserMedia({
 	audio: true,
 	video: true
@@ -19,8 +23,11 @@ navigator.mediaDevices.getUserMedia({
 });
 
 function startMedia(stream) {	
+
 	setStream(stream);
 	makeConnection();
+	
+	$("#videoCallMyName").css("display","block");
 }
 
 function setStream(stream){
@@ -137,7 +144,11 @@ function handleIce(data){
 }
 
 function handleAddStream(data){
-	console.log(data);
+	
+	$(".call-animation").css("display","none");
+	$("#remoteVideo").css("display","block");
+	$("#videoCallOtherName").css("display","block");
+	
 	peer.srcObject = data.stream;		
 }
 
@@ -193,7 +204,7 @@ function speakerBtn(){
 function outBtn(){
 	
 	myPeerConnection.close();
-	location.replace("/board/list");
+	close();
 }
 
 
@@ -209,7 +220,7 @@ function alertAndReplace(msg){
 	alert(msg);
 	
 	return new Promise((resolve, reject) => {
-		location.replace("/board/list");
+		close();
 	})
 }
 

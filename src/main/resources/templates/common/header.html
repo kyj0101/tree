@@ -35,8 +35,6 @@
 </head>
 
 <body>
-	<input type="hidden" th:value="${categoryMap.frstRegisterId}" id="frstRegisterId" />
-	<input type="hidden" th:value="${session.loginMember.esntlId}" id="loginEsntlId" />
   <header>
 		<aside class="menu-container">
 			<div class="logo">
@@ -49,7 +47,7 @@
 				<div class="card">
 					<div class="card-header">
 						<h2 class="mb-0">
-							<button class="btn btn-link btn-block text-left" th:onclick="|location.href='/board/list'|"> 공지사항</button>
+							<button class="btn btn-link btn-block text-secondary text-left" th:onclick="|location.href='/board/list'|"> 공지사항</button>
 						</h2>
 					</div>
 
@@ -59,29 +57,38 @@
 					<div class="card-header" th:id="${project.projectId}">
 						<h2 class="mb-0">
 							<button th:text="${project.projectNm}"
-								class="btn btn-link btn-block text-left" type="button"
+								th:id="|id__${project.projectId}|"
+								class="btn btn-link btn-block text-left text-secondary" type="button"
 								data-toggle="collapse"
 								th:data-target="|#id_${project.projectId}|"
-								aria-expanded="true" aria-controls="collapseOne"></button>
+								aria-controls="collapseOne"
+								th:classappend="${project.projectId} == ${categoryMap.projectId} ? 'projectMenuHeader'"></button>
 						</h2>
 					</div>
 
-					<div th:id="|id_${project.projectId}|" class="collapse"
+					<div 
+						th:id="|id_${project.projectId}|" class="collapse"
 						th:aria-labelledby="${project.projectId}"
-						data-parent="#accordionExample">
+						data-parent="#accordionExample"
+						th:classappend="${project.projectId} == ${categoryMap.projectId} ? 'show'">
 						<div class="card-body">
 							<div class="list-group">
 								<button type="button" class="list-group-item list-group-item-action" th:if="${session.loginMember.esntlId} == ${project.projectManager}" onclick="showAddCategoryBoardModal(this);">게시판 생성 <i class="fas fa-plus"></i></button>
 								<button type="button" class="list-group-item list-group-item-action" 
 							  		th:each="categoryBoard : ${project.categoryBoardList}"
 							  		th:text="${categoryBoard.categoryName}"
-							  		th:onclick="|location.href='/board/list?category=${categoryBoard.categoryNo}'|"></button>
+							  		th:onclick="|location.href='@{/board/list(category=${categoryBoard.categoryNo},projectId=${categoryBoard.projectId})}'|"							  		
+							  		th:classappend="${categoryBoard.categoryNo} == ${categoryMap.categoryNo} ? 'on text-success'" ></button>
 								<button type="button" class="list-group-item list-group-item-action" th:if="${session.loginMember.esntlId} == ${project.projectManager}" onclick="showAddCategoryChatModal(this)">채팅방 생성 <i class="fas fa-plus"></i></button>
 								<button type="button" class="list-group-item list-group-item-action" 
 							  		th:each="chatRoom : ${project.chatRoomList}"
 							  		th:text="${chatRoom.chatRoomTitle}"
-							  		th:onclick="|location.href='/chat/room?category=${chatRoom.chatRoomNumber}'|"></button>
-							  	<a type="button" class="list-group-item list-group-item-action" th:href="|/schedule/view?projectId=${project.projectId}|">프로젝트 일정</a>
+							  		th:onclick="|location.href='@{/chat/room(category=${chatRoom.chatRoomNumber},projectId=${chatRoom.projectId})}'|"
+							  		th:classappend="${chatRoom.chatRoomNumber} == ${categoryMap.categoryNo} ? 'on text-success'"></button>
+							  	<a type="button" 
+							  		class="list-group-item list-group-item-action" 
+							  		th:href="|/schedule/view?projectId=${project.projectId}|"
+							  		th:classappend="${categoryMap.categoryNo}  == 'chat' ? 'on text-success'">프로젝트 일정</a>
 							</div>
 						</div>
 					</div>
@@ -89,90 +96,4 @@
 			</div>
 		</aside>
 
-		<div class="header-container">
-      <ul class="info-ul">
-        <li th:text="${categoryMap.categoryName}">
-        </li>
-        <li>
-          <button type="button" style="appearance: none; border: none; background: none;" data-toggle="tooltip"
-            data-placement="top" title="It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).">
-            <i class="fas fa-info-circle "></i>
-          </button>
-        </li>
-        <li>
-
-        </li>
-      </ul>
-    </div>
-
-
-    <aside>
-      <div class="manager-menu-container">
-        <ul style="display: flex; flex-direction: column; padding:20px;">
-          <li>
-            <i class="fas fa-bars"></i>
-          </li>
-        </ul>
-
-        <ul style="display: flex; flex-direction: column; padding:20px;">
-          <li style="margin-top: 500px; font-size: 25px;">
-              <i class="fas fa-user-circle"></i>
-          </li>
-        </ul>
-
-        <div id="manager-menu" class="manager-menu-hidden">
-          <ul class="list-group">
-            <li sec:authorize="hasRole('ROLE_ADMIN')" class="list-group-item">
-              <a href="/commoncode/list">관리자 메뉴</a>
-            </li>
-            <li class="list-group-item">
-              <a href="/member/mypage/update/view">마이페이지</a>
-            </li>
-            <li class="list-group-item">
-              <a href="#" onclick="showVideoCallModal(this)">화상통화</a>
-            </li>
-          </ul>
-        </div>
-
-        <div id="user-profile" class="user-profile-hidden">
-          <h5 th:text='${session.loginMember.name}' id="myName"></h5>
-          <ul>
-            <li>
-              <label for="email" class="visually-hidden">이메일</label>
-              <input class="form-control" id="email" type="email" th:value='${session.loginMember.email}' readonly>
-            </li>
-            <li>
-              <label for="position" class="visually-hidden">부서</label>
-              <input class="form-control" id="position" type="text" th:value='${session.loginMember.departmentName}' readonly> 
-            </li>
-            <li>
-              <label for="department" class="visually-hidden">직급</label>
-       <input class="form-control" id="department" type="text" th:value='${session.loginMember.positionName}'  readonly> 
-            </li>
-          </ul>
-          <ul class="btn-ul">
-            <li>
-            	<!-- 출근전 -->
-            	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${!isIn and !isOut}">출근</button>
-            	<button type="button" class="btn btn-success attendanceOutBtn" style="margin-left: 15px;" th:if="${!isIn and !isOut}">퇴근</button>    
-            	
-            	<!-- 출근후 -->
-              	<button type="button" class="btn btn-primary attendanceInBtn" th:if="${isIn and !isOut}" >출근</button>
-	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and !isOut}" style="margin-left: 15px;">퇴근</button>
-	            
-	            <!-- 퇴근후 --> 
-	            <button type="button" class="btn btn-primary attendanceInBtn"  th:if="${isIn and isOut}" >출근</button>
-	            <button type="button" class="btn btn-success attendanceOutBtn" th:if="${isIn and isOut}" style="margin-left: 15px;">퇴근</button>
-	               
-            </li>
-            <li>
-            </li>
-          </ul>
-          <button type="button" class="btn btn-warning btnLogout">로그아웃</button>
-          <form id="logoutForm"></form>
-        </div>
-      </div>
-    </aside>
-
-  </header>
-  
+<input type="hidden" id="videoCallOtherName">  

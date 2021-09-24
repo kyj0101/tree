@@ -49,4 +49,6 @@ public interface ProjectMapper {
 	List<ChatRoomVO> getProjectChatRoomList(Map<String, Object> param) throws Exception;
 
 	int updateProject(Map<String, Object> param) throws Exception;
+
+	ProjectVO getProject(String projectId);
 }

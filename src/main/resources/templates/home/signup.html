@@ -16,11 +16,11 @@
             <h4 class="signup-title">회원 가입</h4>
             <form method="POST" action="/signupAction" id="signup-form">
                 <label for="exampleInputPassword1" class="form-label">이메일</label>
-                <div class="form-row" style="display: flex;">
-                  <div class="col-md-12 mb-3" style="display: flex; justify-content: space-around;">
-                      <input type="email" class="form-control" style="margin-right: 5px;" id="email" name="email">
+                <div class="form-row">
+                  <div id="emailDiv" class="col-md-12 mb-3">
+                      <input type="email" class="form-control" id="email" name="email">
                       <span>@</span>
-                      <select class="custom-select domain" style= "height: 46px; margin-left: 5px;" name="domain">
+                      <select class="custom-select domain" name="domain" id="domain">
                         <option th:each="email: ${emailList}" th:value="${email.detailCode}"
 						th:utext="${email.detailCodeName}" ></option>
                         <option value="">직접 입력</option>
@@ -41,17 +41,16 @@
                 </div>
                 <div class="mb-3">
                   <label for="birth" class="form-label">생년월일</label>
-                  <input type="date" class="form-control" id="birth" name="birth">
-                  <div id="birthHelp" class="form-text help hide"></div>
+                  <input type="date" class="form-control" id="birth" name="birth" onkeydown="return false">
                 </div>
                 
 				<div class="mb-3" >
                   <label for="phone" class="form-label">주소</label>
-                  <div style="display: flex">
-	                  <input type="text" class="form-control" id="zipCode" name="zipCode" style="width: 350px" placeholder="우편번호">
+                  <div id="zipCodeDiv">
+	                  <input type="text" class="form-control" id="zipCode" name="zipCode" placeholder="우편번호">
 	                  <button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick="findZipCode();">우편번호 찾기</button>
                   </div>
-	              <input type="text" class="form-control" id="address" name="address" placeholder="주소" style="margin-top: 5px; margin-bottom: 5px;" >
+	              <input type="text" class="form-control" id="address" name="address" placeholder="주소">
 	              <input type="text" class="form-control" id="detailAddress" name="detailAddress" placeholder="상세주소">
                 </div>
                 
@@ -93,6 +92,5 @@
 
         </div>
     </section>
-    
 </body>
 </html>

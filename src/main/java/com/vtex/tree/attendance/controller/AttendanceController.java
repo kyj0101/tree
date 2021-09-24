@@ -199,9 +199,9 @@ public class AttendanceController {
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("attendanceNo", attendanceVO.getAttendanceNo());
-		param.put("day", attendanceVO.getDay());
-		param.put("inTime", attendanceVO.getInTime());
-		param.put("outTime", attendanceVO.getOutTime());
+		param.put("day", attendanceVO.getDay().replaceAll("-", ""));
+		param.put("inTime", attendanceVO.getInTime().replaceAll(":", ""));
+		param.put("outTime", attendanceVO.getOutTime().replaceAll(":", ""));
 		param.put("latenessAt", attendanceVO.getLatenessAt());
 		param.put("latenessReason", attendanceVO.getLatenessReason());
 		param.put("email", attendanceVO.getEmail());
@@ -241,9 +241,9 @@ public class AttendanceController {
 		Map<String, Object> param = new HashMap<>();
 		
 		param.put("attendanceNo", attendanceVO.getAttendanceNo());
-		param.put("day", attendanceVO.getDay());
-		param.put("inTime", attendanceVO.getInTime());
-		param.put("outTime", attendanceVO.getOutTime());
+		param.put("day", attendanceVO.getDay().replaceAll("-", ""));
+		param.put("inTime", attendanceVO.getInTime().replaceAll(":", ""));
+		param.put("outTime", attendanceVO.getOutTime().replaceAll(":", ""));
 		param.put("latenessAt", attendanceVO.getLatenessAt());
 		param.put("latenessReason", attendanceVO.getLatenessReason());
 		param.put("email", attendanceVO.getEmail());

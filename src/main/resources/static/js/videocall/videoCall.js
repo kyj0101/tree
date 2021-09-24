@@ -37,6 +37,7 @@ function showVideoCallModal(e){
 				html += '</span>';
 				html += '</div>'
 				html += '<div>';
+				html += '<input class="name" type="hidden" value="' + elem.name + '">';
 				html += '<input class="esntlId" type="hidden" value="' + elem.esntlId + '">';
 				html += '<a class="btn btn-primary" href="#" role="button" onclick="call(this);">';
 				html += '<i class="fas fa-phone-alt"></i>';
@@ -57,7 +58,8 @@ function showVideoCallModal(e){
 function call(e){
 	
 	var videoCallId = makeVideoCallId();
-	
+	var otherName = $($(e).prev().prev()).val();
+
 	var data = {
 		esntlId : $($(e).prev()).val(),
 		name : $("#myName").text(),
@@ -65,8 +67,9 @@ function call(e){
 	}
 
 	ws.send(JSON.stringify(data));
-	
-	location.replace(`/videocall/view?videoCallId=${videoCallId}&type=host`);
+
+	openWindowPop(`/videocall/view?videoCallId=${videoCallId}&type=host`, otherName);
+	$('#addVideoCallModal').modal('hide');
 }
 
 function makeVideoCallId(){

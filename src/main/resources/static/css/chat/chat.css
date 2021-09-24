@@ -76,3 +76,12 @@
 .notice{
 	text-align: center;
 }
+
+.chatMemberDiv, .chatAddMemberDiv{
+	display: none;
+}
+
+#addChatMemberBtn{
+	margin-left: 680px; 
+	margin-top: 10px;
+}

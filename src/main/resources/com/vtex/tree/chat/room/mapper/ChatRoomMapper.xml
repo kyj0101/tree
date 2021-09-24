@@ -11,6 +11,8 @@
 		<result column="FRST_REGIST_PNTTM" property="frstRegistPnttm"/>
 		<result column="FRST_REGISTER_ID" property="frstRegisterId"/>
 		<result column="NAME" property="name"/>
+		<result column="PROJECT_ID" property="projectId"/>
+		<result column="PROJECT_NM" property="projectNm"/>		
 	</resultMap>
 
 	<insert id="insertChatRoom">
@@ -96,10 +98,13 @@
 			A.CHAT_ROOM_TITLE,
 			A.FRST_REGIST_PNTTM,
 			A.FRST_REGISTER_ID,
-			B.NAME
+			B.NAME,
+			A.PROJECT_ID,
+			C.PROJECT_NM
 		FROM
 			TB_CHAT_ROOM A
 			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID = A.FRST_REGISTER_ID
+			LEFT OUTER JOIN TB_PROJECT C ON C.PROJECT_ID = A.PROJECT_ID
 		WHERE
 			CHAT_ROOM_NUMBER = #{category}		
 	</select>

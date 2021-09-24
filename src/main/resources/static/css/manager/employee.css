@@ -7,7 +7,8 @@ ul{
     width: 100%; 
     display: flex; 
     flex-direction: column; 
-    margin: 0 auto; 
+    margin: 0 auto;
+    margin-bottom: 70px;
     justify-content: center;
 }
 
@@ -42,4 +43,16 @@ ul{
 
 .hide{
 	display: none;
+}
+
+#titleDiv{
+	width: 90%;
+	padding:20px; 
+	margin-left: 20px; 
+	position: relative; 
+	bottom: 20px;
+}
+
+.card-ul{
+	display: flex;
 }

@@ -1,6 +1,6 @@
 var ws = new WebSocket('wss://' + ip + ":" + port + '/nnn');
 var callSocket = new WebSocket('wss://' + ip + ":" + port + '/rtc');
-
+var videoCallOtherName;
 
 ws.onopen = e => {
 	$("#toastDiv").css("display","none");
@@ -15,13 +15,17 @@ ws.onmessage = e => {
 	$(".toast").toast('show');
 	$("#videoCallId").val(data.videoCallId);
 	$("#callInfo").text(data.name + "님으로부터 전화가 왔습니다.");
+	
+	videoCallOtherName = data.name;
 }
 
 function pickUpCall(){
 	
 	var videoCallId = $("#videoCallId").val();
-	
-	location.replace(`/videocall/view?videoCallId=${videoCallId}&type=guest`);
+
+	openWindowPop(`/videocall/view?videoCallId=${videoCallId}&type=guest`, videoCallOtherName);
+	$(".toast").toast('hide');
+	$("#toastDiv").css("display","none");
 }
 
 function hangUpCall(){
@@ -35,5 +39,6 @@ function hangUpCall(){
 	
 	callSocket.send(JSON.stringify(data));
 	$(".toast").toast('hide');
+	$("#toastDiv").css("display","none");
 }
 

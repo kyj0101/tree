@@ -1,5 +1,51 @@
 @charset "UTF-8";
 
+body{
+	overflow: auto;
+}
+
+.menu-container {
+    height: 110vh;
+}
+
+.manager-menu-container {
+    height: 110vh;
+}
+
+#indexDiv{
+    height: 50px;
+    width: 100%;
+    position: absolute;
+    margin-right: 200px;
+    right: 0;
+    text-align: center;
+}
+
+#indexUl{
+	display: flex; 
+	justify-content:flex-end; 
+	margin-right: 350px; 
+	padding: 5px;
+}
+
+.indexLi{
+	display: flex; 
+	padding: 5px;
+}
+
+.colorBox{
+	width: 20px; 
+	height: 20px;
+}
+
+#projectBox{
+	background-color: rgb(214, 255, 207);
+}
+
+#todayBox{
+	background-color: rgba(255,220,40,.15);
+}
+
 #external-events {
   position: fixed;
   z-index: 2;
@@ -21,6 +67,7 @@
   position: relative;
   z-index: 1;
   margin-left: 200px;
+  margin-top: 50px;
 }
 #calendar {
   max-width: 1000px;
@@ -76,9 +123,6 @@
             box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.35);
   }
 }
-
-
-
 
 .fc-daygrid-day-number:hover{
 	text-decoration: underline;

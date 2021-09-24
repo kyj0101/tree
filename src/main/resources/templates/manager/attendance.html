@@ -14,20 +14,20 @@
 <th:block th:replace="manager/section">
 </th:block>
 
-    <div class="select-div" style="top: 100px;">
-        <div class="search-attendance-div" style="padding: 20px;">
-            <input type="date" class="form-control startDay" style="width: 170px;" th:value="${param.startDay}">
-            <p style="margin-left: 15px; margin-right: 15px;">
+    <div class="select-div">
+        <div class="search-attendance-div">
+            <input type="date" class="form-control startDay" th:value="${param.startDay}">
+            <p id="wave">
                 ~
             </p>
-            <input type="date" class="form-control endDay"  style="width: 170px; margin-right: 15px;" th:value="${param.endDay}">
-            <div class="input-group mb-3" style="width: 350px">
+            <input type="date" class="form-control endDay" th:value="${param.endDay}">
+            <div id="searchDiv" class="input-group mb-3">
                 <p class="input-group-text" >검색어</p>
                 <input type="search" class="form-control memberName" placeholder="이메일 또는 이름을 입력해주세요." th:value="${param.name}" th:if="${not #strings.equals(param.name, 'null')}">
                 <input type="search" class="form-control memberName" placeholder="이메일 또는 이름을 입력해주세요."  th:if="${#strings.equals(param.name, 'null')}">
             </div>
-            <div class="form-check" style="margin-left: 20px; margin-right: 20px;">
-	            <p class="input-group-text" style="display: inline-block;">지각여부</p>
+            <div id="formDiv" class="form-check">
+	            <p id="inputText" class="input-group-text">지각여부</p>
             	<select id="latenessAt" name="latenessAt">
             		<option seleted value="" th:selected="${#strings.equals(param.latenessAt, '')}">전체</option>
             		<option value="Y" th:selected="${#strings.equals(param.latenessAt, 'Y')}">예</option>
@@ -64,7 +64,7 @@
 					<td th:text="${attendance.latenessReason}"></td>
 				</tr>
 				<tr th:if="${attendanceList.size() == 0}" onclick="fnPopup(this);">
-					<th colspan="8" th:text="${emptyMsg}" style="text-align: center;"></th>
+					<th class="emptyMsg" colspan="8" th:text="${emptyMsg}" style="text-align: center;"></th>
 				</tr>
 			</tbody>
           </table>

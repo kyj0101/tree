@@ -1,0 +1,16 @@
+@charset "UTF-8";
+
+.profileUl{
+	display: flex; 
+	flex-direction: column; 
+	padding:20px;
+}
+
+#profileLi{
+	margin-top: 500px;
+	font-size: 25px;
+}
+
+.attendanceOutBtn{
+	margin-left: 15px !important;
+}

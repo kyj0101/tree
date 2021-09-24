@@ -1,5 +1,11 @@
 var calendar = null;
-
+var defaultScheduleObj = {
+	start: $("#projectStartDate").val(),
+	end: $("#projectEndDate").val(),
+	display: 'background',
+	backgroundColor: '#d6ffcf'
+}
+				
 document.addEventListener('DOMContentLoaded', function() {
 	
 	var calendarEl = document.getElementById('calendar');
@@ -8,21 +14,24 @@ document.addEventListener('DOMContentLoaded', function() {
 		initialView: 'dayGridMonth',
 		locale: "ko",
 		dateClick(info) {
+
 			var dateStr = info.dateStr;
-			
+
 			$(".addStartDate").val(dateStr);
-			$("#addDate").modal("show");
+			$("#addSchedule").modal("show");
 		},
 		eventClick(info){
 			
-			$("#updateDate").modal("show");
+			if(info.event.display === 'background'){
+				return false;
+			}
 			
 			$("#scheduleId").val(info.event.id);
-			$(".updateTitle").val(info.event.title);
-			$(".updateStartDate").val(info.event.startStr.substring(0,10));
-			$(".updateStartTime").val(info.event.startStr.substring(11,19));
-			$(".updateEndDate").val(info.event.endStr.substring(0,10));
-			$(".updateEndTime").val(info.event.endStr.substring(11,19));
+			$("#updateTitle").val(info.event.title);
+			$("#updateStartDate").val(info.event.startStr.substring(0,10));
+			$("#updateStartTime").val(info.event.startStr.substring(11,19));
+			$("#updateEndDate").val(info.event.endStr.substring(0,10));
+			$("#updateEndTime").val(info.event.endStr.substring(11,19));
 			$("#updateColor").val(info.event.backgroundColor);
 
 			if(info.event.allDay){
@@ -30,7 +39,10 @@ document.addEventListener('DOMContentLoaded', function() {
 				$("#updateAllDay").prop("checked", true);
 				changeAllday($("#updateAllDay"));
 			} 
-		}
+
+			$("#updateSchedule").modal("show");
+		},
+		
 	});
 	
 	calendar.render();
@@ -123,9 +135,12 @@ function getScheduleList(){
 		},
 
 		success(result) {
+			
 			$.each(result, function(index, elem){
 				calendar.addEvent(elem);
 			});
+
+			calendar.addEvent(defaultScheduleObj);
 		}
 	});
 }
@@ -226,5 +241,6 @@ function deleteSchedule(){
 			alert(msg);
 		}
 	});
-	
 }
+
+

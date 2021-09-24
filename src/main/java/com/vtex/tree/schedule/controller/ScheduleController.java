@@ -1,5 +1,6 @@
 package com.vtex.tree.schedule.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +21,7 @@ import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.category.vo.CategoryVO;
 import com.vtex.tree.chat.room.vo.ChatRoomVO;
+import com.vtex.tree.common.util.AttendanceUtil;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
@@ -55,12 +57,8 @@ public class ScheduleController {
 		MemberVO member = (MemberVO) session.getAttribute("loginMember");
 		
 		Map<String, Object> param = new HashMap<>();
-
-		//현재 카테고리 
-		Map<String, Object> categoryMap = categoryBoardService.getCategory(1);
-		categoryMap.put("categoryName", "일정");
-		model.addAttribute("categoryMap", categoryMap);
-
+		
+		//메뉴에 있을 프로젝트 리스트
 		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
 		model.addAttribute("projectList", projectList);
 	
@@ -76,14 +74,31 @@ public class ScheduleController {
 			project.setChatRoomList(chatRoomList);
 		}	
 		
+		//프로필에 나오는 출퇴근 여부
 		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
 		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
 		
 		model.addAttribute("isIn", isIn);
 		model.addAttribute("isOut", isOut);
-	
+		
+		//현재 프로젝트
+		ProjectVO project = projectService.getProject(projectId);
+		Map<String, Object> categoryMap = new HashMap<>();
+		categoryMap.put("projectId", project.getProjectId());
+		categoryMap.put("categoryNo","chat");
+		
+		model.addAttribute("categoryMap", categoryMap);
+		
+		SimpleDateFormat projectFormat = new SimpleDateFormat("yyyy-MM-dd");
+		
+		project.setStartDate(AttendanceUtil.updateDayFormat(project.getStartDate(), projectFormat));
+		project.setEndDate(AttendanceUtil.updateDayFormat(project.getEndDate(), projectFormat));
+		
+		System.out.println("=============================================");
+		System.out.println(project.toString());
+		
+		model.addAttribute("project", project);
 		model.addAttribute("emptyMsg", emptyMsg);
-		model.addAttribute("projectId", projectId);
 		
 		return "schedule/schedule";
 	}

@@ -103,37 +103,7 @@ public class ProjectController {
 		
 		resultCnt += projectService.insertProjectMember(param);
 		
-		//프로젝트 시작일, 종료일 일정 insert
-		//String lastUpdusrId, String deleteAt, String color)
-		ScheduleVO scheduleStart = new ScheduleVO(null, 
-													project.getProjectId(),
-													project.getProjectNm() + " 시작일", 
-													startDate,
-													startDate,
-													"Y",
-													null,
-													member.getEsntlId(),
-													null,
-													member.getEsntlId(),
-													null,
-													"#007bff");
-		ScheduleVO scheduleEnd = new ScheduleVO(null, 
-													project.getProjectId(),
-													project.getProjectNm() + " 종료일", 
-													endDate,
-													endDate,
-													"Y",
-													null,
-													member.getEsntlId(),
-													null,
-													member.getEsntlId(),
-													null,
-													"#007bff");
-		
-		resultCnt += scheduleService.insertSchedule(scheduleStart);
-		resultCnt += scheduleService.insertSchedule(scheduleEnd);
-		
-		if(resultCnt > 3) {
+		if(resultCnt > 0) {
 			return "ok";
 		}
 		

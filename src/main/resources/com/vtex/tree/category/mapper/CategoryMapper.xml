@@ -13,6 +13,7 @@
 		<result column="FRST_REGISTER_ID" property="frstRegisterId"/>
 		<result column="ESNTL_ID" property="esntlId"/>
 		<result column="PROJECT_ID" property="projectId"/>
+		<result column="PROJECT_NM" property="projectNm"/>
 	</resultMap>
 	
 	<insert id="insertCategoryBoard">
@@ -99,10 +100,12 @@
 			B.NAME,
 			B.ESNTL_ID,
 			A.FRST_REGISTER_ID,
-			A.PROJECT_ID
+			A.PROJECT_ID,
+			C.PROJECT_NM
 		FROM
 			TB_CATEGORY A
 			LEFT OUTER JOIN TB_MEMBER B ON B.ESNTL_ID =  A.FRST_REGISTER_ID
+			LEFT OUTER JOIN TB_PROJECT C ON C.PROJECT_ID = A.PROJECT_ID
 		WHERE
 			CATEGORY_NO = #{categoryNo}
 			AND A.DELETE_AT = 'N'

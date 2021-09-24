@@ -89,7 +89,7 @@ img{
  * animation text-focus-in
  * ----------------------------------------
  */
-	@-webkit-keyframes text-focus-in {
+@-webkit-keyframes text-focus-in {
 	0% {
       -webkit-filter: blur(12px);
               filter: blur(12px);
@@ -100,8 +100,8 @@ img{
               filter: blur(0px);
       opacity: 1;
     }
-  }
-  @keyframes text-focus-in {
+}
+@keyframes text-focus-in {
     0% {
       -webkit-filter: blur(12px);
               filter: blur(12px);
@@ -112,4 +112,18 @@ img{
               filter: blur(0px);
       opacity: 1;
     }
-  }
+}
+
+.fa-tree{
+	color: rgb(0, 155, 0);
+	font-size: 22px;
+}
+
+#btnDiv{
+	text-align: right;
+}
+
+.navbar-brand{
+	text-align: left !important;
+}
+  

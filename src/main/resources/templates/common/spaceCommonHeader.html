@@ -1,0 +1,18 @@
+	<div class="header-container">
+      <ul class="info-ul">
+        <li th:if="${categoryMap.projectNm} != ''" 
+        	th:text="|(${categoryMap.projectNm}) ${categoryMap.categoryName} |">
+        </li>
+        <li th:if="${categoryMap.projectNm} == ''" >
+        	공지사항
+        </li>
+        <li>
+          <button id="title" type="button" >
+            <i class="fas fa-info-circle "></i>
+          </button>
+        </li>
+		<input type="hidden" th:value="${categoryMap.frstRegisterId}" id="frstRegisterId" />
+		<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
+		<input type="hidden" th:value="${session.loginMember.esntlId}" id="loginEsntlId" />
+      </ul>
+    </div>

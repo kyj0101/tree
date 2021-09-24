@@ -15,6 +15,15 @@
 <th:block th:replace="common/header">
 </th:block>
 
+<th:block th:replace="common/toast">
+</th:block>
+
+<th:block th:replace="common/spaceCommonHeader">
+</th:block>
+		
+<th:block th:replace="common/profile">
+</th:block>
+
 <link rel="stylesheet" href="/css/chat/chat.css">
 
 <script src="/js/chat/chat.js"></script>
@@ -87,28 +96,16 @@
 						onclick="chatOut();">채팅방 나가기</button>
 				</div>
 
-				<div class="chatMemberDiv" style="display: none">
+				<div class="chatMemberDiv">
 					<ul class="list-group chatMemberUl">
 					</ul>
 				</div>
 
-				<div class="boardAddMemberDiv" style="display: none">
-					<ul class="list-group boardAddMemberUl">
-
-					</ul>
-
-					<button type="button" class="btn btn-primary"
-						style="margin-left: 680px; margin-top: 10px;"
-						onclick="">추가</button>
-				</div>
-				
-				<div class="chatAddMemberDiv" style="display: none">
+				<div class="chatAddMemberDiv">
 					<ul class="list-group chatAddMemberUl">
-
 					</ul>
 
-					<button type="button" class="btn btn-primary"
-						style="margin-left: 680px; margin-top: 10px;"
+					<button id="addChatMemberBtn" type="button" class="btn btn-primary"
 						onclick="addChatMember();">추가</button>
 				</div>
 			</div>
