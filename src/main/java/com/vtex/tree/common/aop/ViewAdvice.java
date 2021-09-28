@@ -9,6 +9,7 @@ import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -38,6 +39,9 @@ public class ViewAdvice {
 	@Autowired
 	private AttendanceService attendanceService;
 	
+	@Value("${empty.msg}")
+	private String emptyMsg;
+	
 	@Pointcut("execution(* com.vtex.tree..*Controller.*View(..))")
 	public void defaultPointcut() {};
 	
@@ -56,7 +60,9 @@ public class ViewAdvice {
 			
 			setModelAndViewProjectList(model, modelMap);
 			setModelAndViewCategoryMap(model, modelMap);
-			setModelAndViewIsInOrIsOut(model, modelMap);			
+			setModelAndViewIsInOrIsOut(model, modelMap);
+			
+			model.addObject("emptyMsg", emptyMsg);
 		}
 		
 		return obj;
@@ -74,7 +80,9 @@ public class ViewAdvice {
 			
 			setModelAndViewProjectList(model, modelMap);
 			setModelAndViewChatRoom(model, modelMap);
-			setModelAndViewIsInOrIsOut(model, modelMap);			
+			setModelAndViewIsInOrIsOut(model, modelMap);
+			
+			model.addObject("emptyMsg", emptyMsg);
 		}
 		
 		return obj;

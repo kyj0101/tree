@@ -8,19 +8,14 @@ public class PageBar {
 		int pageBarSize = 5;
 		int totalPage = (int) Math.ceil((double) totalContents / numPerPage);
 
-
 		url = url + (url.indexOf("?") > -1 ? "&" : "?") + "cPage=";
-		
-		// 1 2 3 4 5 : pageStart 1 ~ pageEnd 5 
-		// 6 7 8 9 10 : pageStart 6 ~ pageEnd 10 
+
 		int pageStart = ((cPage - 1) / pageBarSize) * pageBarSize + 1;
 		int pageEnd = pageStart + pageBarSize - 1;
 		
-		//증감변수
 		int pageNo = pageStart;
 		pageBar.append("<nav><ul class=\"pagination justify-content-center\">\n");
 		
-		//이전 영역
 		if(cPage == 1) {
 			pageBar.append("");
 		}
@@ -30,18 +25,19 @@ public class PageBar {
 					"    </li>\n");
 		}
 		
-		//페이지 No 영역
 		while(pageNo <= pageEnd && pageNo <= totalPage) {
-			//현재페이지인 경우, 링크비활성화
+			
 			if(pageNo == cPage) {
 				pageBar.append("<li class=\"page-item active\"><a class=\"page-link\" href=\"#\">" + pageNo + "</a></li>\n");
 			}
+			
 			else {
 				pageBar.append("<li class=\"page-item\"><a class=\"page-link\" href=\"javascript:paging(" + pageNo + ")\">" + pageNo + "</a></li>\n");
 			}
+			
 			pageNo++;
 		}
-		//다음 영역
+
 		if(cPage >= totalPage) {
 			pageBar.append("");
 		}
@@ -56,6 +52,11 @@ public class PageBar {
 		
 		return pageBar.toString();
 	}
+	
+	public static int getOffset(int cPage, int numperPage){
+		return (cPage - 1) * numperPage;
+	}
+
 	
 	
 }

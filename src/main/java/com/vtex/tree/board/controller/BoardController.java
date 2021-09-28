@@ -1,6 +1,7 @@
 package com.vtex.tree.board.controller;
 
 import static com.vtex.tree.common.util.FileUtil.getFileMap;
+import static com.vtex.tree.common.util.PageBar.getOffset;
 import static com.vtex.tree.common.util.PageBar.getPageBar;
 
 import java.io.File;
@@ -16,7 +17,6 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -24,33 +24,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
-import com.vtex.tree.category.service.CategoryService;
-import com.vtex.tree.category.vo.CategoryVO;
-import com.vtex.tree.chat.room.service.ChatRoomService;
-import com.vtex.tree.chat.room.vo.ChatRoomVO;
-import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.common.util.FileUtil;
-import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.vo.MemberVO;
-import com.vtex.tree.project.service.ProjectService;
-import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.security.annotation.LoginUser;
-import com.vtex.tree.socket.handler.SocketHandler;
-
-import groovy.lang.Category;
 @RequestMapping("/board")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")
@@ -60,20 +45,10 @@ public class BoardController {
 	
 	@Autowired
 	private BoardService boardService;
-	
-	@Autowired
-	private AttendanceService attendanceService;
-	
-	@Autowired
-	private CategoryService categoryBoardService;
 
 	@Autowired
 	private ResourceLoader resourceLoader;
-	
-	@Value("${empty.msg}")
-	private String emptyMsg;
-	
-	
+		
 	/**
 	 * 게시글 리스트 조회
 	 * @param cPage
@@ -90,29 +65,18 @@ public class BoardController {
 											ModelAndView model,
 											@LoginUser MemberVO member) throws Exception {
 		
-		HttpSession session = request.getSession();
-
-		//게시판리스트
-		Map<String, Object> param = new HashMap<>();
-
-		param.put("numPerPage", NUMPERPAGE);
-		param.put("cPage", cPage);
-		
-		int offset = (cPage - 1) * NUMPERPAGE;		
-		RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
-		
+		RowBounds rowBounds = new RowBounds(getOffset(cPage, NUMPERPAGE), NUMPERPAGE);		
 		int totalContents = boardService.getBoardListCnt(category);
 		String url = request.getRequestURI();
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
+
+		model.addObject("pageBar", pageBar);
 		
 		List<BoardVO> boardList = boardService.getBoardList(category, rowBounds);
 		model.addObject("boardList", boardList);
-		model.addObject("pageBar", pageBar);
-
 
 		model.addObject("esntlId", member.getEsntlId());
 		model.addObject("email", member.getEmail());
-		model.addObject("emptyMsg", emptyMsg);
 		model.addObject("category", category);
 		model.setViewName("board/board");
 		

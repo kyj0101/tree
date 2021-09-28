@@ -1,6 +1,7 @@
 package com.vtex.tree.attendance.controller;
 
 import static com.vtex.tree.common.util.PageBar.getPageBar;
+import static com.vtex.tree.common.util.PageBar.getOffset;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -16,7 +17,6 @@ import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -70,15 +70,12 @@ public class AttendanceController {
 		
 		Map<String, Object> param = new HashMap<>();
 
-		param.put("numPerPage", NUMPERPAGE);
-		param.put("cPage", cPage);
 		param.put("startDay", startDay);
 		param.put("endDay", endDay);
 		param.put("name", name);
 		param.put("latenessAt", latenessAt);
-		
-		int offset = (cPage - 1) * NUMPERPAGE;		
-		RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
+
+		RowBounds rowBounds = new RowBounds(getOffset(cPage, NUMPERPAGE), NUMPERPAGE);
 		
 		String setParams = "?startDay=" + startDay + "&endDay=" + endDay + "&name=" + name + "&latenessAt=" + latenessAt;
 		int totalContents = attendanceService.getAttendanceListCnt(param);

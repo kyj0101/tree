@@ -24,6 +24,7 @@ import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.employee.service.EmployeeService;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.security.annotation.LoginUser;
+import static com.vtex.tree.common.util.PageBar.getOffset;
 
 @RequestMapping("/employee")
 @Controller
@@ -54,18 +55,12 @@ public class EmployeeController {
 									@RequestParam(defaultValue = "1")int cPage,
 									HttpServletRequest request) throws Exception {
 		
-		//직원 목록
-		Map<String, Object> param = new HashMap<>();
 
-		param.put("numPerPage", NUMPERPAGE);
-		param.put("cPage", cPage);
-		
-		int offset = (cPage - 1) * NUMPERPAGE;		
-		RowBounds rowBounds = new RowBounds(offset, NUMPERPAGE);
-		
+		RowBounds rowBounds = new RowBounds(getOffset(cPage, NUMPERPAGE), NUMPERPAGE);		
 		int totalContents = employeeService.getMemberListCnt();
 		String url = request.getRequestURI();
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
+		
 		model.addAttribute("pageBar", pageBar);
 		
 		List<MemberVO> memberList = employeeService.getMemberList(rowBounds);
