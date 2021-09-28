@@ -63,7 +63,7 @@ public class ChatController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/room")
-	public ModelAndView getChatRoom(@LoginUser MemberVO member,
+	public ModelAndView getChatRoomView(@LoginUser MemberVO member,
 								ModelAndView model,
 								@RequestParam(defaultValue = "1") int category) throws Exception {
 		

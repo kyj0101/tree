@@ -18,6 +18,7 @@ import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.category.vo.CategoryVO;
 import com.vtex.tree.chat.room.service.ChatRoomService;
 import com.vtex.tree.chat.room.vo.ChatRoomVO;
+import com.vtex.tree.common.enums.ViewName;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
@@ -45,9 +46,6 @@ public class ViewAdvice {
 	@Pointcut("execution(* com.vtex.tree..*Controller.*View(..))")
 	public void defaultPointcut() {};
 	
-	@Pointcut("execution(* com.vtex.tree..*Controller.getChatRoom(..))")
-	public void chatRoomPointcut() {};
-	
 	@Around("defaultPointcut()")
 	public Object setDefaultView(ProceedingJoinPoint pjp) throws Throwable {
 
@@ -57,29 +55,17 @@ public class ViewAdvice {
 			
 			ModelAndView model = (ModelAndView)obj;
 			Map<String, Object> modelMap = model.getModelMap();
+			String view = model.getViewName();
 			
 			setModelAndViewProjectList(model, modelMap);
-			setModelAndViewCategoryMap(model, modelMap);
-			setModelAndViewIsInOrIsOut(model, modelMap);
 			
-			model.addObject("emptyMsg", emptyMsg);
-		}
-		
-		return obj;
-	}
-	
-	@Around("chatRoomPointcut()")
-	public Object setChatRoomView(ProceedingJoinPoint pjp) throws Throwable {
-
-		Object obj = pjp.proceed();
-		
-		if(obj instanceof ModelAndView) {
+			if(ViewName.BOARD.getViewName().equals(view)) {
+				setModelAndViewCategoryMap(model, modelMap);				
 			
-			ModelAndView model = (ModelAndView)obj;
-			Map<String, Object> modelMap = model.getModelMap();
+			}else if(ViewName.CHAT.getViewName().equals(view)){
+				setModelAndViewChatRoom(model, modelMap);				
+			}
 			
-			setModelAndViewProjectList(model, modelMap);
-			setModelAndViewChatRoom(model, modelMap);
 			setModelAndViewIsInOrIsOut(model, modelMap);
 			
 			model.addObject("emptyMsg", emptyMsg);
