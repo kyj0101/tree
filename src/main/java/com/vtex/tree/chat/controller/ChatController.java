@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
@@ -62,43 +63,18 @@ public class ChatController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/room")
-	public String getChatRoom(@LoginUser MemberVO member,
-								Model model,
+	public ModelAndView getChatRoom(@LoginUser MemberVO member,
+								ModelAndView model,
 								@RequestParam(defaultValue = "1") int category) throws Exception {
 		
-		Map<String, Object> param = new HashMap<>();
+		model.addObject("esntlId", member.getEsntlId());
+		model.addObject("emptyMsg", emptyMsg);
+		model.addObject("category", category);
+		model.addObject("email", member.getEmail());
+		model.addObject("name", member.getName());
+		model.setViewName("chat/chat");
 		
-		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
-		model.addAttribute("projectList", projectList);
-	
-		for(ProjectVO project : projectList) {
-
-			param.put("projectId", project.getProjectId());
-			param.put("esntlId", member.getEsntlId());
-			
-			List<CategoryVO> categoryBoardList = projectService.getProjectBoardList(param);
-			project.setCategoryBoardList(categoryBoardList);
-
-			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
-			project.setChatRoomList(chatRoomList);
-			
-		}
-		
-		//현재 카테고리
-		Map<String, Object> categoryMap = chatRoomSevice.getChatRoom(category);
-		model.addAttribute("categoryMap", categoryMap);
-		
-		//출퇴근 여부
-		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
-		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
-		
-		model.addAttribute("isIn", isIn);
-		model.addAttribute("isOut", isOut);
-		model.addAttribute("emptyMsg", emptyMsg);
-		model.addAttribute("email", member.getEmail());
-		model.addAttribute("name", member.getName());
-
-		return "chat/chat";
+		return model;
 	}
 	
 	@MessageMapping("/active/{category}")

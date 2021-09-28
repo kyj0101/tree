@@ -5,22 +5,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
-import com.vtex.tree.category.vo.CategoryVO;
-import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.common.util.AttendanceUtil;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
@@ -50,52 +45,28 @@ public class ScheduleController {
 	private String emptyMsg;
 	
 	@RequestMapping("/view")
-	public String calendarView(@RequestParam String projectId, 
-								Model model,
+	public ModelAndView calendarView(@RequestParam String projectId, 
+								ModelAndView model,
 								@LoginUser MemberVO member) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
-		
-		//메뉴에 있을 프로젝트 리스트
-		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
-		model.addAttribute("projectList", projectList);
-	
-		for(ProjectVO project : projectList) {
 
-			param.put("projectId", project.getProjectId());
-			param.put("esntlId", member.getEsntlId());
-			
-			List<CategoryVO> categoryBoardList = projectService.getProjectBoardList(param);
-			project.setCategoryBoardList(categoryBoardList);
-
-			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
-			project.setChatRoomList(chatRoomList);
-		}	
-		
-		//프로필에 나오는 출퇴근 여부
-		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
-		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
-		
-		model.addAttribute("isIn", isIn);
-		model.addAttribute("isOut", isOut);
-		
 		//현재 프로젝트
 		ProjectVO project = projectService.getProject(projectId);
-		Map<String, Object> categoryMap = new HashMap<>();
-		categoryMap.put("projectId", project.getProjectId());
-		categoryMap.put("categoryNo","chat");
-		
-		model.addAttribute("categoryMap", categoryMap);
-		
+	
 		SimpleDateFormat projectFormat = new SimpleDateFormat("yyyy-MM-dd");
 		
 		project.setStartDate(AttendanceUtil.updateDayFormat(project.getStartDate(), projectFormat));
 		project.setEndDate(AttendanceUtil.updateDayFormat(project.getEndDate(), projectFormat));
 		
-		model.addAttribute("project", project);
-		model.addAttribute("emptyMsg", emptyMsg);
+		model.addObject("project", project);
+		model.addObject("emptyMsg", emptyMsg);
+		model.addObject("category", 1);
+		model.addObject("esntlId", member.getEsntlId());
+		model.addObject("email", member.getEmail());
+		model.setViewName("schedule/schedule");
 		
-		return "schedule/schedule";
+		return model;
 	}
 	
 	@ResponseBody

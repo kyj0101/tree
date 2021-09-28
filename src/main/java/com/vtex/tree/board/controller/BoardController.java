@@ -68,9 +68,6 @@ public class BoardController {
 	private CategoryService categoryBoardService;
 
 	@Autowired
-	private ProjectService projectService;
-
-	@Autowired
 	private ResourceLoader resourceLoader;
 	
 	@Value("${empty.msg}")
@@ -87,11 +84,11 @@ public class BoardController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/list")
-	public String getBoardList(@RequestParam(defaultValue = "1") int cPage,
-								HttpServletRequest request, 
-								@RequestParam(defaultValue = "1") int category, 
-								Model model,
-								@LoginUser MemberVO member) throws Exception {
+	public ModelAndView getBoardListView(@RequestParam(defaultValue = "1") int cPage,
+											HttpServletRequest request, 
+											@RequestParam(defaultValue = "1") int category, 
+											ModelAndView model,
+											@LoginUser MemberVO member) throws Exception {
 		
 		HttpSession session = request.getSession();
 
@@ -109,47 +106,17 @@ public class BoardController {
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
 		
 		List<BoardVO> boardList = boardService.getBoardList(category, rowBounds);
-		model.addAttribute("boardList", boardList);
-		model.addAttribute("pageBar", pageBar);
-		
-		//카테고리 리스트 
-		session.setAttribute("loginMember", member);
-				
-		List<ProjectVO> projectList = projectService.getMembersProject(member.getEsntlId());
-		model.addAttribute("projectList", projectList);
-	
-		for(ProjectVO project : projectList) {
+		model.addObject("boardList", boardList);
+		model.addObject("pageBar", pageBar);
 
-			param.put("projectId", project.getProjectId());
-			param.put("esntlId", member.getEsntlId());
-			
-			List<CategoryVO> categoryBoardList = projectService.getProjectBoardList(param);
-			project.setCategoryBoardList(categoryBoardList);
-			
-			List<ChatRoomVO> chatRoomList = projectService.getProjectChatRoomList(param);
-			project.setChatRoomList(chatRoomList);
-			
-		}
 
-		//현재 카테고리 
-		Map<String, Object> categoryMap = categoryBoardService.getCategory(category);
+		model.addObject("esntlId", member.getEsntlId());
+		model.addObject("email", member.getEmail());
+		model.addObject("emptyMsg", emptyMsg);
+		model.addObject("category", category);
+		model.setViewName("board/board");
 		
-		if(categoryMap.get("projectId") == null) {
-			categoryMap.put("projectId", "notice");		
-			categoryMap.put("projectNm", "");		
-		}
-		
-		model.addAttribute("categoryMap", categoryMap);
-		
-		//출퇴근 여부
-		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
-		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
-		
-		model.addAttribute("isIn", isIn);
-		model.addAttribute("isOut", isOut);
-		model.addAttribute("emptyMsg", emptyMsg);
-
-		return "board/board";
+		return model;
 	}
 	
 	/**
