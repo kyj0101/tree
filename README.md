@@ -49,4 +49,4 @@
 
 ## 👇 아래 노션 링크를 클릭하시면 더 자세한 정보를 보실 수 있습니다.
 
-[](https://lucky-continent-f31.notion.site/Tree-1eb851df2a814b5a9ae2faadb8eea231)
+[준비중](https://lucky-continent-f31.notion.site/Tree-1eb851df2a814b5a9ae2faadb8eea231)
