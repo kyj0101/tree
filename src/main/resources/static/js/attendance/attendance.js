@@ -93,6 +93,7 @@ function fnPopup(e){
 		$("#updateLatenessAtY").attr("selected",true);	
 	}else{
 		$("#updateLatenessAtN").attr("selected",true);
+		updateLatenessAtSelectedChange();
 	}
 	
 	$(".updateLatenessAtReason").val(reason);

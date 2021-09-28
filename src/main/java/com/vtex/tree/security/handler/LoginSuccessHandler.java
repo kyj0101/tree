@@ -18,11 +18,11 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
 		
-		Object proincipalObj = authentication.getPrincipal();
+		Object principalObj = authentication.getPrincipal();
 		
-		if(proincipalObj instanceof MemberVO) {
+		if(principalObj instanceof MemberVO) {
 			
-			MemberVO member = (MemberVO)proincipalObj;
+			MemberVO member = (MemberVO)principalObj;
 			
 			request.getSession().setAttribute("loginMember", member);
 			super.onAuthenticationSuccess(request, response, authentication);

@@ -88,7 +88,7 @@
 		FROM
 			TB_ATTENDANCE
 		WHERE
-			DAY = TO_CHAR(SYSDATE, 'yyyy-mm-dd')
+			DAY = TO_CHAR(SYSDATE, 'yyyymmdd')
 			AND EMAIL = #{email}
 	</select>
 	
@@ -100,7 +100,7 @@
 		FROM
 			TB_ATTENDANCE
 		WHERE
-			DAY = TO_CHAR(SYSDATE, 'yyyy-mm-dd')
+			DAY = TO_CHAR(SYSDATE, 'yyyymmdd')
 			AND EMAIL = #{email}
 	</select>
 	
