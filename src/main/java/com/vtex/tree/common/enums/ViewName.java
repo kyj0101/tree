@@ -3,7 +3,8 @@ package com.vtex.tree.common.enums;
 public enum ViewName {
 	
 	BOARD("board/board"),
-	CHAT("chat/chat");
+	CHAT("chat/chat"),
+	SCHEDULE("schedule/schedule");
 	
 	public final String viewName;
 	

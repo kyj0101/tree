@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
@@ -63,7 +64,10 @@ public class ViewAdvice {
 				setModelAndViewCategoryMap(model, modelMap);				
 			
 			}else if(ViewName.CHAT.getViewName().equals(view)){
-				setModelAndViewChatRoom(model, modelMap);				
+				setModelAndViewChatRoom(model, modelMap);		
+				
+			}else if(ViewName.SCHEDULE.getViewName().equals(view)) {
+				setModelAndViewSchedule(model, modelMap);
 			}
 			
 			setModelAndViewIsInOrIsOut(model, modelMap);
@@ -100,14 +104,15 @@ public class ViewAdvice {
 	private ModelAndView setModelAndViewCategoryMap(ModelAndView model, Map<String, Object> modelMap) throws Exception {
 		
 		Map<String, Object> categoryMap = categoryService.getCategory(Integer.parseInt(modelMap.get("category") + ""));
-		model.addObject("categoryMap", categoryMap);
 		
-		if(categoryMap.get("projectId") == null) {
-			
-			categoryMap.put("projectId", "notice");		
-			categoryMap.put("projectNm", "");		
+		//만약 선택된 게시판이 공지사항이라면
+		if((Integer.parseInt(categoryMap.get("categoryNo") + "")) == 1) {
+			categoryMap.put("projectId", "-1");
+			categoryMap.put("projectNm", "");
 		}
 		
+		model.addObject("categoryMap", categoryMap);
+
 		return model;
 	}
 	
@@ -116,16 +121,23 @@ public class ViewAdvice {
 		
 		Map<String, Object> categoryMap = chatRoomSevice.getChatRoom(Integer.parseInt(modelMap.get("category") + ""));
 		model.addObject("categoryMap", categoryMap);
-		
-		if(categoryMap.get("projectId") == null) {
-			
-			categoryMap.put("projectId", "notice");		
-			categoryMap.put("projectNm", "");		
-		}
-		
+
 		return model;
 	}
 	
+	//캘린더
+	private ModelAndView setModelAndViewSchedule(ModelAndView model, Map<String, Object> modelMap) {
+		
+		Map<String, Object> categoryMap = new HashMap<>();
+		
+		categoryMap.put("projectId", modelMap.get("selectedProjectId"));
+		categoryMap.put("categoryNo", "schedule");
+		
+		model.addObject("categoryMap", categoryMap);
+		
+		return model;
+	}
+
 	//출퇴근 여부
 	private ModelAndView setModelAndViewIsInOrIsOut(ModelAndView model, Map<String, Object> modelMap) throws Exception {
 		

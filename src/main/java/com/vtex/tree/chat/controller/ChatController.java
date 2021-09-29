@@ -40,19 +40,7 @@ public class ChatController {
 
 	@Autowired
 	private ChatService chatService;
-	
-	@Autowired
-	private AttendanceService attendanceService;
 
-	@Autowired
-	private ChatRoomService chatRoomSevice;
-	
-	@Autowired
-	private ProjectService projectService;
-	
-	@Value("${empty.msg}")
-	private String emptyMsg;
-	
 	
 	/**
 	 * 채팅방
@@ -68,7 +56,6 @@ public class ChatController {
 								@RequestParam(defaultValue = "1") int category) throws Exception {
 		
 		model.addObject("esntlId", member.getEsntlId());
-		model.addObject("emptyMsg", emptyMsg);
 		model.addObject("category", category);
 		model.addObject("email", member.getEmail());
 		model.addObject("name", member.getName());
@@ -91,7 +78,4 @@ public class ChatController {
 		
 		return memberList;
 	}
-
-	
-
 }

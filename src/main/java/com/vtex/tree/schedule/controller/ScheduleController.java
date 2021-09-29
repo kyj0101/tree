@@ -41,26 +41,20 @@ public class ScheduleController {
 	@Autowired
 	private ProjectService projectService;
 	
-	@Value("${empty.msg}")
-	private String emptyMsg;
-	
 	@RequestMapping("/view")
-	public ModelAndView calendarView(@RequestParam String projectId, 
+	public ModelAndView scheduleView(@RequestParam String projectId, 
 								ModelAndView model,
 								@LoginUser MemberVO member) throws Exception {
-
-		Map<String, Object> param = new HashMap<>();
-
 		//현재 프로젝트
 		ProjectVO project = projectService.getProject(projectId);
-	
+
 		SimpleDateFormat projectFormat = new SimpleDateFormat("yyyy-MM-dd");
-		
+
 		project.setStartDate(AttendanceUtil.updateDayFormat(project.getStartDate(), projectFormat));
 		project.setEndDate(AttendanceUtil.updateDayFormat(project.getEndDate(), projectFormat));
 		
-		model.addObject("project", project);
-		model.addObject("emptyMsg", emptyMsg);
+		model.addObject("project", project); 
+		model.addObject("selectedProjectId", projectId);
 		model.addObject("category", 1);
 		model.addObject("esntlId", member.getEsntlId());
 		model.addObject("email", member.getEmail());

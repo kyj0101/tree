@@ -1,18 +1,16 @@
 package com.vtex.tree.project.controller;
 
 import static com.vtex.tree.common.util.PageBar.getPageBar;
-
+import static com.vtex.tree.common.util.PageBar.getOffset;
 import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,7 +23,6 @@ import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.schedule.service.ScheduleService;
-import com.vtex.tree.schedule.vo.ScheduleVO;
 import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/project")
@@ -47,14 +44,8 @@ public class ProjectController {
 	
 	@RequestMapping("/list")
 	public String projectList(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model) throws Exception {
-		
-		Map<String, Object> param = new HashMap<>();
-
-		param.put("numPerPage", PROJECT_NUMPERPAGE);
-		param.put("cPage", cPage);
-		
-		int offset = (cPage - 1) * PROJECT_NUMPERPAGE;		
-		RowBounds rowBounds = new RowBounds(offset, PROJECT_NUMPERPAGE);
+	
+		RowBounds rowBounds = new RowBounds(getOffset(cPage, PROJECT_NUMPERPAGE), PROJECT_NUMPERPAGE);
 		
 		int totalContents = projectService.getTotalProject();
 		String url = request.getRequestURI();

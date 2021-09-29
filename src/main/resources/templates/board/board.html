@@ -26,7 +26,7 @@
       <figure>
         <figcaption>
         	<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
-        	<p th:if="${categoryMap.categoryNo} == 1" class="category-p"  th:text="${categoryMap.categoryName}"></p>
+        	<p th:if="${categoryMap.categoryNo} == 1" class="category-p">공지사항</p>
 			<p th:if="${categoryMap.categoryNo} != 1" class="category-p"  th:text="${categoryMap.categoryName}" data-toggle="modal" data-target="#boardInfo" id="boardInfoTitle"></p>			
         </figcaption>
       </figure>
