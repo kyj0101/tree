@@ -21,7 +21,7 @@ document.addEventListener('DOMContentLoaded', function() {
 			$("#addSchedule").modal("show");
 		},
 		eventClick(info){
-			
+
 			if(info.event.display === 'background'){
 				return false;
 			}
@@ -30,7 +30,10 @@ document.addEventListener('DOMContentLoaded', function() {
 			$("#updateTitle").val(info.event.title);
 			$("#updateStartDate").val(info.event.startStr.substring(0,10));
 			$("#updateStartTime").val(info.event.startStr.substring(11,19));
-			$("#updateEndDate").val(info.event.endStr.substring(0,10));
+			
+			info.event.end != null && $("#updateEndDate").val(info.event.endStr.substring(0,10));
+			info.event.end == null && $("#updateEndDate").val(info.event.startStr.substring(0,10));
+			
 			$("#updateEndTime").val(info.event.endStr.substring(11,19));
 			$("#updateColor").val(info.event.backgroundColor);
 
@@ -137,6 +140,7 @@ function getScheduleList(){
 		success(result) {
 			
 			$.each(result, function(index, elem){
+				console.log(elem)
 				calendar.addEvent(elem);
 			});
 

@@ -1,9 +1,9 @@
 var userIsManager = $("#frstRegisterId").val() === $("#loginEsntlId").val();
+var categoryNo;
 
 $(function() {
+	categoryNo = $("#categoryNo").val();
 	
-	var categoryNo = $("#categoryNo").val();
-
 	if(!userIsManager){
 		$(".boardAddMember").css("display","none");
 	}
@@ -159,11 +159,7 @@ $(function() {
 			},
 		});
 	});
-	
-	$(".close").click(function(){
-		//location.replace('/board/list?category=' + categoryNo)
-	});
-	
+
 	$(".board-update-btn").click(function(){
 		
 		var boardNo = $("#boardNo").val();
@@ -463,5 +459,10 @@ function showBoardInfo(){
 	$(".boardAddMember").removeClass("active");
 	$(".boardMember").removeClass("active");
 	$(".boardInfo").addClass("active");	
+}
+
+function replace(){
+	console.log(categoryNo);
+	location.replace('/board/list?category=' + categoryNo);
 }
 

@@ -68,6 +68,7 @@ public class BoardController {
 		RowBounds rowBounds = new RowBounds(getOffset(cPage, NUMPERPAGE), NUMPERPAGE);		
 		int totalContents = boardService.getBoardListCnt(category);
 		String url = request.getRequestURI();
+		url = category != 1 ? url + "?" + ("category=" + category) : url;
 		String pageBar = getPageBar(totalContents, cPage, NUMPERPAGE, url);
 
 		model.addObject("pageBar", pageBar);

@@ -16,7 +16,7 @@ button {
 	-moz-appearance: none;
 }
 
-ul {
+ul:not #boardInfo{
 	list-style: none;
 }
 

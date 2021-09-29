@@ -76,7 +76,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.oauth2Login() //OAuth2 로그인 설정의 진입점
 			.loginPage("/login")
 			.failureHandler(logInFailHandler())
-			.successHandler(logInSuccessHandler())
 			.userInfoEndpoint() //로그인 성공 이후 사용자 정보를 가져올 때의 설정들을 담당
 			.userService(service); //로그인 성공 이ㅣ후 후속 조치를 진행할 UserService인터페이스 구현체를 등록함
 	}

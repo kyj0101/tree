@@ -25,7 +25,6 @@
 
       <figure>
         <figcaption>
-        	<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
         	<p th:if="${categoryMap.categoryNo} == 1" class="category-p">공지사항</p>
 			<p th:if="${categoryMap.categoryNo} != 1" class="category-p"  th:text="${categoryMap.categoryName}" data-toggle="modal" data-target="#boardInfo" id="boardInfoTitle"></p>			
         </figcaption>
@@ -81,7 +80,7 @@
       <div class="modal-header">
         <h5 class="modal-title boardDetailTitle" id="add-modal-label"></h5>
 
-        <button type="button" class="close" data-dismiss="modal">
+        <button type="button" class="close" data-dismiss="modal" onclick="replace();">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
@@ -174,7 +173,7 @@
 			<div class="modal-header">
 				<h5 class="modal-title" id="add-modal-label">게시글 작성</h5>
 				<button type="button" class="close" data-dismiss="modal"
-					aria-label="Close">
+					aria-label="Close" onclick="replace();">
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
@@ -186,7 +185,6 @@
 							id="boardTitle"
 							list="datalistOptions" placeholder="제목을 입력하세요."
 							aria-label="Search" aria-describedby="basic-addon2">
-						<input type="hidden" th:value="${categoryMap.categoryNo}" id="categoryNo" />
 						<div>
 							<input class="form-check-input" type="checkbox" value="Y" id="noticeAt" name="noticeAt">
 							<label class="form-check-label" for="noticeAt"> 공지사항 </label>
