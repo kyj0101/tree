@@ -8,17 +8,6 @@
 
 월드버텍 수습기간(2021.8.14 ~ 2021.10.5)에 진행한 개인 프로젝트 입니다.
 
-# application.properties 필요 정보
-+ server.ssl.key 설정
-+ spring.datasource 설정
-+ mybatis 설정
-+ Gmail SMPT 설정
-+ OAuth2 설정
-+ working.time=09:00
-+ empty.msg=No Data.
-+ ip값
-
-
 ## ⚙ 기술 스택
 
 + Back End
@@ -55,6 +44,16 @@
 + 근태 관리
 + 공통 코드 관리
 + 일정 관리
+
+# application.properties 필요 정보
++ server.ssl.key 설정
++ spring.datasource 설정
++ mybatis 설정
++ Gmail SMPT 설정
++ OAuth2 설정
++ working.time=09:00
++ empty.msg=No Data.
++ ip값
 
 ## 👇 아래 노션 링크를 클릭하시면 더 자세한 정보를 보실 수 있습니다.
 
