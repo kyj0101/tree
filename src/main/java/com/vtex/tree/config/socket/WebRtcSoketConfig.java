@@ -12,7 +12,7 @@ import com.vtex.tree.socket.handler.WebRTCHandler;
 
 @Configuration
 @EnableWebSocket
-public class WebRtcSoketConfiguration implements WebSocketConfigurer{
+public class WebRtcSoketConfig implements WebSocketConfigurer{
 	
 	@Autowired
 	private WebRTCHandler webRtcHandler;

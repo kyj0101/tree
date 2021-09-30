@@ -130,14 +130,33 @@ ip= ( *ip )
 
 ### /attendance (근태)
 
-|          URL          |                설명                |
-| :-------------------: | :--------------------------------: |
-|   /attendance/list/   |   근태 목록 (admin만 접근 가능)    |
-|    /attendance/in     |             출근 처리              |
-|    /attendance/out    |             퇴근 처리              |
-|  /attendance/update   | 근태 기록 수정 (admin만 접근 가능) |
-| /attendance/auto/name |   근태 등록시 이름 자동완성 ( a)   |
-|                       |                                    |
+|          URL          |                     설명                      |
+| :-------------------: | :-------------------------------------------: |
+|   /attendance/list/   |         근태 목록 (admin만 접근 가능)         |
+|    /attendance/in     |                   출근 처리                   |
+|    /attendance/out    |                   퇴근 처리                   |
+|  /attendance/update   |      근태 기록 수정 (admin만 접근 가능)       |
+| /attendance/auto/name | 근태 등록시 이름 자동완성 (admin만 접근 가능) |
+|  /attendance/insert   |         근태 등록 (admin만 접근 가능)         |
+|  /attendance/delete   |         근태 삭제 (admin만 접근 가능)         |
+
+
+
+### /board (게시판)
+
+| URL  | 설명 |
+| :--: | :--: |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
+|      |      |
 
 
 

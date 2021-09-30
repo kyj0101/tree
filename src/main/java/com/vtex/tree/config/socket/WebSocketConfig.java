@@ -10,7 +10,7 @@ import com.vtex.tree.socket.handler.SocketHandler;
 
 @Configuration
 @EnableWebSocket
-public class WebSocketConfiguration implements WebSocketConfigurer{
+public class WebSocketConfig implements WebSocketConfigurer{
 	
 	@Autowired
 	private SocketHandler socketHandler;

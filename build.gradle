@@ -51,7 +51,12 @@ dependencies {
 	//thymeleaf 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'nz.net.ultraq.thymeleaf:thymeleaf-layout-dialect'
-
+	
+	// https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
+	implementation group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+	implementation group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+	
+	
     implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.1.4'
 	implementation fileTree(dir: 'ext-libs', include: ['*.jar'])
 
