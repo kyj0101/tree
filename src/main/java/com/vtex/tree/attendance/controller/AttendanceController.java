@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -59,6 +60,7 @@ public class AttendanceController {
 	 * @return
 	 * @throws Exception
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/list")
 	public String getAttendanceList(@RequestParam(required = false)String startDay,
 									@RequestParam(required = false)String endDay,
@@ -107,6 +109,7 @@ public class AttendanceController {
 	 * @return
 	 * @throws Exception
 	 */
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
 	@RequestMapping("/in")
 	public String insertIn(HttpServletRequest request, @LoginUser MemberVO member) throws Exception {
@@ -144,6 +147,7 @@ public class AttendanceController {
 	 * @return
 	 * @throws Exception
 	 */
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
 	@RequestMapping("/out")
 	public String updateOut(HttpServletRequest request, @LoginUser MemberVO member) throws Exception {
@@ -186,6 +190,7 @@ public class AttendanceController {
 	 * @return
 	 * @throws Exception
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping("/update")
 	public String updateAttendance(AttendanceVO attendanceVO, @LoginUser MemberVO member) throws Exception {
@@ -216,6 +221,7 @@ public class AttendanceController {
 	 * @param searchName
 	 * @throws Exception
 	 */
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/auto/name")
 	public ResponseEntity<List<MemberVO>> autoName(String searchName) throws Exception {
 
@@ -226,6 +232,7 @@ public class AttendanceController {
 							.body(memberList);
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping("/insert")
 	public String insertAttendance(AttendanceVO attendanceVO, @LoginUser MemberVO member) throws Exception {
@@ -251,6 +258,7 @@ public class AttendanceController {
 		}	
 	}
 	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping("/delete")
 	public String deleteAttendance(int attendanceNo, @LoginUser MemberVO member) throws Exception {
