@@ -38,6 +38,8 @@ function findPassword(){
 				}else{
 					alert("임시 비밀번호가 발송안됐습니다")
 				}
+				
+				location.replace("/login");
 			},
 	
 			error(xhr, status, err) {

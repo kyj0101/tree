@@ -1,5 +1,3 @@
-//웹소켓 선언 및 연결
-//1.최초 웹소켓 생성 url: /stomp
 var socket = new SockJS('/stomp');
 var userIsManager = $("#frstRegisterId").val() === $("#loginEsntlId").val();
 
@@ -82,7 +80,7 @@ function sendMessage() {
 	}
 	
 	//전역변수 stompClient를 통해 메세지 전송 
-	stompClient.send(`/chat/active/${category}`, {}, JSON.stringify(data));
+	stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(data));
 	chatSend(chatName,$("#message").val());
 	scrollTop();
 	//message창 초기화
@@ -176,7 +174,7 @@ stompClient.connect({}, function(frame) {
 			}
 			
 		//전역변수 stompClient를 통해 메세지 전송 
-		stompClient.send(`/chat/active/${category}`, {}, JSON.stringify(data));	
+		stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(data));	
 		scrollTop();
 		chatNotice(chatName,chatName + "님이 입장했습니다.");
 		
@@ -184,9 +182,10 @@ stompClient.connect({}, function(frame) {
 	}
 	
 
-	stompClient.subscribe("/chat/active/" + category, (frame) => {
-		
+	stompClient.subscribe("/chat/receive/topic/" + category, (frame) => {
+		console.log("]=======================================================");
 		var msgObj = JSON.parse(frame.body);
+		console.log(frame.body);
 		var {chatId, to, msg, type, time, chatType} = msgObj;
 		
 		if(chatType == 'chat' && chatId !=  chatName){
