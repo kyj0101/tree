@@ -45,7 +45,7 @@
 + 공통 코드 관리
 + 일정 관리
 
-# ✔ application.properties 필요 정보
+## ✔ application.properties 필요 정보
 + server.ssl.key 설정
 + spring.datasource 설정
 + mybatis 설정
