@@ -45,20 +45,19 @@ ws.onmessage = e => {
 		html += '</div>';
 		html += '</li>';
 		
-		$("#messageUl").append(html);
-		//$("#messageUl").
-		setTimeout(() =>{
-			$($("#messageUl").children().first()).addClass("slide-out-right");
-			
-			setTimeout(() => {
-				$($("#messageUl").children().first()).remove();			
-			}, 1000);
-		}, 2000)
+		$("#messageUl").append(html);			
+
+
 	}	
 }
 
+
 function closeMessage(e){
-	$($(e).parent().parent()).remove();
+	$($(e).parent().parent()).addClass("slide-out-right");
+	
+	setTimeout(() => {
+		$($(e).parent().parent()).remove();		
+	}, 600);
 }
 
 function pickUpCall(){
