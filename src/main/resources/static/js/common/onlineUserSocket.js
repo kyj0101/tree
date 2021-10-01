@@ -23,7 +23,9 @@ ws.onmessage = e => {
 
 	if(data.type == "chat" && $(".chat-div").length == 0){
 		
-		var html = "<li>";
+		$("#messageDiv").css("display","block");
+		
+		var html = "<li style='z-index:1000;'>";
 		html += "<div class='toast-header'>";
 		html += '<strong class="mr-auto">';
 		html += data.chatRoomName;
@@ -46,8 +48,6 @@ ws.onmessage = e => {
 		html += '</li>';
 		
 		$("#messageUl").append(html);			
-
-
 	}	
 }
 
@@ -56,7 +56,10 @@ function closeMessage(e){
 	$($(e).parent().parent()).addClass("slide-out-right");
 	
 	setTimeout(() => {
-		$($(e).parent().parent()).remove();		
+		$($(e).parent().parent()).remove();
+		if($("#messageUl").children().length == 0){
+			$("#messageDiv").css("display","none");
+		}		
 	}, 600);
 }
 

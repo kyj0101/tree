@@ -91,4 +91,13 @@ public class ChatController {
 		
 		return memberList;
 	}
+	
+	@ResponseBody
+	@RequestMapping("/delete")
+	public String deleteChat(String chatRoomNumber) throws Exception {
+		
+		int result = chatService.deleteChat(chatRoomNumber);
+		
+		return result > 0 ? "ok" : "fail"; 
+	}
 }

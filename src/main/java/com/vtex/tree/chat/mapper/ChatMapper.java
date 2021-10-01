@@ -17,5 +17,7 @@ public interface ChatMapper {
 
 	List<ChatVO> selectChatList(int category) throws Exception;
 
+	int deleteChat(String chatRoomNumber) throws Exception;
+
 	
 }

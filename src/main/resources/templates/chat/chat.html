@@ -92,7 +92,12 @@
 					<button type="button"
 						class="list-group-item list-group-item-action deleteMenu"
 						th:if="${session.loginMember.esntlId} == ${categoryMap.frstRegisterId}"
+						onclick="chatTextDelete()">채팅내역 삭제</button>
+					<button type="button"
+						class="list-group-item list-group-item-action deleteMenu"
+						th:if="${session.loginMember.esntlId} == ${categoryMap.frstRegisterId}"
 						onclick="chatDelete()">채팅방 삭제</button>
+					
 					<button type="button"
 						class="list-group-item list-group-item-action deleteMenu"
 						th:if="${session.loginMember.esntlId} != ${categoryMap.frstRegisterId}"

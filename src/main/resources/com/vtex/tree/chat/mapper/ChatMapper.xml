@@ -85,6 +85,13 @@
 			AND B.DELETE_AT = 'N'		
 	</select>
 	
-
+	<delete id="deleteChat">
+		/* ChatMapper.deleteChat */
+		
+		DELETE FROM
+			TB_CHAT
+		WHERE
+			CHAT_ROOM_NUMBER = #{chatRoomNumber}
+	</delete>
 
 </mapper>

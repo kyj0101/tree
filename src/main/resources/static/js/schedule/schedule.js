@@ -140,7 +140,6 @@ function getScheduleList(){
 		success(result) {
 			
 			$.each(result, function(index, elem){
-				console.log(elem)
 				calendar.addEvent(elem);
 			});
 

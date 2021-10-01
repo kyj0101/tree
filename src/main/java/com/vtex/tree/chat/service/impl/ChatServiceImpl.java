@@ -31,4 +31,9 @@ public class ChatServiceImpl implements ChatService{
 	public List<ChatVO> selectChatList(int category) throws Exception {
 		return chatMapper.selectChatList(category);
 	}
+
+	@Override
+	public int deleteChat(String chatRoomNumber) throws Exception {
+		return chatMapper.deleteChat(chatRoomNumber);
+	}
 }
