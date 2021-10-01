@@ -8,15 +8,57 @@ ws.onopen = e => {
 }
 
 ws.onmessage = e => {
-	console.log(e.data);
+
 	var data = JSON.parse(e.data);
 	
-	$("#toastDiv").css("display","block");
-	$(".toast").toast('show');
-	$("#videoCallId").val(data.videoCallId);
-	$("#callInfo").text(data.name + "님으로부터 전화가 왔습니다.");
-	
-	videoCallOtherName = data.name;
+	if(data.type == "call"){
+		
+		$("#toastDiv").css("display","block");
+		$(".toast").toast('show');
+		$("#videoCallId").val(data.videoCallId);
+		$("#callInfo").text(data.name + "님으로부터 전화가 왔습니다.");
+		
+		videoCallOtherName = data.name;
+	}
+
+	if(data.type == "chat" && $(".chat-div").length == 0){
+		
+		var html = "<li>";
+		html += "<div class='toast-header'>";
+		html += '<strong class="mr-auto">';
+		html += data.chatRoomName;
+		html += '</strong>';
+		html += '<button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close" onclick="closeMessage(this);">';
+		html += '<span aria-hidden="true">&times;</span>';
+		html += '</button>';
+		html += '</div>';
+		html += '<div class="toast-body">';
+		html += '<p id="callInfo">';
+		html += data.name + " (" + data.email + ")";
+		html += '</p>';
+		html += '<p id="callInfo">';
+		html += data.content;
+		html += '</p>';
+		html += '<p id="timeInfo">';
+		html += data.time;
+		html += '</p>';
+		html += '</div>';
+		html += '</li>';
+		
+		$("#messageUl").append(html);
+		//$("#messageUl").
+		setTimeout(() =>{
+			$($("#messageUl").children().first()).addClass("slide-out-right");
+			
+			setTimeout(() => {
+				$($("#messageUl").children().first()).remove();			
+			}, 1000);
+		}, 2000)
+	}	
+}
+
+function closeMessage(e){
+	$($(e).parent().parent()).remove();
 }
 
 function pickUpCall(){

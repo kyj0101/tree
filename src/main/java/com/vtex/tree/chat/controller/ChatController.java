@@ -21,6 +21,7 @@ import com.vtex.tree.chat.vo.ChatVO;
 import com.vtex.tree.common.enums.ChatType;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.security.annotation.LoginUser;
+import com.vtex.tree.socket.handler.SocketHandler;
 
 
 @RequestMapping("/chat")
@@ -29,6 +30,8 @@ public class ChatController {
 
 	@Autowired
 	private ChatService chatService;
+	
+	MemberVO loginMember;
 	
 	/**
 	 * 채팅방
@@ -58,6 +61,8 @@ public class ChatController {
 		model.addObject("name", member.getName());
 		model.setViewName("chat/chat");
 		
+		loginMember = member;
+		
 		return model;
 	}
 	
@@ -68,8 +73,12 @@ public class ChatController {
 		
 		if(!ChatType.NOTICE.getType().equals(chat.getChatType())) {
 			int result = chatService.insertChat(chat);
+			
+			List<MemberVO> memberList = getChatMemberList(category);
+			SocketHandler socketHandler = new SocketHandler();
+			socketHandler.sendChatMessage(memberList, loginMember, chat);
 		}
-		
+
 		return chat;
 	}
 	

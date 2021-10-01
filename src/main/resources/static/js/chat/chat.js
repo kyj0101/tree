@@ -39,6 +39,7 @@ function sendMessage() {
 
 	var chat = {
 		chatRoomNumber : category,
+		chatRoomName : $("#categoryName").text(),
 		name : myName,
 		email : myEmail,
 		time : getNow(),

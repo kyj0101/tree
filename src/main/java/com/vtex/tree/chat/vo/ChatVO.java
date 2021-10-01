@@ -17,6 +17,7 @@ import lombok.ToString;
 public class ChatVO {
 	
 	private String chatRoomNumber;
+	private String chatRoomName;
 	private String name;
 	private String email;
 	private String time;

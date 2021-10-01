@@ -1,7 +1,7 @@
 	<div class="header-container">
       <ul class="info-ul">
         <li th:if="${categoryMap.projectNm} != ''" 
-        	th:text="|(${categoryMap.projectNm}) ${categoryMap.categoryName} |">
+        	th:text="|(${categoryMap.projectNm}) ${categoryMap.categoryName} |" id="categoryName">
         </li>
         <li th:if="${categoryMap.projectNm} == ''" >
         	공지사항

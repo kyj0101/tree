@@ -1,5 +1,6 @@
 package com.vtex.tree.socket.handler;
 
+import java.io.IOException;
 import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,8 +17,9 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.JsonObject;
 import com.nimbusds.jose.shaded.json.JSONObject;
-import com.nimbusds.jose.shaded.json.parser.JSONParser;
+import com.vtex.tree.chat.vo.ChatVO;
 import com.vtex.tree.member.vo.MemberVO;
 
 
@@ -91,29 +93,62 @@ public class SocketHandler extends TextWebSocketHandler{
 		
 		String payload = (String)message.getPayload();
 		Map<String, Object> msgMap = new ObjectMapper().readValue(payload, Map.class);
+		msgMap.put("type", "call");
 		
 		String esntlId = (String) msgMap.get("esntlId");
-		String sessionId = "";
+		String sessionId = findSessionIdWithEsntlId(esntlId);
+		WebSocketSession s = findWebSocketSessionWithSessionId(sessionId);
+		JSONObject jsonObj = new JSONObject(msgMap);
 		
-		for(MemberVO m : loginMemberList) {
+		s.sendMessage(new TextMessage(jsonObj.toJSONString()));
+	}
+
+	public void sendChatMessage(List<MemberVO> memberList, MemberVO loginMember,  ChatVO chat) {
+
+		memberList.remove(loginMember);
+	
+		for(MemberVO member : memberList) {
 			
-			if(esntlId.equals(m.getEsntlId())) {
+			try {
+			
+				String sessionId = findSessionIdWithEsntlId(member.getEsntlId()); 
+				WebSocketSession session = findWebSocketSessionWithSessionId(sessionId);
+				ObjectMapper objMapper = new ObjectMapper();
+				Map<String, Object> objMap = objMapper.convertValue(chat, Map.class);
 				
-				sessionId = m.getSessionId();
-				break;
-			}
-		}
-		
-		for(WebSocketSession s : sessionList) {
-			System.out.println(sessionId);
-			if(sessionId.equals(s.getId())) {
+				objMap.put("type", "chat");
+				session.sendMessage(new TextMessage(objMapper.writeValueAsString(objMap)));
 				
-				JSONObject json = new JSONObject(msgMap);
+			} catch (IllegalArgumentException e) {
+				continue;
 				
-				s.sendMessage(new TextMessage(json.toJSONString()));
-				break;
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
 		}
 	}
 	
+	private String findSessionIdWithEsntlId(String esntlId) {
+		
+		for(MemberVO m : loginMemberList) {
+			
+			if(esntlId.equals(m.getEsntlId())) {
+				return m.getSessionId();
+			}
+		}
+		
+		throw new IllegalArgumentException();
+	}
+	
+	private WebSocketSession findWebSocketSessionWithSessionId(String sessionId) {
+		
+		for(WebSocketSession s : sessionList) {
+
+			if(sessionId.equals(s.getId())) {
+				return s;
+			}
+		}
+		
+		throw new IllegalArgumentException();
+	}
 }
