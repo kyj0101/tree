@@ -4,6 +4,86 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.chat.mapper.ChatMapper">
 	
+	<insert id="insertChat">
+		/* ChatMapper.insertChat */
+		
+		INSERT INTO
+			TB_CHAT
+				(
+					CHAT_ROOM_NUMBER,
+					NAME,
+					EMAIL,
+					TIME,
+					CONTENT,
+					FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID
+				)
+			VALUES
+				(
+					#{chatRoomNumber},
+					#{name},
+					#{email},
+					TO_TIMESTAMP(#{time}, 'YYYY-MM-DD HH24:MI:SS'),
+					#{content},
+					SYSDATE,
+					#{email},
+					SYSDATE,
+					#{email}
+				)
+	</insert>
+	
+	<select id="selectMyChatList" resultType="chatVO">
+		/* ChatMapper.selectMyChatList */
+		
+		SELECT
+			NAME,
+			EMAIL,
+			TIME,
+			CONTENT
+		FROM
+			TB_CHAT
+		WHERE
+			CHAT_ROOM_NUMBER = #{chatRoomNumber}
+			AND EMAIL = #{email}
+		ORDER BY
+			TIME	
+	</select>
+	
+	<select id="selectOtherChatList" resultType="chatVO">
+		/* ChatMapper.selectOtherChatList */
+		
+		SELECT
+			NAME,
+			EMAIL,
+			TIME,
+			CONTENT
+		FROM
+			TB_CHAT
+		WHERE
+			CHAT_ROOM_NUMBER = #{chatRoomNumber}
+			AND EMAIL != #{email}
+		ORDER BY
+			TIME	
+	</select>
+	
+	<select id="selectChatList" resultType="chatVO">
+		/* ChatMapper.selectChatList */
+		
+		SELECT
+			NAME,
+			EMAIL,
+			TIME,
+			CONTENT
+		FROM
+			TB_CHAT
+		WHERE
+			CHAT_ROOM_NUMBER = #{chatRoomNumber}
+		ORDER BY
+			TIME		
+	</select>
+	
 	<select id="getChatMemberList" resultType="memberVO">
 		/* ChatMapper.getChatMemberList */
 		
@@ -38,6 +118,7 @@
 			B.CHAT_ROOM_NUMBER = #{categoryNo}
 			AND B.DELETE_AT = 'N'		
 	</select>
+	
 
 
 </mapper>

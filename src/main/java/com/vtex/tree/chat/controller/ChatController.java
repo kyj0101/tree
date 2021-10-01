@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.vtex.tree.chat.service.ChatService;
+import com.vtex.tree.chat.vo.ChatVO;
+import com.vtex.tree.common.enums.ChatType;
 import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.security.annotation.LoginUser;
 
@@ -42,6 +44,19 @@ public class ChatController {
 								ModelAndView model,
 								@RequestParam(defaultValue = "1") int category) throws Exception {
 		
+		Map<String, Object> param = new HashMap<>();
+		
+		param.put("chatRoomNumber", category);
+		param.put("email", member.getEmail());
+		
+		List<ChatVO> myChatList = chatService.selectMyChatList(param);
+		List<ChatVO> otherChatList = chatService.selectOtherChatList(param);
+		List<ChatVO> chatList = chatService.selectChatList(category);
+		
+		model.addObject("chatList", chatList);
+		model.addObject("myChatList", myChatList);
+		model.addObject("otherChatList", otherChatList);
+		
 		model.addObject("esntlId", member.getEsntlId());
 		model.addObject("category", category);
 		model.addObject("email", member.getEmail());
@@ -54,10 +69,13 @@ public class ChatController {
 
 	@MessageMapping("/active/{category}")
 	@SendTo("/chat/receive/topic/{category}")
-	public String notice(@DestinationVariable String category, String msg) {
-		System.out.println("================================");
-		System.out.println(msg);
-		return msg;
+	public ChatVO notice(@DestinationVariable String category, ChatVO chat) throws Exception {
+		
+		if(!ChatType.NOTICE.getType().equals(chat.getChatType())) {
+			int result = chatService.insertChat(chat);
+		}
+		
+		return chat;
 	}
 	
 	@PreAuthorize("hasRole('ROLE_USER')")

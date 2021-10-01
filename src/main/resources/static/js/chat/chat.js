@@ -7,89 +7,56 @@ socket.onmessage = function(e) {
 
 var stompClient = Stomp.over(socket);
 
-function chatSend(name,msg){
-	
-	var name = " <li class='user'><p><i class='fas fa-user-circle'></i>" + name + "</p>"
+function chatSend(name, email, msg){
+
+	var nameText = " <li class='user'><p><i class='fas fa-user-circle'></i>" + makeChatName(name, email) + "</p>"
 	var chatText = "<span>" + msg + "</span></li>";
-	var now = new Date();
-	var time = "<p class='chat-time-p user-p'>" + now.getFullYear()
-                                             + "-"
-                                             + "0" + (now.getMonth() + 1) 
-                                             + "-"
-                                             + now.getDate()                                            
-                                             + " "
-                                             + now.getHours()
-                                             + ":"
-                                             + now.getMinutes()
-                                             + ":"
-                                             + now.getSeconds()
-                                             + "</p>"
-	$(".chat-ul > li:last").append(name + time + chatText);
+	var time = "<p class='chat-time-p user-p'>" + getNow() + "</p>"
+
+	$(".chat-ul > li:last").append(nameText + time + chatText);
 	$("#chat-textarea").val("")
 }
 
-function chatReceive(name,msg){
-	var name = " <li class='other'><p><i class='fas fa-user-circle'></i>" + name + "</p>"
+function chatReceive(name, email, time, msg){
+	
+	var nameText = " <li class='other'><p><i class='fas fa-user-circle'></i>" + makeChatName(name, email) + "</p>"
 	var chatText = "<span>" + msg + "</span></li>";
-	var now = new Date();
-	var time = "<p class='chat-time-p user-p' style='text-align: right;'>" + now.getFullYear()
-                                             + "-"
-                                             + "0" + (now.getMonth() + 1) 
-                                             + "-"
-                                             + now.getDate()                                            
-                                             + " "
-                                             + now.getHours()
-                                             + ":"
-                                             + now.getMinutes()
-                                             + ":"
-                                             + now.getSeconds()
-                                             + "</p>"
-	$(".chat-ul > li:last").append(name + time + chatText);
+	var timeText = "<p class='chat-time-p user-p' style='text-align: right;'>" + time + "</p>"
+
+	$(".chat-ul > li:last").append(nameText + timeText + chatText);
 	$("#chat-textarea").val("")
 }
 
 
-function chatNotice(name,msg){
-	var now = new Date();
-	var time = + now.getFullYear()
-				+ "-" 
-				+ "0" 
-				+ (now.getMonth() + 1)  
-				+ "-" 
-				+ now.getDate()                                            
-				+ " "
-				+ now.getHours()
-				+ ":"
-				+ now.getMinutes()
-				+ ":"
-				+ now.getSeconds();
-	
+function chatNotice(time, msg){
+
 	var chatText = "<li class='notice'><span>" + msg + " (" + time + " )" + "</span></li>";
+	
 	$(".chat-ul > li:last").append(chatText);
-	$("#chat-textarea").val("")
 }
 
 function sendMessage() {
-	let data = {
-		chatId :  chatName,
-		memberId : chatName,
-		msg : $("#message").val(),
-		time : Date.now(),
-		type: "string",
+
+	var chat = {
+		chatRoomNumber : category,
+		name : myName,
+		email : myEmail,
+		time : getNow(),
+		content : $("#message").val(),
 		chatType: "chat"
 	}
 	
-	//전역변수 stompClient를 통해 메세지 전송 
-	stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(data));
-	chatSend(chatName,$("#message").val());
+	stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(chat));
+	chatSend(myName,myEmail,$("#message").val());
 	scrollTop();
-	//message창 초기화
 	$('#message').val('');
 }
 
 function scrollTop(){
-	//스크롤처리
- 	$('.chat-div').scrollTop($(".chat-div").prop('scrollHeight'));
+	
+	setTimeout(() => {
+	 	$('.chat-div').scrollTop($(".chat-div").prop('scrollHeight'));	
+	}, 200)
 }
 
 function showChatMember(){
@@ -155,46 +122,66 @@ function showChatInfo(){
 	$(".chatInfoDiv").css("display","block");
 	$(".chatMemberDiv").css("display","none");
 	$(".chatAddMemberDiv").css("display","none");
-	
-
 }
 
+function makeChatName(name, email){
+	return name + "(" + email + ")";
+}
+
+function getNow(){
+	
+	var now = new Date();
+	
+	return  now.getFullYear()
+				+ "-"
+				+ ((now.getMonth() + 1) < 10 ? ( "0" + (now.getMonth() + 1)) : (now.getMonth() + 1))
+				+ "-"
+				+ now.getDate()
+				+ " "
+				+ now.getHours()
+				+ ":"
+				+ now.getMinutes()
+				+ ":"
+				+ now.getSeconds();
+}
 
 
 stompClient.connect({}, function(frame) {
 
 	if(!connect){
-		let data = {
-				chatId :  chatName,
-				memberId : chatName,
-				msg : chatName + "님이 입장했습니다.",
-				time : Date.now(),
-				type: "string",
-				chatType: "notice"
-			}
-			
+		
+		var chat = {
+			chatRoomNumber : category,
+			name : myName,
+			email : myEmail,
+			time : getNow(),
+			content : makeChatName(myName, myEmail) + "님이 입장했습니다.",
+			chatType: "notice"
+		}
+
 		//전역변수 stompClient를 통해 메세지 전송 
-		stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(data));	
+		stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(chat));	
 		scrollTop();
-		chatNotice(chatName,chatName + "님이 입장했습니다.");
+		chatNotice(chat.time, makeChatName(myName, myEmail) + "님이 입장했습니다.");
 		
 		connect = true;
 	}
 	
 
 	stompClient.subscribe("/chat/receive/topic/" + category, (frame) => {
-		console.log("]=======================================================");
+
 		var msgObj = JSON.parse(frame.body);
-		console.log(frame.body);
-		var {chatId, to, msg, type, time, chatType} = msgObj;
-		
-		if(chatType == 'chat' && chatId !=  chatName){
-			chatReceive(chatId,msg);	
+		var {chatRoomNumber, name, email, time, content, chatType} = msgObj;
+
+		if(chatType == 'chat' && myEmail != email){
+			console.log("chat");
+			chatReceive(name, email, time, content);	
 			scrollTop();
 		}
 		
 		if(chatType == 'notice'){
-			chatNotice(chatId,msg);
+			
+			chatNotice(time, content);
 			scrollTop();
 		}
 		
@@ -204,7 +191,7 @@ stompClient.connect({}, function(frame) {
 
 
 $(function(){
-
+	scrollTop();
 	$("#message").keydown(function(key) {
 		if (key.keyCode == 13) {// 엔터
 			sendMessage();

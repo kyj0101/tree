@@ -3,8 +3,8 @@
 <title>채팅방</title>
 
 <script type="text/javascript">
-	var email = '[[${email}]]';
-	var name = '[[${name}]]';
+	var myEmail = '[[${email}]]';
+	var myName = '[[${name}]]';
 	var category = '[[${categoryMap.categoryNo}]]';
 	var chatName = name + "(" + email + ")";
 	var connect = false;
@@ -32,11 +32,13 @@
     <section>
         <div class="chat-div">
             <ul class="chat-ul">
-                <li class="user">
-
-                </li>
-                <li class="other">
-
+                <li th:each="chat : ${chatList}" th:class="${chat.email == session.loginMember.email} ? 'user' : 'other'">
+					<p>
+						<i class='fas fa-user-circle'></i>
+						<span th:text="|${chat.name}(${chat.email})|"></span>
+					</p>
+					<p class="chat-time-p user-p" th:classappend="${chat.email == session.loginMember.email} ? '' : other-time" th:text="${chat.time}"></p>
+					<span th:text="${chat.content}"></span>
                 </li>
             </ul>
 	       	<button type="button" class="btn" id="chatLeave" data-toggle="modal" data-target="#chatMenu">
