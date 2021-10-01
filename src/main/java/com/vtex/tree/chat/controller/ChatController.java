@@ -48,14 +48,9 @@ public class ChatController {
 		
 		param.put("chatRoomNumber", category);
 		param.put("email", member.getEmail());
-		
-		List<ChatVO> myChatList = chatService.selectMyChatList(param);
-		List<ChatVO> otherChatList = chatService.selectOtherChatList(param);
+
 		List<ChatVO> chatList = chatService.selectChatList(category);
-		
 		model.addObject("chatList", chatList);
-		model.addObject("myChatList", myChatList);
-		model.addObject("otherChatList", otherChatList);
 		
 		model.addObject("esntlId", member.getEsntlId());
 		model.addObject("category", category);

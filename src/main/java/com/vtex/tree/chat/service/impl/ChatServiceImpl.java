@@ -28,16 +28,6 @@ public class ChatServiceImpl implements ChatService{
 	}
 
 	@Override
-	public List<ChatVO> selectMyChatList(Map<String, Object> param) throws Exception {
-		return chatMapper.selectMyChatList(param);
-	}
-
-	@Override
-	public List<ChatVO> selectOtherChatList(Map<String, Object> param) throws Exception {
-		return chatMapper.selectOtherChatList(param);
-	}
-	
-	@Override
 	public List<ChatVO> selectChatList(int category) throws Exception {
 		return chatMapper.selectChatList(category);
 	}

@@ -15,10 +15,6 @@ public interface ChatMapper {
 
 	int insertChat(ChatVO chat) throws Exception;
 
-	List<ChatVO> selectMyChatList(Map<String, Object> param) throws Exception;
-
-	List<ChatVO> selectOtherChatList(Map<String, Object> param) throws Exception;
-
 	List<ChatVO> selectChatList(int category) throws Exception;
 
 	

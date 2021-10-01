@@ -33,41 +33,7 @@
 					#{email}
 				)
 	</insert>
-	
-	<select id="selectMyChatList" resultType="chatVO">
-		/* ChatMapper.selectMyChatList */
-		
-		SELECT
-			NAME,
-			EMAIL,
-			TIME,
-			CONTENT
-		FROM
-			TB_CHAT
-		WHERE
-			CHAT_ROOM_NUMBER = #{chatRoomNumber}
-			AND EMAIL = #{email}
-		ORDER BY
-			TIME	
-	</select>
-	
-	<select id="selectOtherChatList" resultType="chatVO">
-		/* ChatMapper.selectOtherChatList */
-		
-		SELECT
-			NAME,
-			EMAIL,
-			TIME,
-			CONTENT
-		FROM
-			TB_CHAT
-		WHERE
-			CHAT_ROOM_NUMBER = #{chatRoomNumber}
-			AND EMAIL != #{email}
-		ORDER BY
-			TIME	
-	</select>
-	
+
 	<select id="selectChatList" resultType="chatVO">
 		/* ChatMapper.selectChatList */
 		

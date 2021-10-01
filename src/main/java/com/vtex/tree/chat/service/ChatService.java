@@ -12,10 +12,6 @@ public interface ChatService {
 	
 	List<MemberVO> getChatMemberList(String categoryNo) throws Exception;
 
-	List<ChatVO> selectMyChatList(Map<String, Object> param) throws Exception;
- 
-	List<ChatVO> selectOtherChatList(Map<String, Object> param) throws Exception;
-
 	List<ChatVO> selectChatList(int category) throws Exception;
 
 }
