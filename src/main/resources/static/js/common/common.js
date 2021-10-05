@@ -27,7 +27,6 @@ function helpDisplayCheck(){
 			break;
 		}
 		if(!$(helps[key]).attr("class").includes("hide")){
-			console.log($(helps[key]).attr("class"));
 			return true;
 		}
 	}
@@ -58,8 +57,6 @@ function emailDuplicationCheck(email){
 function findZipCode(){
 	new daum.Postcode({
         oncomplete: function(data) {
-				
-        	console.log(data);
 			
 			var address = "";
 			

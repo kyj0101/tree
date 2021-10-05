@@ -4,13 +4,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,9 +32,7 @@ public class ChatController {
 
 	@Autowired
 	private ChatService chatService;
-	
-	MemberVO loginMember;
-	
+
 	/**
 	 * 채팅방
 	 * @param request
@@ -60,9 +60,7 @@ public class ChatController {
 		model.addObject("email", member.getEmail());
 		model.addObject("name", member.getName());
 		model.setViewName("chat/chat");
-		
-		loginMember = member;
-		
+
 		return model;
 	}
 	
@@ -71,12 +69,15 @@ public class ChatController {
 	@SendTo("/chat/receive/topic/{category}")
 	public ChatVO notice(@DestinationVariable String category, ChatVO chat) throws Exception {
 		
+		
 		if(!ChatType.NOTICE.getType().equals(chat.getChatType())) {
+			
 			int result = chatService.insertChat(chat);
 			
 			List<MemberVO> memberList = getChatMemberList(category);
 			SocketHandler socketHandler = new SocketHandler();
-			socketHandler.sendChatMessage(memberList, loginMember, chat);
+
+			socketHandler.sendChatMessage(memberList, chat);
 		}
 
 		return chat;

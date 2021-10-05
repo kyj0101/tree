@@ -5,13 +5,11 @@
 <script type="text/javascript">
 	var myEmail = '[[${email}]]';
 	var myName = '[[${name}]]';
+	var myEsntlId = '[[${esntlId}]]';
 	var category = '[[${categoryMap.categoryNo}]]';
-	var chatName = name + "(" + email + ")";
+	var chatName = myName + "(" + myEmail + ")";
 	var connect = false;
 </script>
-
-<th:block th:replace="common/addModal">
-</th:block>
 
 <th:block th:replace="common/header">
 </th:block>
@@ -19,10 +17,16 @@
 <th:block th:replace="common/toast">
 </th:block>
 
+<th:block th:replace="common/addModal">
+</th:block>
+
 <th:block th:replace="common/spaceCommonHeader">
 </th:block>
 		
 <th:block th:replace="common/profile">
+</th:block>
+
+<th:block th:replace="common/message">
 </th:block>
 
 <link rel="stylesheet" href="/css/chat/chat.css">
@@ -32,6 +36,13 @@
     <section>
         <div class="chat-div">
             <ul class="chat-ul">
+				
+				<li class="user">
+                </li>
+                
+                <li class="other">
+                </li>
+                
                 <li th:each="chat : ${chatList}" th:class="${chat.email == session.loginMember.email} ? 'user' : 'other'">
 					<p>
 						<i class='fas fa-user-circle'></i>
@@ -120,9 +131,3 @@
 		</div>
 	</div>
 </div>
-
-<th:block th:replace="common/addModal">
-</th:block>
-
-<th:block th:replace="common/toast">
-</th:block>

@@ -1,9 +1,7 @@
 var socket = new SockJS('/stomp');
 var userIsManager = $("#frstRegisterId").val() === $("#loginEsntlId").val();
 
-socket.onmessage = function(e) {
-  	console.log("onmessage:",e);
-}
+socket.onmessage = function(e) {}
 
 var stompClient = Stomp.over(socket);
 
@@ -44,7 +42,8 @@ function sendMessage() {
 		email : myEmail,
 		time : getNow(),
 		content : $("#message").val(),
-		chatType: "chat"
+		chatType: "chat",
+		esntlId: myEsntlId
 	}
 	
 	stompClient.send(`/chat/send/active/${category}`, {}, JSON.stringify(chat));
@@ -135,15 +134,19 @@ function getNow(){
 	
 	return  now.getFullYear()
 				+ "-"
-				+ ((now.getMonth() + 1) < 10 ? ( "0" + (now.getMonth() + 1)) : (now.getMonth() + 1))
+				+ make2digit(now.getMonth() + 1)
 				+ "-"
-				+ now.getDate()
+				+ make2digit(now.getDate())
 				+ " "
-				+ now.getHours()
+				+ make2digit(now.getHours()) 
 				+ ":"
-				+ now.getMinutes()
+				+ make2digit(now.getMinutes())
 				+ ":"
-				+ now.getSeconds();
+				+ make2digit(now.getSeconds());
+}
+
+function make2digit(n) {
+	return n < 10 ? "0" + n : n;
 }
 
 function chatTextDelete(){
@@ -195,7 +198,7 @@ stompClient.connect({}, function(frame) {
 		var {chatRoomNumber, name, email, time, content, chatType} = msgObj;
 
 		if(chatType == 'chat' && myEmail != email){
-			console.log("chat");
+
 			chatReceive(name, email, time, content);	
 			scrollTop();
 		}

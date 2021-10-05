@@ -27,4 +27,5 @@ public class ChatVO {
 	private String frstRegisterId;
 	private Date lastUpdtPnttm;
 	private String lastUpdusrId;
+	private String esntlId;
 }

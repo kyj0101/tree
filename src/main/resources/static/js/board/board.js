@@ -83,13 +83,15 @@ $(function() {
 	$(".boardTitle").click(function() {
 		var siblings = $(this).siblings();
 		var boardNo = 0;
-		
+
 		//3개라면 일반 게시글 이상이라면 공지
 		if (siblings.length == 3) {
 			boardNo = $($(siblings[0])).text();
-
+			$($(siblings[2])).text(Number($($(siblings[2])).text()) + 1);
+		
 		} else {
 			boardNo = $($(siblings[1])).val();
+			$($(siblings[3])).text(Number($($(siblings[3])).text()) + 1);
 		}
 
 		$.ajax({
@@ -111,12 +113,11 @@ $(function() {
 
 				info += "작성자 : ";
 				info += board.name;
-				info += " 조회수 : ";
-				info += board.boardView;
 
 				$(".boardDetailTitle").text(board.boardTitle);
 				$(".textDiv").append(board.boardContent);
 				$(".board-info-p").text(info);
+				$("#count").text(" 조회수 : " + board.boardView);
 				$("#boardNo").val(board.boardNo);
 				
 				var loginEmail = $(".loginMemberEmail").val();

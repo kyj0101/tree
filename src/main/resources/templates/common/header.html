@@ -27,7 +27,7 @@
   	<script src="/js/common/main.js"></script>
   	<script src="/js/category/category.js"></script>
 	<script src="/js/chatroom/chatRoom.js"></script>
-	<script type="text/javascript" src="/js/common/onlineUserSocket.js"></script>
+	<script src="/js/common/onlineUserSocket.js"></script>
 	<script src="/js/videocall/videoCall.js"></script>
 	<script src="/js/space/space.js"></script>
   	<script src="/js/attendance/attendanceRecord.js"></script>
@@ -73,6 +73,10 @@
 						th:classappend="${project.projectId} == ${categoryMap.projectId} ? 'show'">
 						<div class="card-body">
 							<div class="list-group">
+							  	<a type="button" 
+							  		class="list-group-item list-group-item-action" 
+							  		th:href="|/schedule/view?projectId=${project.projectId}|"
+							  		th:classappend="${categoryMap.categoryNo}  == 'schedule' ? 'on text-success'">프로젝트 일정</a>
 								<button type="button" class="list-group-item list-group-item-action" th:if="${session.loginMember.esntlId} == ${project.projectManager}" onclick="showAddCategoryBoardModal(this);">게시판 생성 <i class="fas fa-plus"></i></button>
 								<button type="button" class="list-group-item list-group-item-action" 
 							  		th:each="categoryBoard : ${project.categoryBoardList}"
@@ -85,10 +89,6 @@
 							  		th:text="${chatRoom.chatRoomTitle}"
 							  		th:onclick="|location.href='@{/chat/room(category=${chatRoom.chatRoomNumber},projectId=${chatRoom.projectId})}'|"
 							  		th:classappend="${chatRoom.chatRoomNumber} == ${categoryMap.categoryNo} ? 'on text-success'"></button>
-							  	<a type="button" 
-							  		class="list-group-item list-group-item-action" 
-							  		th:href="|/schedule/view?projectId=${project.projectId}|"
-							  		th:classappend="${categoryMap.categoryNo}  == 'schedule' ? 'on text-success'">프로젝트 일정</a>
 							</div>
 						</div>
 					</div>

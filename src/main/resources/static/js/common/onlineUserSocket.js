@@ -3,14 +3,16 @@ var callSocket = new WebSocket('wss://' + ip + ":" + port + '/rtc');
 var videoCallOtherName;
 
 ws.onopen = e => {
+	console.log("open....");
 	$("#toastDiv").css("display","none");
-  	console.log("onopen:",e);
 }
 
 ws.onmessage = e => {
-
+	console.log(e);
 	var data = JSON.parse(e.data);
-	
+	console.log("================================");
+	console.log(data);
+
 	if(data.type == "call"){
 		
 		$("#toastDiv").css("display","block");
@@ -21,10 +23,10 @@ ws.onmessage = e => {
 		videoCallOtherName = data.name;
 	}
 
-	if(data.type == "chat" && $(".chat-div").length == 0){
+	if (data.type == "chat" && data.chatRoomNumber != $("#categoryNo").val()){
 		
 		$("#messageDiv").css("display","block");
-		
+
 		var html = "<li style='z-index:1000;'>";
 		html += "<div class='toast-header'>";
 		html += '<strong class="mr-auto">';
@@ -47,7 +49,10 @@ ws.onmessage = e => {
 		html += '</div>';
 		html += '</li>';
 		
-		$("#messageUl").append(html);			
+		return new Promise(function(resolve, reject) {
+			$("#messageUl").append(html);			
+		});
+
 	}	
 }
 
@@ -56,7 +61,9 @@ function closeMessage(e){
 	$($(e).parent().parent()).addClass("slide-out-right");
 	
 	setTimeout(() => {
+		
 		$($(e).parent().parent()).remove();
+		
 		if($("#messageUl").children().length == 0){
 			$("#messageDiv").css("display","none");
 		}		

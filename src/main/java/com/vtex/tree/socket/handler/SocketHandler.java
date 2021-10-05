@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.tomcat.websocket.WsRemoteEndpointImplBase;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -60,7 +61,9 @@ public class SocketHandler extends TextWebSocketHandler{
 
 		loginMemberList.remove(member);
 		loginMemberList.add(member);
+		System.out.println(loginMemberList.toString());
 		sessionList.add(session);
+		System.out.println(sessionList.toString());
 	}
 
 	@Override
@@ -86,7 +89,7 @@ public class SocketHandler extends TextWebSocketHandler{
 		}
 
 		loginMemberList.remove(member);		
-		sessionList.remove(session);
+		removeSessionListWithSessionId(session.getId());
 	}
 	@Override
 	public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
@@ -103,12 +106,15 @@ public class SocketHandler extends TextWebSocketHandler{
 		s.sendMessage(new TextMessage(jsonObj.toJSONString()));
 	}
 
-	public void sendChatMessage(List<MemberVO> memberList, MemberVO loginMember,  ChatVO chat) {
-
+	public void sendChatMessage(List<MemberVO> memberList,  ChatVO chat) {
+		
+		MemberVO loginMember = new MemberVO();
+		
+		loginMember.setEsntlId(chat.getEsntlId());
 		memberList.remove(loginMember);
-	
+
 		for(MemberVO member : memberList) {
-			
+
 			try {
 			
 				String sessionId = findSessionIdWithEsntlId(member.getEsntlId()); 
@@ -117,7 +123,7 @@ public class SocketHandler extends TextWebSocketHandler{
 				Map<String, Object> objMap = objMapper.convertValue(chat, Map.class);
 				
 				objMap.put("type", "chat");
-				session.sendMessage(new TextMessage(objMapper.writeValueAsString(objMap)));
+				session.sendMessage(new TextMessage(objMapper.writeValueAsString(objMap)));					
 				
 			} catch (IllegalArgumentException e) {
 				continue;
@@ -150,5 +156,21 @@ public class SocketHandler extends TextWebSocketHandler{
 		}
 		
 		throw new IllegalArgumentException();
+	}
+	
+	private void removeSessionListWithSessionId(String sessionId) {
+		
+		List<WebSocketSession> newSessionList = new ArrayList<>();
+		
+		for(WebSocketSession s : sessionList) {
+			
+			if(sessionId.equals(s.getId())) {
+				continue;
+			}
+			
+			newSessionList.add(s);
+		}
+		
+		sessionList = newSessionList;
 	}
 }

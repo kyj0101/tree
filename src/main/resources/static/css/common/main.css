@@ -22,6 +22,7 @@ ul:not #boardInfo{
 
 .boardTitle{
 	cursor: pointer;
+	text-align: left;
 }
 
 .boardTitle:hover{
