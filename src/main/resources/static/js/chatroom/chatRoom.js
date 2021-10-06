@@ -100,7 +100,7 @@ function outChatManager(e){
 	
 	var esntlId = $($(e).parent()).data("esntlid");
 
-	if (confirm("회원을 게시판에서 내보냅니다.")) {
+	if (confirm("회원을 채팅방에서 내보냅니다.")) {
 		$.ajax({
 			type: "POST",
 			url: "/chatroom/out/manager",
