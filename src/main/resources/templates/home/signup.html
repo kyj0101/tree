@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
+<head th:replace="layout/base/head :: common_header(~{::title}, ~{::link}, ~{::script})" >
+    <title>회원 가입</title>
+    <link rel="stylesheet" href="/css/home/signup.css">
+
+    <script type="text/javascript" src="/js/home/signup.js"></script>
+    <script type="text/javascript" src="/js/common/regExp.js"></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+</head>
+
 <th:block th:replace="home/header">
 </th:block>
-
-<link rel="stylesheet" href="/css/home/signup.css">
-	
-<script type="text/javascript" src="/js/home/signup.js"></script>
-<script type="text/javascript" src="/js/common/regExp.js"></script>
-<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
 <body>
     <section>

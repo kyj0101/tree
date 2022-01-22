@@ -38,6 +38,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -68,36 +69,19 @@ public class HomeController {
 	
 	@Value("${server.port}")
 	String port;
-	
-	/**
-	 * 홈페이지
-	 * 
-	 * @return
-	 */
-	@PreAuthorize("permitAll()")
-	@RequestMapping("/")
+
+	@GetMapping("/")
 	public String home() {
-		return "/home/home";
+		return "home/home";
 	}
 
-	/**
-	 * 로그인 페이지
-	 * 
-	 * @return
-	 */
-	@RequestMapping("/login")
+	@GetMapping("/login")
 	public String login() {
 		return "home/login";
 	}
 
-	/**
-	 * 회원가입 페이지
-	 * 
-	 * @return
-	 * @throws Exception
-	 */
 	@PreAuthorize("permitAll()")
-	@RequestMapping("/signup")
+	@GetMapping("/members")
 	public String signUp(Model model) throws Exception {
 
 		// 부서 목록
@@ -125,49 +109,7 @@ public class HomeController {
 		return "home/signup";
 	}
 
-	/**
-	 * 이메일 중복검사
-	 * 
-	 * @param email
-	 * @return
-	 */
-	@ResponseBody
-	@RequestMapping("/email/duplication/check")
-	public String emailDuplicationCheck(String email) {
-		System.out.println(email);
-		boolean isDuplicate = homeService.emailDuplicationCheck(email);
-
-		return isDuplicate ? "true" : "false";
-	}
-
-	/**
-	 * 이메일 인증 페이지
-	 * 
-	 * @param model
-	 * @param key   이메일 인증키
-	 * @param email 이메일 주소
-	 * @return
-	 */
-	@PreAuthorize("permitAll()")
-	@RequestMapping("/email/verify")
-	public String emailVerify(Model model, String key, String email) {
-
-		model.addAttribute("key", key);
-		model.addAttribute("email", email);
-
-		return "home/emailVerify";
-	}
-
-	/**
-	 * 회원 가입 처리
-	 * 
-	 * @param member
-	 * @param domain
-	 * @return
-	 * @throws MessagingException
-	 * @throws UnsupportedEncodingException
-	 */
-	@PostMapping("/signupAction")
+	@PostMapping("/members")
 	public String signUp(MemberVO member, String domain) throws MessagingException, UnsupportedEncodingException {
 
 		String password = passwordEncoder.encode(member.getPassword());
@@ -206,14 +148,25 @@ public class HomeController {
 		return "redirect:/";
 	}
 
-	/**
-	 * 이메일 인증 처리
-	 * 
-	 * @param email
-	 * @param key
-	 * @param redirectAttribute
-	 * @return
-	 */
+	@ResponseBody
+	@RequestMapping("/email/duplication/check")
+	public String emailDuplicationCheck(String email) {
+		System.out.println(email);
+		boolean isDuplicate = homeService.emailDuplicationCheck(email);
+
+		return isDuplicate ? "true" : "false";
+	}
+
+	@PreAuthorize("permitAll()")
+	@RequestMapping("/email/verify")
+	public String emailVerify(Model model, String key, String email) {
+
+		model.addAttribute("key", key);
+		model.addAttribute("email", email);
+
+		return "home/emailVerify";
+	}
+
 	@PostMapping("/email/verify")
 	public String emailVerify(String email, String key, RedirectAttributes redirectAttribute) {
 		Map<String, String> param = new HashMap<>();

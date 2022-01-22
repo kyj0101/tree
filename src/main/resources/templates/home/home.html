@@ -1,33 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org"  xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 
-<th:block th:replace="home/header">
+<head th:replace="layout/base/head :: common_header(~{::title}, ~{::link}, ~{::script})" >
+    <title>홈</title>
+    <link>
+    <script></script>
+</head>
+
+<th:block th:replace="layout/home/header">
 </th:block>
-    <p class="home-p">
-        효과적인 팀워크
-        <br>
-        가벼워진 업무,
-        <br>
-        협업툴 트리
-    </p>
-    <!-- 로그인 하지 않았다면 -->
-    <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='login'">로그인</button>
-    <button sec:authorize="!isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='signup'">회원 가입</button>
-    
-    <!-- 로그인 상태라면 -->
-    <button sec:authorize="isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='/logout'">로그아웃</button>
-	<button sec:authorize="isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='/board/list'">홈으로</button>
-    <div class="img-div">
-        <img src="img/화면캡쳐.png" alt="">
-    </div>
+
+<p class="home-p">
+    효과적인 팀워크
+    <br>
+    가벼워진 업무,
+    <br>
+    협업툴 트리
+</p>
+<!-- 로그인 하지 않았다면 -->
+<button sec:authorize="!isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='login'">로그인</button>
+<button sec:authorize="!isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='signup'">회원 가입</button>
+
+<!-- 로그인 상태라면 -->
+<button sec:authorize="isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='/logout'">로그아웃</button>
+<button sec:authorize="isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='/board/list'">홈으로</button>
+<div class="img-div">
+    <img src="/img/home.png" alt="">
+</div>
 </body>
 </html>
 <script th:inline="javascript">
 
-var msg = '[[ ${msg} ]]'; 
+    var msg = '[[ ${msg} ]]';
 
-if(msg != "" && msg != "null" ){
-	alert(msg);
-}
+    if(msg != "" && msg != "null" ){
+        alert(msg);
+    }
 
 </script>

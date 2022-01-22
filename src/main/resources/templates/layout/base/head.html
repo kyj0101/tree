@@ -1,9 +1,10 @@
-<head>
+<head th:fragment="common_header(title, links, script)">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>홈</title>
-    
+    <title th:replace="${title}">홈</title>
+
+    <!-- 공통 -->
     <script src="https://kit.fontawesome.com/d37b4c8496.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.js"></script>
@@ -16,32 +17,10 @@
 
     <link rel="stylesheet" href="/css/home/home.css">
 
-	<script type="text/javascript" src="/js/common/common.js"></script>
+    <script type="text/javascript" src="/js/common/common.js"></script>
     <script src="/js/home.js"></script>
 
+    <!-- 추가 -->
+    <th:block th:replace="${links}" />
+    <th:block th:replace="${script}" />
 </head>
-
-<body>
-      <nav class="navbar navbar-expand-lg navbar-light bg-light">
-
-        <div class="container-fluid">
-        <a class="navbar-brand" href="/">
-            <i class="fas fa-tree"></i>
-            Tree
-        </a>
-        
-          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-          </button>
-          <div id="btnDiv" sec:authorize="!isAuthenticated()">
-            <ul class="navbar-nav" >
-              <li class="nav-item">
-                <a class="nav-link" href="/login">로그인</a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="/signup">회원가입</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-    </nav>

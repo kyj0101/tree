@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 
-<th:block th:replace="home/header">
-</th:block>
+<head th:replace="layout/base/head :: common_header(~{::title}, ~{::link}, ~{::script})" >
+    <title>이메일 인증</title>
+    <link rel="stylesheet" href="/css/home/emailVerify.css">
+    <script></script>
+</head>
 
-<link rel="stylesheet" href="/css/home/emailVerify.css">
+<th:block th:replace="layout/home/header">
+</th:block>
 
     <p class="home-p">
         아래 버튼을 클릭하여
