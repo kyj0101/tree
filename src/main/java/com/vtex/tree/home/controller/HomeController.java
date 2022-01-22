@@ -18,6 +18,8 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.json.JSONParser;
 import org.apache.tomcat.util.json.ParseException;
 import org.slf4j.Logger;
@@ -50,22 +52,16 @@ import com.vtex.tree.member.vo.MemberVO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
-	@Autowired
-	private HomeService homeService;
+	private final HomeService homeService;
+	private final CommonCodeService commonCodeService;
+	private final MemberService memberService;
 
-	@Autowired
-	private CommonCodeService commonCodeService;
+	private final JavaMailSenderImpl mailSender;
 
-	@Autowired
-	private JavaMailSenderImpl mailSender;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private MemberService memberService;
+	private final PasswordEncoder passwordEncoder;
 	
 	@Value("${ip}")
 	String ip;

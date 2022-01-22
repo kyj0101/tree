@@ -13,6 +13,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -22,6 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -35,6 +37,7 @@ import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/attendance")
 @Controller
+@RequiredArgsConstructor
 public class AttendanceController {
 	
 	private final int NUMPERPAGE = 10;
@@ -44,9 +47,8 @@ public class AttendanceController {
 	
 	@Value("${empty.msg}")
 	private String emptyMsg;
-	
-	@Autowired
-	private AttendanceService attendanceService;
+
+	private final AttendanceService attendanceService;
 	
 	/**
 	 * 검색 리스트 
@@ -61,7 +63,7 @@ public class AttendanceController {
 	 * @throws Exception
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@RequestMapping("/list")
+	@GetMapping("/list")
 	public String getAttendanceList(@RequestParam(required = false)String startDay,
 									@RequestParam(required = false)String endDay,
 									@RequestParam(required = false)String name,

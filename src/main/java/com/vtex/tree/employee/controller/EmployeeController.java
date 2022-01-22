@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -29,15 +30,13 @@ import static com.vtex.tree.common.util.PageBar.getOffset;
 @RequestMapping("/employee")
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMIN')")
+@RequiredArgsConstructor
 public class EmployeeController {
-	
+
 	private final int NUMPERPAGE = 5;
-	
-	@Autowired
-	private EmployeeService employeeService;
-	
-	@Autowired
-	private CommonCodeService commonCodeService;
+
+	private final EmployeeService employeeService;
+	private final CommonCodeService commonCodeService;
 	
 	@Value("${empty.msg}")
 	private String emptyMsg;

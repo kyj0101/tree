@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -39,15 +40,13 @@ import com.vtex.tree.security.annotation.LoginUser;
 @RequestMapping("/board")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")
+@RequiredArgsConstructor
 public class BoardController {
 	
 	private final int NUMPERPAGE = 10;
-	
-	@Autowired
-	private BoardService boardService;
 
-	@Autowired
-	private ResourceLoader resourceLoader;
+	private final BoardService boardService;
+	private final ResourceLoader resourceLoader;
 		
 	/**
 	 * 게시글 리스트 조회

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,20 +28,16 @@ import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/project")
 @Controller
+@RequiredArgsConstructor
 public class ProjectController {
 	
 	private final int PROJECT_NUMPERPAGE = 3;
 	
 	private final int MEMBER_NUMPERPAGE = 10;
-	
-	@Autowired
-	private ProjectService projectService;
-	
-	@Autowired
-	private CommonCodeService commonCodeService;
-	
-	@Autowired
-	private ScheduleService scheduleService;
+
+	private final ProjectService projectService;
+	private final CommonCodeService commonCodeService;
+	private final ScheduleService scheduleService;
 	
 	@RequestMapping("/list")
 	public String projectList(@RequestParam(defaultValue = "1") int cPage, HttpServletRequest request, Model model) throws Exception {

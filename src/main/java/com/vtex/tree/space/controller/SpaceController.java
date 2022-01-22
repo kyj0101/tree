@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -29,10 +30,10 @@ import com.vtex.tree.space.service.SpaceService;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/space")
 @Controller
+@RequiredArgsConstructor
 public class SpaceController {
-	
-	@Autowired
-	private SpaceService spaceService;
+
+	private final SpaceService spaceService;
 	
 	
 	@RequestMapping("/memberlist")

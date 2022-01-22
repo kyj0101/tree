@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -28,10 +29,10 @@ import com.vtex.tree.socket.handler.SocketHandler;
 
 @RequestMapping("/chat")
 @Controller
+@RequiredArgsConstructor
 public class ChatController {
 
-	@Autowired
-	private ChatService chatService;
+	private final ChatService chatService;
 
 	/**
 	 * 채팅방

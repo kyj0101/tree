@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,15 +35,15 @@ import com.vtex.tree.security.annotation.LoginUser;
 @RequestMapping("/commoncode")
 @Controller
 @PreAuthorize("hasRole('ROLE_ADMIN')")
+@RequiredArgsConstructor
 public class CommonCodeContorller {
 
 	private final int NUMPERPAGE = 5;
 	
 	@Value("${empty.msg}")
 	private String emptyMsg;
-	
-	@Autowired
-	private CommonCodeService commonCodeService;
+
+	private final CommonCodeService commonCodeService;
 
 	// =================== 공통코드 =======================
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,16 +28,13 @@ import com.vtex.tree.security.annotation.LoginUser;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/videocall")
 @Controller
+@RequiredArgsConstructor
 public class VideoCallController {
 	
-	@Autowired
-	private AttendanceService attendanceService;
-	
-	@Autowired
-	private ProjectService projectService;
-	
-	@Autowired
-	private CategoryService categoryBoardService;
+
+	private final AttendanceService attendanceService;
+	private final ProjectService projectService;
+	private final CategoryService categoryBoardService;
 	
 	@Value("${empty.msg}")
 	private String emptyMsg;

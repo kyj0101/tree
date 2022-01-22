@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -27,19 +28,13 @@ import com.vtex.tree.security.annotation.LoginUser;
 @PreAuthorize("hasRole('ROLE_USER')")
 @RequestMapping("/schedule")
 @Controller
+@RequiredArgsConstructor
 public class ScheduleController {
-	
-	@Autowired
-	private ScheduleService scheduleService;
-	
-	@Autowired
-	private CategoryService categoryBoardService;
-	
-	@Autowired
-	private AttendanceService attendanceService;
-	
-	@Autowired
-	private ProjectService projectService;
+
+	private final ScheduleService scheduleService;
+	private final CategoryService categoryBoardService;
+	private final AttendanceService attendanceService;
+	private final ProjectService projectService;
 	
 	@RequestMapping("/view")
 	public ModelAndView scheduleView(@RequestParam String projectId, 

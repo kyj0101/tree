@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -27,19 +28,13 @@ import com.vtex.tree.security.annotation.LoginUser;
 @RequestMapping("/member")
 @Controller
 @PreAuthorize("hasRole('ROLE_USER')")
+@RequiredArgsConstructor
 public class MemberController {
-	
-	@Autowired
-	private MemberService memberService;
-	
-	@Autowired
-	private CommonCodeService commonCodeService;
-	
-	@Autowired
-	private HomeService homeService;
-	
-	@Autowired
-	private PasswordEncoder passwordEncoder;
+
+	private final MemberService memberService;
+	private final CommonCodeService commonCodeService;
+	private final HomeService homeService;
+	private final PasswordEncoder passwordEncoder;
 	
 
 	@RequestMapping("/mypage/update/view")

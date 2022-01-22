@@ -9,7 +9,7 @@
 
 		SELECT
 			A.EMAIL,
-			A.NAME,
+			A.USER_NAME,
 			A.PHONE,
 			A.BIRTH,
 			A.PASSWORD,
