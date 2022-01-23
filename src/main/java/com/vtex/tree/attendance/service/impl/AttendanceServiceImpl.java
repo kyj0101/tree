@@ -4,6 +4,7 @@ package com.vtex.tree.attendance.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,10 +15,10 @@ import com.vtex.tree.attendance.vo.AttendanceVO;
 import com.vtex.tree.member.vo.Member;
 
 @Service
+@RequiredArgsConstructor
 public class AttendanceServiceImpl implements AttendanceService {
-	
-	@Autowired
-	private AttendanceMapper attendanceMapper;
+
+	private final AttendanceMapper attendanceMapper;
 	
 	public int insertIn(AttendanceVO attendance) throws Exception{
 		return attendanceMapper.insertIn(attendance);

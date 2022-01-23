@@ -14,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
+import oracle.ucp.proxy.annotation.Post;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -22,10 +23,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.attendance.vo.AttendanceVO;
@@ -48,7 +46,10 @@ public class AttendanceController {
 	private String emptyMsg;
 
 	private final AttendanceService attendanceService;
-	
+
+	private final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyyMMdd");
+	private final SimpleDateFormat TIME_FORMAT = new SimpleDateFormat("HHmm");
+
 	/**
 	 * 검색 리스트 
 	 * @param startDay : 날짜 검색할 때 시작 날짜
@@ -62,7 +63,7 @@ public class AttendanceController {
 	 * @throws Exception
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
-	@GetMapping("/list")
+	@GetMapping()
 	public String getAttendanceList(@RequestParam(required = false)String startDay,
 									@RequestParam(required = false)String endDay,
 									@RequestParam(required = false)String name,
@@ -102,39 +103,31 @@ public class AttendanceController {
 		
 		return "manager/attendance";
 	}
-	
-	
-	/**
-	 * 근태 출근 처리 
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
+
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
-	@RequestMapping("/in")
-	public String insertIn(HttpServletRequest request, @LoginUser Member member) throws Exception {
+	@PostMapping("/{email}/in")
+	public String insertIn(HttpServletRequest request,
+							@PathVariable String email) throws Exception {
 		
 		HttpSession session = request.getSession();
 		
 		//출퇴근 여부
-		boolean isIn = attendanceService.isIn(member.getEmail()) > 0;
+		boolean isIn = attendanceService.isIn(email) > 0;
 		
 		if(isIn) {
 			return "fail";
 		
 		}else {
-			
-			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
+
 			Calendar calendar = Calendar.getInstance();
 			Date now = new Date(calendar.getTimeInMillis());
 			
-			String day = dayFormat.format(now);
-			String time = timeFormat.format(now);
+			String day = DATE_FORMAT.format(now);
+			String time = TIME_FORMAT.format(now);
 			String latenessAt = AttendanceUtil.getTimeDifference(time, workingTime) > 0 ? "N" : "Y";
 
-			AttendanceVO attendance = new AttendanceVO(0,member.getEmail(), day, time, null, latenessAt, null, member.getEmail(), null, member.getEmail(), "N", null, null);
+			AttendanceVO attendance = new AttendanceVO(0, email, day, time, null, latenessAt, null, email, null, email, "N", null, null);
 			int resultCnt = attendanceService.insertIn(attendance);
 			session.setAttribute("attendanceNo", attendance.getAttendanceNo());
 			 
@@ -150,32 +143,29 @@ public class AttendanceController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
-	@RequestMapping("/out")
-	public String updateOut(HttpServletRequest request, @LoginUser Member member) throws Exception {
+	@PostMapping("/{email}/out")
+	public String updateOut(HttpServletRequest request,
+							@PathVariable String email) throws Exception {
 		
 		HttpSession session = request.getSession();
-	
-		boolean isOut = attendanceService.isOut(member.getEmail()) > 0;
+		boolean isOut = attendanceService.isOut(email) > 0;
 
 		if(isOut){
 			return "fail";
 		
 		}else {
-			
-			SimpleDateFormat dayFormat = new SimpleDateFormat("yyyyMMdd");
-			SimpleDateFormat timeFormat = new SimpleDateFormat("HHmm");
 			Calendar calendar = Calendar.getInstance();
 			Date now = new Date(calendar.getTimeInMillis());
 			
-			String day = dayFormat.format(now);
-			String outTime = timeFormat.format(now);
+			String day = DATE_FORMAT.format(now);
+			String outTime = TIME_FORMAT.format(now);
 			int attendanceNo = Integer.parseInt(session.getAttribute("attendanceNo") + "");
 			
 			Map<String, Object> param = new HashMap<>();
 			
 			param.put("day", day);
 			param.put("outTime", outTime);
-			param.put("email", member.getEmail());
+			param.put("email", email);
 			param.put("attendanceNo", attendanceNo);
 			
 			int resultCnt = attendanceService.updateOut(param);
@@ -183,30 +173,14 @@ public class AttendanceController {
 			return "ok";
 		}
 	}
-	
-	/**
-	 * 근태 기록 수정
-	 * @param attendanceVO
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
+
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
-	@RequestMapping("/update")
-	public String updateAttendance(AttendanceVO attendanceVO, @LoginUser Member member) throws Exception {
-		
-		Map<String, Object> param = new HashMap<>();
-		
-		param.put("attendanceNo", attendanceVO.getAttendanceNo());
-		param.put("day", attendanceVO.getDay().replaceAll("-", ""));
-		param.put("inTime", attendanceVO.getInTime().replaceAll(":", ""));
-		param.put("outTime", attendanceVO.getOutTime().replaceAll(":", ""));
-		param.put("latenessAt", attendanceVO.getLatenessAt());
-		param.put("latenessReason", attendanceVO.getLatenessReason());
-		param.put("email", attendanceVO.getEmail());
-		param.put("adminEmail", member.getEmail());
-		
+	@PostMapping("/{email}")
+	public String updateAttendance(@ModelAttribute AttendanceVO attendanceVO,
+								   @PathVariable String email) throws Exception {
+
+		Map<String, Object> param = makeAttendanceParam(attendanceVO, email);
 		int resultCnt = attendanceService.updateAttendance(param);
 		
 		if(resultCnt > 0) {
@@ -216,7 +190,7 @@ public class AttendanceController {
 			return "fail";
 		}
 	}
-	
+
 	/**
 	 * 근태 등록시 이름 자동완성 
 	 * @param searchName
@@ -235,20 +209,10 @@ public class AttendanceController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
-	@RequestMapping("/insert")
-	public String insertAttendance(AttendanceVO attendanceVO, @LoginUser Member member) throws Exception {
-		
-		Map<String, Object> param = new HashMap<>();
-		
-		param.put("attendanceNo", attendanceVO.getAttendanceNo());
-		param.put("day", attendanceVO.getDay().replaceAll("-", ""));
-		param.put("inTime", attendanceVO.getInTime().replaceAll(":", ""));
-		param.put("outTime", attendanceVO.getOutTime().replaceAll(":", ""));
-		param.put("latenessAt", attendanceVO.getLatenessAt());
-		param.put("latenessReason", attendanceVO.getLatenessReason());
-		param.put("email", attendanceVO.getEmail());
-		param.put("adminEmail", member.getEmail());
-		
+	@PostMapping()
+	public String insertAttendance(@ModelAttribute AttendanceVO attendanceVO, @LoginUser Member member) throws Exception {
+
+		Map<String, Object> param = makeAttendanceParam(attendanceVO, member.getEmail());
 		int resultCnt = attendanceService.insertAttendance(param);
 		
 		if(resultCnt > 0) {
@@ -261,12 +225,12 @@ public class AttendanceController {
 	
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
-	@RequestMapping("/delete")
-	public String deleteAttendance(int attendanceNo, @LoginUser Member member) throws Exception {
+	@PostMapping("/{email}/delete")
+	public String deleteAttendance(@RequestParam int attendanceNo, @PathVariable String email) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
-		param.put("email", member.getEmail());
+		param.put("email", email);
 		param.put("attendanceNo", attendanceNo);
 		
 		int resultCnt = attendanceService.deleteAttendance(param);
@@ -277,6 +241,22 @@ public class AttendanceController {
 		}else {
 			return "fail";
 		}
+	}
+
+	private Map<String, Object> makeAttendanceParam(AttendanceVO attendanceVO, String email) {
+
+		Map<String,Object> param = new HashMap<>();
+
+		param.put("attendanceNo", attendanceVO.getAttendanceNo());
+		param.put("day", attendanceVO.getDay().replaceAll("-", ""));
+		param.put("inTime", attendanceVO.getInTime().replaceAll(":", ""));
+		param.put("outTime", attendanceVO.getOutTime().replaceAll(":", ""));
+		param.put("latenessAt", attendanceVO.getLatenessAt());
+		param.put("latenessReason", attendanceVO.getLatenessReason());
+		param.put("email", attendanceVO.getEmail());
+		param.put("adminEmail", email);
+
+		return param;
 	}
 
 }
