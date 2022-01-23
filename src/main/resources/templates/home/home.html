@@ -18,8 +18,8 @@
     협업툴 트리
 </p>
 <!-- 로그인 하지 않았다면 -->
-<button sec:authorize="!isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='login'">로그인</button>
-<button sec:authorize="!isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='signup'">회원 가입</button>
+<button sec:authorize="!isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='/login'">로그인</button>
+<button sec:authorize="!isAuthenticated()" type="button" class="btn btn-light" onclick="location.href='/member'">회원 가입</button>
 
 <!-- 로그인 상태라면 -->
 <button sec:authorize="isAuthenticated()" type="button" class="btn btn-dark" onclick="location.href='/logout'">로그아웃</button>

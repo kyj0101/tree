@@ -39,4 +39,5 @@ public interface CommonCodeService {
 
 	int countDetailCode(Map<String, String> param);
 
+
 }

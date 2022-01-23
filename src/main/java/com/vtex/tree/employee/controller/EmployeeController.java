@@ -40,15 +40,7 @@ public class EmployeeController {
 	
 	@Value("${empty.msg}")
 	private String emptyMsg;
-	
-	/**
-	 * 직원 목록 
-	 * @param model
-	 * @param cPage
-	 * @param request
-	 * @return
-	 * @throws Exception
-	 */
+
 	@RequestMapping("/list")
 	public String getEmployeeList(Model model, 
 									@RequestParam(defaultValue = "1")int cPage,
