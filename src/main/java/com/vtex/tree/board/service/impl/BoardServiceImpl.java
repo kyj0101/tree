@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import com.vtex.tree.board.mapper.BoardMapper;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Service
 public class BoardServiceImpl implements BoardService{
@@ -90,7 +90,7 @@ public class BoardServiceImpl implements BoardService{
 	}
 	
 	@Override
-	public List<MemberVO> getBoardMemberList(String categoryNo) throws Exception {
+	public List<Member> getBoardMemberList(String categoryNo) throws Exception {
 		return boardMapper.getBoardMemberList(categoryNo);
 	}
 }

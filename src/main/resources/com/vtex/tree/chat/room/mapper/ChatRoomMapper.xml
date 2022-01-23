@@ -109,7 +109,7 @@
 			CHAT_ROOM_NUMBER = #{category}		
 	</select>
 	
-	<select id="getMemberListToInvite" resultType="memberVO">
+	<select id="getMemberListToInvite" resultType="member">
 		/* ChatRoomMapper.getMemberListToInvite */
 			
 		SELECT

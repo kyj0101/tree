@@ -119,7 +119,7 @@
 			AND USE_AT = 'Y'
 	</select>
 	
-	<select id="getMemberList" resultType="memberVO">
+	<select id="getMemberList" resultType="member">
 		/* ProjectMapper.getMemberList */
 		
 		SELECT
@@ -181,7 +181,7 @@
 			A.NAME									
 	</select>
 	
-	<select id="getProjectMemberList" resultType="memberVO">
+	<select id="getProjectMemberList" resultType="member">
 		/* ProjectMapper.getProjectMemberList */
 		
 		SELECT

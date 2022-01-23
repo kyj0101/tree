@@ -9,16 +9,13 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,7 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.google.gson.Gson;
 import com.google.gson.JsonIOException;
 import com.vtex.tree.commoncode.service.CommonCodeService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
 
 @RequestMapping("/commoncode")
@@ -90,7 +87,7 @@ public class CommonCodeContorller {
 	public ModelAndView insertCommonCode(String codeName, 
 											String code, 
 											String useAt, 
-											@LoginUser MemberVO member, 
+											@LoginUser Member member,
 											Model model) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
@@ -148,7 +145,7 @@ public class CommonCodeContorller {
 	public ModelAndView updateCommonCode(String codeName, 
 											String code, 
 											String useAt, 
-											@LoginUser MemberVO member) throws Exception {
+											@LoginUser Member member) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		Map<String, String> param = new HashMap<>();
@@ -185,7 +182,7 @@ public class CommonCodeContorller {
 	 * @throws Exception 
 	 */
 	@RequestMapping("/code/delete")
-	public ModelAndView deleteCommonCode(String code, @LoginUser MemberVO member) throws Exception {
+	public ModelAndView deleteCommonCode(String code, @LoginUser Member member) throws Exception {
 		
 		ModelAndView mav = new ModelAndView();
 		Map<String, String> param = new HashMap<>();
@@ -324,7 +321,7 @@ public class CommonCodeContorller {
 													String detailCodeName, 
 													String sortOrdr,
 													String detailCodeUseAt,
-													@LoginUser MemberVO member) throws Exception {
+													@LoginUser Member member) throws Exception {
 
 		Map<String, String> param = new HashMap<>();
 
@@ -375,7 +372,7 @@ public class CommonCodeContorller {
 													String detailCodeName, 
 													String sortOrdr,
 													String detailCodeUseAt,
-													@LoginUser MemberVO member) throws Exception {
+													@LoginUser Member member) throws Exception {
 
 		Map<String, String> param = new HashMap<>();
 		
@@ -398,7 +395,7 @@ public class CommonCodeContorller {
 	
 
 	@RequestMapping("/detail/code/delete")
-	public ResponseEntity<String> deleteDetailCode(String detailCode, @LoginUser MemberVO member) throws Exception {
+	public ResponseEntity<String> deleteDetailCode(String detailCode, @LoginUser Member member) throws Exception {
 
 		Map<String, String> param = new HashMap<>();
 

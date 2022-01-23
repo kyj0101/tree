@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -22,7 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.chat.vo.ChatVO;
 import com.vtex.tree.common.enums.ChatType;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
 import com.vtex.tree.socket.handler.SocketHandler;
 
@@ -44,7 +40,7 @@ public class ChatController {
 	 */
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@RequestMapping("/room")
-	public ModelAndView getChatRoomView(@LoginUser MemberVO member,
+	public ModelAndView getChatRoomView(@LoginUser Member member,
 								ModelAndView model,
 								@RequestParam(defaultValue = "1") int category) throws Exception {
 		
@@ -75,7 +71,7 @@ public class ChatController {
 			
 			int result = chatService.insertChat(chat);
 			
-			List<MemberVO> memberList = getChatMemberList(category);
+			List<Member> memberList = getChatMemberList(category);
 			SocketHandler socketHandler = new SocketHandler();
 
 			socketHandler.sendChatMessage(memberList, chat);
@@ -87,9 +83,9 @@ public class ChatController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
 	@RequestMapping("/member/list")
-	public List<MemberVO> getChatMemberList(String categoryNo) throws Exception{
+	public List<Member> getChatMemberList(String categoryNo) throws Exception{
 		
-		List<MemberVO> memberList = chatService.getChatMemberList(categoryNo);
+		List<Member> memberList = chatService.getChatMemberList(categoryNo);
 		
 		return memberList;
 	}

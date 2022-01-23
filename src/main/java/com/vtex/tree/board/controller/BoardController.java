@@ -13,11 +13,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.ResourceLoader;
 import org.springframework.http.HttpHeaders;
@@ -35,7 +33,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.board.service.BoardService;
 import com.vtex.tree.board.vo.BoardVO;
 import com.vtex.tree.common.util.FileUtil;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
 @RequestMapping("/board")
 @Controller
@@ -62,7 +60,7 @@ public class BoardController {
 											HttpServletRequest request, 
 											@RequestParam(defaultValue = "1") int category, 
 											ModelAndView model,
-											@LoginUser MemberVO member) throws Exception {
+											@LoginUser Member member) throws Exception {
 		
 		RowBounds rowBounds = new RowBounds(getOffset(cPage, NUMPERPAGE), NUMPERPAGE);		
 		int totalContents = boardService.getBoardListCnt(category);
@@ -100,7 +98,7 @@ public class BoardController {
 												String noticeAt,
 												String fileId,
 												String categoryNo,
-												@LoginUser MemberVO member,
+												@LoginUser Member member,
 												MultipartFile[] uploadFile) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
@@ -169,7 +167,7 @@ public class BoardController {
 								String content, 
 								String boardNo, 
 								String noticeAt, 
-								@LoginUser MemberVO member) throws Exception {
+								@LoginUser Member member) throws Exception {
 
 		Map<String, Object> param = new HashMap<String, Object>();
 		
@@ -349,9 +347,9 @@ public class BoardController {
 	
 	@ResponseBody
 	@RequestMapping("/member/list")
-	public List<MemberVO> getBoardMemberList(String categoryNo) throws Exception{
+	public List<Member> getBoardMemberList(String categoryNo) throws Exception{
 		
-		List<MemberVO> memberList = boardService.getBoardMemberList(categoryNo);
+		List<Member> memberList = boardService.getBoardMemberList(categoryNo);
 		
 		return memberList;
 	}

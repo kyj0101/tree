@@ -1,17 +1,16 @@
 package com.vtex.tree.chat.mapper;
 
 import java.util.List;
-import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
 import com.vtex.tree.chat.vo.ChatVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Mapper
 public interface ChatMapper {
 	
-	List<MemberVO> getChatMemberList(String categoryNo) throws Exception;
+	List<Member> getChatMemberList(String categoryNo) throws Exception;
 
 	int insertChat(ChatVO chat) throws Exception;
 

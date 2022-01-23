@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.vtex.tree.chat.room.mapper.ChatRoomMapper;
 import com.vtex.tree.chat.room.service.ChatRoomService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Service
 public class ChatRoomServiceImpl implements ChatRoomService{
@@ -47,7 +47,7 @@ public class ChatRoomServiceImpl implements ChatRoomService{
 	}
 	
 	@Override
-	public List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception {
+	public List<Member> getMemberListToInvite(String categoryNo) throws Exception {
 		return chatRoomMapper.getMemberListToInvite(categoryNo);
 	}
 	

@@ -1,13 +1,9 @@
 package com.vtex.tree.schedule.controller;
 
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.common.util.AttendanceUtil;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.schedule.service.ScheduleService;
@@ -39,7 +35,7 @@ public class ScheduleController {
 	@RequestMapping("/view")
 	public ModelAndView scheduleView(@RequestParam String projectId, 
 								ModelAndView model,
-								@LoginUser MemberVO member) throws Exception {
+								@LoginUser Member member) throws Exception {
 		//현재 프로젝트
 		ProjectVO project = projectService.getProject(projectId);
 
@@ -60,7 +56,7 @@ public class ScheduleController {
 	
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertSchedule(ScheduleVO schedule, @LoginUser MemberVO member) throws Exception {
+	public String insertSchedule(ScheduleVO schedule, @LoginUser Member member) throws Exception {
 		
 		String loginEsntlId = member.getEsntlId();
 		

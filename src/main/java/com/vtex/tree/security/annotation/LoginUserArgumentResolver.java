@@ -9,7 +9,7 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 import lombok.RequiredArgsConstructor;
 
@@ -23,7 +23,7 @@ public class LoginUserArgumentResolver implements HandlerMethodArgumentResolver{
 	public boolean supportsParameter(MethodParameter parameter) {
 		
 		boolean isLoginUserAnnotation = parameter.getParameterAnnotation(LoginUser.class) != null;
-		boolean isUserClass = MemberVO.class.equals(parameter.getParameterType());
+		boolean isUserClass = Member.class.equals(parameter.getParameterType());
 		
 		return isLoginUserAnnotation && isUserClass;
 	}

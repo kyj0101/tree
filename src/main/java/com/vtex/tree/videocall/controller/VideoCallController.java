@@ -4,11 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -20,7 +16,7 @@ import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.category.vo.CategoryVO;
 import com.vtex.tree.chat.room.vo.ChatRoomVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.security.annotation.LoginUser;
@@ -42,7 +38,7 @@ public class VideoCallController {
 	@RequestMapping("/view")
 	public String videoCallView(@RequestParam(required = true) String videoCallId, 
 								@RequestParam(required = true) String type,
-								@LoginUser MemberVO member, 
+								@LoginUser Member member,
 								Model model) throws Exception {
 
 		//카테고리 리스트 

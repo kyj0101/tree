@@ -5,7 +5,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Mapper
 public interface ChatRoomMapper {
@@ -20,7 +20,7 @@ public interface ChatRoomMapper {
 
 	int deleteChatRoom(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception;
+	List<Member> getMemberListToInvite(String categoryNo) throws Exception;
 
 	int insertChatRoomMember(Map<String, Object> param) throws Exception;
 }

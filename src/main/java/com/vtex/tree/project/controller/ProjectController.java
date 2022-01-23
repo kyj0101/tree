@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,7 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vtex.tree.common.util.AttendanceUtil;
 import com.vtex.tree.commoncode.service.CommonCodeService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
 import com.vtex.tree.schedule.service.ScheduleService;
@@ -66,7 +65,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertProject(ProjectVO project, @LoginUser MemberVO member) throws Exception {
+	public String insertProject(ProjectVO project, @LoginUser Member member) throws Exception {
 		
 		String startDate = project.getStartDate(); 
 		String endDate = project.getEndDate();
@@ -130,7 +129,7 @@ public class ProjectController {
 		model.addAttribute("pageBar", pageBar);
 		
 		//프로젝트에 소속된 멤버리스트 
-		List<MemberVO> memberList = projectService.getProjectMemberList(param, rowBounds);
+		List<Member> memberList = projectService.getProjectMemberList(param, rowBounds);
 		model.addAttribute("memberList", memberList);
 		
 		//직급, 부서 리스트 
@@ -148,9 +147,9 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/memberList")
-	public List<MemberVO> getMemberList(String projectId, 
-										@RequestParam(required = false) String department,
-										@RequestParam(required = false) String position) throws Exception{
+	public List<Member> getMemberList(String projectId,
+                                      @RequestParam(required = false) String department,
+                                      @RequestParam(required = false) String position) throws Exception{
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -158,7 +157,7 @@ public class ProjectController {
 		param.put("department", department);
 		param.put("position", position);
 		
-		List<MemberVO> memberList = projectService.getMemberList(param); 
+		List<Member> memberList = projectService.getMemberList(param);
 		
 		return memberList;
 	} 
@@ -166,7 +165,7 @@ public class ProjectController {
 	@ResponseBody
 	@RequestMapping("/insert/member")
 	public String insertProjectMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
-										@LoginUser MemberVO member,
+										@LoginUser Member member,
 										String projectId) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
@@ -188,7 +187,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/insert/note")
-	public String insertProjectNote(String projectId, String note, @LoginUser MemberVO member) throws Exception {
+	public String insertProjectNote(String projectId, String note, @LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -206,7 +205,7 @@ public class ProjectController {
 	public String updateProjectRole(String projectId, 
 									String esntlId, 
 									String role, 
-									@LoginUser MemberVO member) throws Exception {
+									@LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -225,7 +224,7 @@ public class ProjectController {
 	public String updateProjectRoleManager(String projectId, 
 											String esntlId, 
 											String role, 
-											@LoginUser MemberVO member) throws Exception{
+											@LoginUser Member member) throws Exception{
 
 		Map<String, Object> param = new HashMap<>();
 		
@@ -247,7 +246,7 @@ public class ProjectController {
 									String projectNm, 
 									String startDate, 
 									String endDate,
-									@LoginUser MemberVO member) throws Exception {
+									@LoginUser Member member) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
 		
@@ -264,7 +263,7 @@ public class ProjectController {
 	
 	@ResponseBody
 	@RequestMapping("/delete/member")
-	public String deleteProjectMember(String projectId, String esntlId, @LoginUser MemberVO member) throws Exception {
+	public String deleteProjectMember(String projectId, String esntlId, @LoginUser Member member) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
 		

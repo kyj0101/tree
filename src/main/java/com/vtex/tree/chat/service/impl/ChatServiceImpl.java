@@ -1,7 +1,6 @@
 package com.vtex.tree.chat.service.impl;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -9,7 +8,7 @@ import org.springframework.stereotype.Service;
 import com.vtex.tree.chat.mapper.ChatMapper;
 import com.vtex.tree.chat.service.ChatService;
 import com.vtex.tree.chat.vo.ChatVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Service
 public class ChatServiceImpl implements ChatService{
@@ -23,7 +22,7 @@ public class ChatServiceImpl implements ChatService{
 	}
 	
 	@Override
-	public List<MemberVO> getChatMemberList(String categoryNo) throws Exception {
+	public List<Member> getChatMemberList(String categoryNo) throws Exception {
 		return chatMapper.getChatMemberList(categoryNo);
 	}
 

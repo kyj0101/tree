@@ -7,14 +7,11 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.employee.service.EmployeeService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
 import static com.vtex.tree.common.util.PageBar.getOffset;
 
@@ -54,7 +51,7 @@ public class EmployeeController {
 		
 		model.addAttribute("pageBar", pageBar);
 		
-		List<MemberVO> memberList = employeeService.getMemberList(rowBounds);
+		List<Member> memberList = employeeService.getMemberList(rowBounds);
 		model.addAttribute("memberList", memberList);
 		
 		//업데이트할 때 select 박스에 넣을 부서값, 직급값
@@ -75,7 +72,7 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@RequestMapping("/withdraw")
-	public String withdrawEmployee(String email, @LoginUser MemberVO member) throws Exception {
+	public String withdrawEmployee(String email, @LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -94,7 +91,7 @@ public class EmployeeController {
 	
 	@ResponseBody
 	@RequestMapping("/update")
-	public String updateEmployee(MemberVO member, @LoginUser MemberVO loginMember) throws Exception {
+	public String updateEmployee(Member member, @LoginUser Member loginMember) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
 		

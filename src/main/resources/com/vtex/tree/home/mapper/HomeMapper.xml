@@ -59,24 +59,13 @@
 				DUAL
 		</selectKey>
 	</insert>
-	
-	<select id="emailDuplicationCheck" resultType="int">
-		/* HomeMapper.emailCheck */
-		
-		SELECT
-			COUNT(*)
-		FROM
-			TB_MEMBER
-		WHERE
-			EMAIL = #{email}
-	</select>
-	
-	<select id="selectOneMember" resultType="memberVO">
+
+	<select id="selectOneMember" resultType="member">
 		/* HomeMapper.selecOneMember */
 
 		SELECT
 			A.EMAIL,
-			A.NAME,
+			A.USER_NAME,
 			A.PHONE,
 			A.BIRTH,
 			A.PASSWORD,
@@ -115,38 +104,5 @@
 			AND EMAIL_VERIFY_PNTTM IS NOT NULL
 			AND A.QUIT_AT = 'N'
 	</select>
-	
-	<update id="updateEmailVerify">
-		/* HomeMapper.updateEmailVerify */
-		
-		UPDATE 
-			TB_MEMBER
-		SET
-			EMAIL_VERIFY_PNTTM = SYSDATE
-		WHERE
-			EMAIL = #{email}
-	</update>
-	
-	<update id="setLogin">
-		/* HomeMapper.setLogin */
-		
-		UPDATE
-			TB_MEMBER
-		SET
-			LOGIN_AT = 'Y'
-		WHERE
-			EMAIL = #{email}
-	</update>
-	
-	<update id="setLogout">
-		/* HomeMapper.setLogout */
-		
-		UPDATE
-			TB_MEMBER
-		SET
-			LOGIN_AT = 'N'
-		WHERE
-			EMAIL = #{email}
-	</update>
 
 </mapper>

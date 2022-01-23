@@ -6,9 +6,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpSession;
-import javax.swing.text.Position;
 
-import org.springframework.security.authentication.InternalAuthenticationServiceException;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
@@ -18,7 +16,7 @@ import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.mapper.SecurityMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -40,7 +38,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 .getUserInfoEndpoint().getUserNameAttributeName();
 
         OAuthAttributes attributes = OAuthAttributes.of(registrationId, userNameAttributeName, oAuth2User.getAttributes());
-        MemberVO member  = saveOrUpdate(attributes);
+        Member member  = saveOrUpdate(attributes);
         
         if(member == null) {
 			throw new OAuth2AuthenticationException("user not found");
@@ -74,9 +72,9 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
                 attributes.getNameAttributeKey());
     }
 
-    private MemberVO saveOrUpdate(OAuthAttributes attributes) {
+    private Member saveOrUpdate(OAuthAttributes attributes) {
     
-    	MemberVO user = mapper.login(attributes.getEmail());
+    	Member user = mapper.login(attributes.getEmail());
         return user;
     }
 }

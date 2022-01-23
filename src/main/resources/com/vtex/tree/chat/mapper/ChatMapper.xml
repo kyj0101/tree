@@ -50,7 +50,7 @@
 			TIME		
 	</select>
 	
-	<select id="getChatMemberList" resultType="memberVO">
+	<select id="getChatMemberList" resultType="member">
 		/* ChatMapper.getChatMemberList */
 		
 		SELECT

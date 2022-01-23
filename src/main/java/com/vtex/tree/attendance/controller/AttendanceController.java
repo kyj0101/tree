@@ -15,7 +15,6 @@ import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
 import org.apache.ibatis.session.RowBounds;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -31,7 +30,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.attendance.vo.AttendanceVO;
 import com.vtex.tree.common.util.AttendanceUtil;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
 
 
@@ -114,7 +113,7 @@ public class AttendanceController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
 	@RequestMapping("/in")
-	public String insertIn(HttpServletRequest request, @LoginUser MemberVO member) throws Exception {
+	public String insertIn(HttpServletRequest request, @LoginUser Member member) throws Exception {
 		
 		HttpSession session = request.getSession();
 		
@@ -152,7 +151,7 @@ public class AttendanceController {
 	@PreAuthorize("hasRole('ROLE_USER')")
 	@ResponseBody
 	@RequestMapping("/out")
-	public String updateOut(HttpServletRequest request, @LoginUser MemberVO member) throws Exception {
+	public String updateOut(HttpServletRequest request, @LoginUser Member member) throws Exception {
 		
 		HttpSession session = request.getSession();
 	
@@ -195,7 +194,7 @@ public class AttendanceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping("/update")
-	public String updateAttendance(AttendanceVO attendanceVO, @LoginUser MemberVO member) throws Exception {
+	public String updateAttendance(AttendanceVO attendanceVO, @LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -225,9 +224,9 @@ public class AttendanceController {
 	 */
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@RequestMapping("/auto/name")
-	public ResponseEntity<List<MemberVO>> autoName(String searchName) throws Exception {
+	public ResponseEntity<List<Member>> autoName(String searchName) throws Exception {
 
-		List<MemberVO> memberList = attendanceService.autoName(searchName);
+		List<Member> memberList = attendanceService.autoName(searchName);
 
 		return ResponseEntity.ok()
 							.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
@@ -237,7 +236,7 @@ public class AttendanceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping("/insert")
-	public String insertAttendance(AttendanceVO attendanceVO, @LoginUser MemberVO member) throws Exception {
+	public String insertAttendance(AttendanceVO attendanceVO, @LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -263,7 +262,7 @@ public class AttendanceController {
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@ResponseBody
 	@RequestMapping("/delete")
-	public String deleteAttendance(int attendanceNo, @LoginUser MemberVO member) throws Exception {
+	public String deleteAttendance(int attendanceNo, @LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.session.RowBounds;
 
 import com.vtex.tree.attendance.vo.AttendanceVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 public interface AttendanceService {
 
@@ -24,7 +24,7 @@ public interface AttendanceService {
 
 	int updateAttendance(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> autoName(String searchName) throws Exception;
+	List<Member> autoName(String searchName) throws Exception;
 
 	int insertAttendance(Map<String, Object> param) throws Exception;
 

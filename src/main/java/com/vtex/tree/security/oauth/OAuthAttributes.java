@@ -2,9 +2,7 @@ package com.vtex.tree.security.oauth;
 
 import java.util.Map;
 
-import org.apache.ibatis.javassist.compiler.ast.Member;
-
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 import lombok.Builder;
 import lombok.Getter;
@@ -42,8 +40,8 @@ public class OAuthAttributes {
                 .build();
     }
 
-    public MemberVO toEntity() {
-    	MemberVO member = new MemberVO();
+    public Member toEntity() {
+    	Member member = new Member();
     	member.setName(name);
     	member.setEmail(email);
         

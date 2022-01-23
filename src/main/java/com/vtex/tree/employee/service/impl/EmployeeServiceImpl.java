@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.vtex.tree.employee.mapper.EmployeeMapper;
 import com.vtex.tree.employee.service.EmployeeService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService{
@@ -18,7 +18,7 @@ public class EmployeeServiceImpl implements EmployeeService{
 	private EmployeeMapper employeeMapper;
 
 	@Override
-	public List<MemberVO> getMemberList(RowBounds rowBounds) throws Exception {
+	public List<Member> getMemberList(RowBounds rowBounds) throws Exception {
 		return employeeMapper.getMemberList(rowBounds);
 	}
 

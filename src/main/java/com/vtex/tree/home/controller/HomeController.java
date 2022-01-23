@@ -1,57 +1,28 @@
 package com.vtex.tree.home.controller;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+
 import java.io.UnsupportedEncodingException;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.concurrent.ExecutionException;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import com.vtex.tree.emailverify.sevice.EmailVerifyService;
-import lombok.AllArgsConstructor;
+import com.vtex.tree.emailverify.vo.Email;
 import lombok.RequiredArgsConstructor;
-import org.apache.tomcat.util.json.JSONParser;
-import org.apache.tomcat.util.json.ParseException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import com.vtex.tree.common.util.TemporailyPassword;
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.service.MemberService;
-import com.vtex.tree.member.vo.MemberVO;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.vtex.tree.member.vo.Member;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,6 +34,16 @@ public class HomeController {
 	private final EmailVerifyService emailVerifyService;
 
 	private final PasswordEncoder passwordEncoder;
+
+	@Value("${ip}")
+	private String ip;
+
+	@Value("${server.port}")
+	private String port;
+
+	private final String EMAIL_VERIFY_SUBJECT = "Tree 이메일 인증입니다.";
+	private final String EMAIL_VERIFY_TEXT = "<p>안녕하세요.</p>" + "<p>다음 링크를 통해 이메일 인증을 완료하세요.</p>" + "<p><a href=' url '>이메일 인증</a></p>" + "<p>감사합니다.</p>" + "<p>- Tree -</p>";
+
 
 	@GetMapping("/")
 	public String home() {
@@ -104,7 +85,7 @@ public class HomeController {
 	}
 
 	@PostMapping("/member")
-	public String signUp(MemberVO member, String domain) throws MessagingException, UnsupportedEncodingException {
+	public String signUp(Member member, String domain) throws MessagingException, UnsupportedEncodingException {
 
 		String password = passwordEncoder.encode(member.getPassword());
 		String key = UUID.randomUUID().toString();
@@ -116,50 +97,17 @@ public class HomeController {
 		member.setFrstRegisterId(member.getEmail());
 		member.setLastUpdusrId(member.getEmail());
 
-
 		homeService.insertMember(member);
-		emailVerifyService.emailVerifySend(member);
+		emailVerifyService.emailSend(makeSignUpEmail(member));
 
 		return "redirect:/";
 	}
 
-	@RequestMapping("/find/password/view")
-	public String findPasswordView() {
-		return "home/findPassword";
+	private Email makeSignUpEmail(Member member) {
+
+		String param = "?key=" + member.getEmillKey() + "&email=" + member.getEmail();
+		String url = emailVerifyService.makeEmailUrl(ip, port, "/email/verify", param);
+
+		return new Email(member.getEmail(), EMAIL_VERIFY_SUBJECT, EMAIL_VERIFY_TEXT.replace("url", url));
 	}
-	
-	/*@ResponseBody
-	@RequestMapping("/find/password")
-	public String findPassword(String email) {
-		
-		String tempoPwd =  TemporailyPassword.getTemporailyPassword(8);
-		Map<String, String> param = new HashMap<>();
-		
-		param.put("password", passwordEncoder.encode(tempoPwd));
-		param.put("email", email);
-		
-		memberService.updatePassword(param);
-		
-		MimeMessage message = mailSender.createMimeMessage();
-		MimeMessageHelper helper;
-		
-		try {
-			helper = new MimeMessageHelper(message, true, "UTF-8");
-			helper.setFrom("Tree", "Tree");
-			helper.setTo(email);
-			helper.setSubject("Tree 임시 비밀번호 입니다.");
-			helper.setText(("<p>임시 비밀번호: " + tempoPwd + "</p><p>감사합니다.</p>" + "<p>- Tree -</p>"), true);
-			
-			mailSender.send(message);
-			
-			return "ok";
-		
-		} catch (MessagingException | UnsupportedEncodingException e) {
-			e.printStackTrace();
-			
-			return "fail";
-		}
-
-	}*/
-
 }

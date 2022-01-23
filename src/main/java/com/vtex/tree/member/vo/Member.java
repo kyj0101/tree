@@ -2,17 +2,14 @@ package com.vtex.tree.member.vo;
 
 import java.io.Serializable;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -21,7 +18,7 @@ import lombok.ToString;
 @ToString
 @Getter
 @Setter
-public class MemberVO implements Serializable, UserDetails{
+public class Member implements Serializable, UserDetails{
 	
 	private static final long serialVersionUID = 1L;
 
@@ -51,10 +48,10 @@ public class MemberVO implements Serializable, UserDetails{
 	private String projectRole;
 	private String sessionId;
 
-	public MemberVO() {
+	public Member() {
 	}
 
-	public MemberVO(String email, String name, String phone, String birth, String password, String department, String position, String emillKey, String frstRegisterId, String lastUpdusrId, String roleCode, String zipCode, String address, String detailAddress) {
+	public Member(String email, String name, String phone, String birth, String password, String department, String position, String emillKey, String frstRegisterId, String lastUpdusrId, String roleCode, String zipCode, String address, String detailAddress) {
 		this.email = email;
 		this.name = name;
 		this.phone = phone;
@@ -119,9 +116,9 @@ public class MemberVO implements Serializable, UserDetails{
 	@Override
 	public boolean equals(Object obj) {
 		
-		if(obj instanceof MemberVO) {
+		if(obj instanceof Member) {
 			
-			MemberVO otherMember = (MemberVO)obj;
+			Member otherMember = (Member)obj;
 			String otherEsntlId = otherMember.getEsntlId(); 
 			
 			if(otherEsntlId.equals(this.esntlId)) {

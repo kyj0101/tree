@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
 import com.vtex.tree.board.vo.BoardVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Mapper
 public interface BoardMapper {
@@ -39,5 +39,5 @@ public interface BoardMapper {
 	
 	Map<String, Object> getFile(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getBoardMemberList(String categoryNo) throws Exception;
+	List<Member> getBoardMemberList(String categoryNo) throws Exception;
 }

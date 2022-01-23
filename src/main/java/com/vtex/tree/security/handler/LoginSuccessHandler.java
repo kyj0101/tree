@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler{
@@ -20,9 +20,9 @@ public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessH
 		
 		Object principalObj = authentication.getPrincipal();
 		
-		if(principalObj instanceof MemberVO) {
+		if(principalObj instanceof Member) {
 			
-			MemberVO member = (MemberVO)principalObj;
+			Member member = (Member)principalObj;
 			
 			request.getSession().setAttribute("loginMember", member);
 			super.onAuthenticationSuccess(request, response, authentication);

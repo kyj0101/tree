@@ -8,7 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.vtex.tree.commoncode.service.CommonCodeService;
 import com.vtex.tree.home.service.HomeService;
 import com.vtex.tree.member.service.MemberService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
 @RequestMapping("/member")
 @Controller
@@ -38,7 +37,7 @@ public class MemberController {
 	
 
 	@RequestMapping("/mypage/update/view")
-	public String myPageUpdateView(Model model, @LoginUser MemberVO member) throws Exception {
+	public String myPageUpdateView(Model model, @LoginUser Member member) throws Exception {
 		
 		String birth = member.getBirth();
 		
@@ -96,7 +95,7 @@ public class MemberController {
 			memberService.updateMember(param);
 			
 			HttpSession session = request.getSession();
-			MemberVO member = homeService.selectOneMember(email);
+			Member member = homeService.selectOneMember(email);
 			
 			session.setAttribute("loginMember", member);
 	
@@ -133,7 +132,7 @@ public class MemberController {
 										String newPassword, 
 										HttpServletRequest request,
 										RedirectAttributes redirectAttribute,
-										@LoginUser MemberVO member) {
+										@LoginUser Member member) {
 		try {
 			
 			HttpSession session = request.getSession();
@@ -161,7 +160,7 @@ public class MemberController {
 	public String myPageWithdraw(String password, 
 									String reasonCode, 
 									HttpServletRequest request,
-									@LoginUser MemberVO member) throws Exception {
+									@LoginUser Member member) throws Exception {
 
 		HttpSession session = request.getSession();
 	

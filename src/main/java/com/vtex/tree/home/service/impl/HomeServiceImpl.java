@@ -1,14 +1,11 @@
 package com.vtex.tree.home.service.impl;
 
-import java.util.List;
-import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.vtex.tree.home.mapper.HomeMapper;
 import com.vtex.tree.home.service.HomeService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Service
 public class HomeServiceImpl implements HomeService {
@@ -17,23 +14,12 @@ public class HomeServiceImpl implements HomeService {
 	private HomeMapper homeMapper;
 
 	@Override
-	public void insertMember(MemberVO member) {
+	public void insertMember(Member member) {
 		homeMapper.insertMember(member);
 	}
 
 	@Override
-	public MemberVO selectOneMember(String email) {
+	public Member selectOneMember(String email) {
 		return homeMapper.selectOneMember(email);
 	}
-
-	@Override
-	public int setLogin(String email) {
-		return homeMapper.setLogin(email);
-	}
-	
-	@Override
-	public int setLogout(String email) {
-		return homeMapper.setLogout(email);
-	}
-	
 }

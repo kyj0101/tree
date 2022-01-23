@@ -6,7 +6,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.space.mapper.SpaceMapper;
 import com.vtex.tree.space.service.SpaceService;
 
@@ -17,7 +17,7 @@ public class SpaceServiceImpl implements SpaceService{
 	private SpaceMapper spaceMapper;
 	
 	@Override
-	public List<MemberVO> getMemberList(Map<String, Object> param) throws Exception {
+	public List<Member> getMemberList(Map<String, Object> param) throws Exception {
 		return spaceMapper.getMemberList(param);
 	}
 }

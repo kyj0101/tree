@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Controller
-@RequestMapping("emailVerify")
+@RequestMapping("/emailVerify")
 @RequiredArgsConstructor
 public class EmailVerifyController {
 

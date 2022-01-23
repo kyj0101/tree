@@ -8,7 +8,7 @@ import org.apache.ibatis.session.RowBounds;
 
 import com.vtex.tree.category.vo.CategoryVO;
 import com.vtex.tree.chat.room.vo.ChatRoomVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.project.vo.ProjectVO;
 
 @Mapper
@@ -22,11 +22,11 @@ public interface ProjectMapper {
 
 	ProjectVO selectOneProject(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getMemberList(Map<String, Object> param) throws Exception;
+	List<Member> getMemberList(Map<String, Object> param) throws Exception;
 
 	int insertProjectMember(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getProjectMemberList(Map<String, Object> param, RowBounds rowBounds) throws Exception;
+	List<Member> getProjectMemberList(Map<String, Object> param, RowBounds rowBounds) throws Exception;
 
 	int getTotalProjectMember(String projectId) throws Exception;
 

@@ -3,7 +3,7 @@ package com.vtex.tree.chat.room.service;
 import java.util.List;
 import java.util.Map;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 public interface ChatRoomService {
 
@@ -19,7 +19,7 @@ public interface ChatRoomService {
 
 	int deleteChatRoom(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception;
+	List<Member> getMemberListToInvite(String categoryNo) throws Exception;
 
 	int insertCategoryChatMember(Map<String, Object> param) throws Exception;
 

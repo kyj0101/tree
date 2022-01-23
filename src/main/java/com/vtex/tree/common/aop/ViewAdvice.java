@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.mvc.support.RedirectAttributesModelMap;
 
 import com.vtex.tree.attendance.service.AttendanceService;
 import com.vtex.tree.category.service.CategoryService;
@@ -20,10 +19,8 @@ import com.vtex.tree.category.vo.CategoryVO;
 import com.vtex.tree.chat.room.service.ChatRoomService;
 import com.vtex.tree.chat.room.vo.ChatRoomVO;
 import com.vtex.tree.common.enums.ViewName;
-import com.vtex.tree.member.vo.MemberVO;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
-import com.vtex.tree.security.annotation.LoginUser;
 
 @Service
 @Aspect

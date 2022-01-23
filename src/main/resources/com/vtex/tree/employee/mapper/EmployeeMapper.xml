@@ -4,7 +4,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.vtex.tree.employee.mapper.EmployeeMapper">
 
-	<select id="getMemberList" resultType="memberVO">
+	<select id="getMemberList" resultType="member">
 		/* EmployeeMapper.getMemberList */
 		
 		SELECT

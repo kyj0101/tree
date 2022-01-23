@@ -111,7 +111,7 @@
 			AND A.DELETE_AT = 'N'
 	</select>
 	
-	<select id="getMemberListToInvite" resultType="memberVO">
+	<select id="getMemberListToInvite" resultType="member">
 		/* CategoryMapper.getMemberListToInvite */
 		
 		SELECT

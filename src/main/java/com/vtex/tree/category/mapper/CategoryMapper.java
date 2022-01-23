@@ -5,12 +5,12 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Mapper
 public interface CategoryMapper {
 	
-	List<MemberVO> getMemberList(String email) throws Exception;
+	List<Member> getMemberList(String email) throws Exception;
 	
 	int insertCategoryBoard(Map<String, Object> param);
 	
@@ -24,5 +24,5 @@ public interface CategoryMapper {
 
 	int outBoard(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception;
+	List<Member> getMemberListToInvite(String categoryNo) throws Exception;
 }

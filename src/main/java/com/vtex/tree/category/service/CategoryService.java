@@ -3,10 +3,10 @@ package com.vtex.tree.category.service;
 import java.util.List;
 import java.util.Map;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 public interface CategoryService {
-	List<MemberVO> getMemberList(String email) throws Exception;
+	List<Member> getMemberList(String email) throws Exception;
 
 	int insertCategoryBoard(Map<String, Object> param);
 
@@ -20,5 +20,5 @@ public interface CategoryService {
 
 	int outBoard(Map<String, Object> param) throws Exception;
 
-	List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception;
+	List<Member> getMemberListToInvite(String categoryNo) throws Exception;
 }

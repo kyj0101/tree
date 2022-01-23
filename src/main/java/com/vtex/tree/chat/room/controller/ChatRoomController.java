@@ -1,31 +1,19 @@
 package com.vtex.tree.chat.room.controller;
 
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonIOException;
-import com.vtex.tree.category.service.CategoryService;
 import com.vtex.tree.chat.room.service.ChatRoomService;
-import com.vtex.tree.chat.service.ChatService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.security.annotation.LoginUser;
-import com.vtex.tree.socket.handler.SocketHandler;
 
 @PreAuthorize("hasRole('ROLE_USER')")
 @ResponseBody
@@ -40,7 +28,7 @@ public class ChatRoomController {
 	public String insertCategoryChat(@RequestParam(value="esntlIdList[]") List<String> esntlIdList, 
 									String title,
 									String projectId,
-									@LoginUser MemberVO member) throws Exception {
+									@LoginUser Member member) throws Exception {
 		
 		String loginEsntlId = member.getEsntlId(); 
 				
@@ -75,12 +63,12 @@ public class ChatRoomController {
 	}
 
 	@RequestMapping("/out")
-	public String outChatRoom(String category, @LoginUser MemberVO member) throws Exception {
+	public String outChatRoom(String category, @LoginUser Member member) throws Exception {
 		return outChatRoomManager(category, member.getEsntlId(), member);
 	}
 	
 	@RequestMapping("/out/manager")
-	public String outChatRoomManager(String category, String esntlId, @LoginUser MemberVO member) throws Exception {
+	public String outChatRoomManager(String category, String esntlId, @LoginUser Member member) throws Exception {
 		
 		Map<String, Object> param = new HashMap<>();
 		
@@ -93,7 +81,7 @@ public class ChatRoomController {
 	}
 	
 	@RequestMapping("/delete")
-	public String deleteChat(String category, @LoginUser MemberVO member) throws Exception {
+	public String deleteChat(String category, @LoginUser Member member) throws Exception {
 
 		Map<String, Object> param = new HashMap<>();
 		
@@ -111,13 +99,13 @@ public class ChatRoomController {
 	}
 	
 	@RequestMapping("/memberlist")
-	public List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception {
+	public List<Member> getMemberListToInvite(String categoryNo) throws Exception {
 		return chatRoomService.getMemberListToInvite(categoryNo);
 	}
 	
 	@RequestMapping("/add/member")
 	public String addMember(@RequestParam(value="esntlIdList[]") List<String> esntlIdList,
-								@LoginUser MemberVO member,
+								@LoginUser Member member,
 								String categoryNo) throws Exception {
 		
 		int resultCnt = 0;

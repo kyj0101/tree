@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.vtex.tree.category.vo.CategoryVO;
 import com.vtex.tree.chat.room.vo.ChatRoomVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 import com.vtex.tree.project.mapper.ProjectMapper;
 import com.vtex.tree.project.service.ProjectService;
 import com.vtex.tree.project.vo.ProjectVO;
@@ -41,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public List<MemberVO> getMemberList(Map<String, Object> param) throws Exception {
+	public List<Member> getMemberList(Map<String, Object> param) throws Exception {
 		return projectMapper.getMemberList(param);
 	}
 	
@@ -56,7 +56,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 	
 	@Override
-	public List<MemberVO> getProjectMemberList(Map<String, Object> param, RowBounds rowBounds) throws Exception {
+	public List<Member> getProjectMemberList(Map<String, Object> param, RowBounds rowBounds) throws Exception {
 		return projectMapper.getProjectMemberList(param, rowBounds);
 	}
 	

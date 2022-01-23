@@ -1,21 +1,12 @@
 package com.vtex.tree.home.mapper;
 
-import java.util.List;
-import java.util.Map;
-
 import org.apache.ibatis.annotations.Mapper;
 
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 @Mapper
 public interface HomeMapper {
 
+	void insertMember(Member member);
 
-
-	void insertMember(MemberVO member);
-
-	MemberVO selectOneMember(String userName);
-
-	int setLogin(String email);
-
-	int setLogout(String email);
+	Member selectOneMember(String userName);
 }

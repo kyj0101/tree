@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.tomcat.websocket.WsRemoteEndpointImplBase;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.oauth2.client.authentication.OAuth2AuthenticationToken;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
@@ -18,16 +17,15 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.JsonObject;
 import com.nimbusds.jose.shaded.json.JSONObject;
 import com.vtex.tree.chat.vo.ChatVO;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 
 @Component
 public class SocketHandler extends TextWebSocketHandler{
 
-	public static List<MemberVO> loginMemberList = new ArrayList<>();
+	public static List<Member> loginMemberList = new ArrayList<>();
 	
 	public static List<WebSocketSession> sessionList = new ArrayList<>();
 	
@@ -35,12 +33,12 @@ public class SocketHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception { 
 		
 		Principal p =  session.getPrincipal();
-		MemberVO member = null;
+		Member member = null;
 		
 		if(p instanceof UsernamePasswordAuthenticationToken) {
 			
 			UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken)p;
-			member = (MemberVO) token.getPrincipal();
+			member = (Member) token.getPrincipal();
 			member.setSessionId(session.getId());
 			
 		}else if(p instanceof OAuth2AuthenticationToken) {
@@ -50,7 +48,7 @@ public class SocketHandler extends TextWebSocketHandler{
 			
 			Map<String, Object> attributes  = oAuthUser.getAttributes();
 			
-			member = new MemberVO();
+			member = new Member();
 			member.setEmail((String)attributes.get("email"));
 			member.setName((String)attributes.get("name"));
 			member.setEsntlId((String)attributes.get("esntlId"));
@@ -70,12 +68,12 @@ public class SocketHandler extends TextWebSocketHandler{
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		
 		Principal p =  session.getPrincipal();
-		MemberVO member = (MemberVO) null;
+		Member member = (Member) null;
 
 		if(p instanceof UsernamePasswordAuthenticationToken) {
 			
 			UsernamePasswordAuthenticationToken token = (UsernamePasswordAuthenticationToken)p;
-			member = (MemberVO) token.getPrincipal();
+			member = (Member) token.getPrincipal();
 		
 		}else if(p instanceof OAuth2AuthenticationToken) {
 			
@@ -84,7 +82,7 @@ public class SocketHandler extends TextWebSocketHandler{
 			
 			Map<String, Object> attributes  = oAuthUser.getAttributes();
 			
-			member = new MemberVO();
+			member = new Member();
 			member.setEsntlId((String)attributes.get("esntlId"));
 		}
 
@@ -106,14 +104,14 @@ public class SocketHandler extends TextWebSocketHandler{
 		s.sendMessage(new TextMessage(jsonObj.toJSONString()));
 	}
 
-	public void sendChatMessage(List<MemberVO> memberList,  ChatVO chat) {
+	public void sendChatMessage(List<Member> memberList, ChatVO chat) {
 		
-		MemberVO loginMember = new MemberVO();
+		Member loginMember = new Member();
 		
 		loginMember.setEsntlId(chat.getEsntlId());
 		memberList.remove(loginMember);
 
-		for(MemberVO member : memberList) {
+		for(Member member : memberList) {
 
 			try {
 			
@@ -136,7 +134,7 @@ public class SocketHandler extends TextWebSocketHandler{
 	
 	private String findSessionIdWithEsntlId(String esntlId) {
 		
-		for(MemberVO m : loginMemberList) {
+		for(Member m : loginMemberList) {
 			
 			if(esntlId.equals(m.getEsntlId())) {
 				return m.getSessionId();

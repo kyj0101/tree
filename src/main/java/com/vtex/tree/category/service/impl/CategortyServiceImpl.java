@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.vtex.tree.category.mapper.CategoryMapper;
 import com.vtex.tree.category.service.CategoryService;
-import com.vtex.tree.member.vo.MemberVO;
+import com.vtex.tree.member.vo.Member;
 
 @Service
 public class CategortyServiceImpl implements CategoryService{
@@ -17,7 +17,7 @@ public class CategortyServiceImpl implements CategoryService{
 	private CategoryMapper categoryMapper;
 	
 	@Override
-	public List<MemberVO> getMemberList(String email) throws Exception {
+	public List<Member> getMemberList(String email) throws Exception {
 		return categoryMapper.getMemberList(email);
 	}
 	
@@ -52,7 +52,7 @@ public class CategortyServiceImpl implements CategoryService{
 	}
 	
 	@Override
-	public List<MemberVO> getMemberListToInvite(String categoryNo) throws Exception {
+	public List<Member> getMemberListToInvite(String categoryNo) throws Exception {
 		return categoryMapper.getMemberListToInvite(categoryNo);
 	}
 
