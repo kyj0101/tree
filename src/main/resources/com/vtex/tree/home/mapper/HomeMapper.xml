@@ -11,7 +11,7 @@
 			TB_MEMBER
 				(
 					EMAIL,
-					NAME,
+					USER_NAME,
 					PHONE,
 					BIRTH,
 					PASSWORD,
@@ -52,6 +52,12 @@
 					#{detailAddress},
 					'USR_'|| LPAD(SEQ_TB_MEMBER.NEXTVAL, 16, '0')
 				)
+		<selectKey resultType="string" keyProperty="esntlId" order="AFTER">
+			SELECT
+			'USR_'|| LPAD(SEQ_TB_MEMBER.CURRVAL, 16, '0')
+			FROM
+				DUAL
+		</selectKey>
 	</insert>
 	
 	<select id="emailDuplicationCheck" resultType="int">

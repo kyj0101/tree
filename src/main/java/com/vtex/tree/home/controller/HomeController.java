@@ -18,6 +18,7 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.vtex.tree.emailverify.sevice.EmailVerifyService;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.apache.tomcat.util.json.JSONParser;
@@ -59,16 +60,9 @@ public class HomeController {
 	private final HomeService homeService;
 	private final CommonCodeService commonCodeService;
 	private final MemberService memberService;
-
-	private final JavaMailSenderImpl mailSender;
+	private final EmailVerifyService emailVerifyService;
 
 	private final PasswordEncoder passwordEncoder;
-	
-	@Value("${ip}")
-	String ip;
-	
-	@Value("${server.port}")
-	String port;
 
 	@GetMapping("/")
 	public String home() {
@@ -81,7 +75,7 @@ public class HomeController {
 	}
 
 	@PreAuthorize("permitAll()")
-	@GetMapping("/members")
+	@GetMapping("/member")
 	public String signUp(Model model) throws Exception {
 
 		// 부서 목록
@@ -109,7 +103,7 @@ public class HomeController {
 		return "home/signup";
 	}
 
-	@PostMapping("/members")
+	@PostMapping("/member")
 	public String signUp(MemberVO member, String domain) throws MessagingException, UnsupportedEncodingException {
 
 		String password = passwordEncoder.encode(member.getPassword());
@@ -122,79 +116,19 @@ public class HomeController {
 		member.setFrstRegisterId(member.getEmail());
 		member.setLastUpdusrId(member.getEmail());
 
-		String url = "https://" + ip + ":" +  port + "/email/verify" + "?key=" + key + "&email=" + member.getEmail();
 
-		try {
-			homeService.insertMember(member);
-
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-			helper.setFrom("Tree", "Tree");
-			helper.setTo(member.getEmail());
-			helper.setSubject("Tree 이메일 인증입니다.");
-			helper.setText("<p>안녕하세요.</p>" + "<p>다음 링크를 통해 이메일 인증을 완료하세요.</p>" + "<p><a href='" + url
-					+ "'>이메일 인증</a></p>" + "<p>감사합니다.</p>" + "<p>- Tree -</p>", true);
-
-			mailSender.send(message);
-
-		} catch (MessagingException e) {
-			throw e;
-
-		} catch (UnsupportedEncodingException e) {
-			throw e;
-		}
+		homeService.insertMember(member);
+		emailVerifyService.emailVerifySend(member);
 
 		return "redirect:/";
 	}
 
-	@ResponseBody
-	@RequestMapping("/email/duplication/check")
-	public String emailDuplicationCheck(String email) {
-		System.out.println(email);
-		boolean isDuplicate = homeService.emailDuplicationCheck(email);
-
-		return isDuplicate ? "true" : "false";
-	}
-
-	@PreAuthorize("permitAll()")
-	@RequestMapping("/email/verify")
-	public String emailVerify(Model model, String key, String email) {
-
-		model.addAttribute("key", key);
-		model.addAttribute("email", email);
-
-		return "home/emailVerify";
-	}
-
-	@PostMapping("/email/verify")
-	public String emailVerify(String email, String key, RedirectAttributes redirectAttribute) {
-		Map<String, String> param = new HashMap<>();
-		param.put("email", email);
-		param.put("key", key);
-
-		try {
-			int result = homeService.updateEmailVerify(param);
-
-			if (result > 0) {
-				redirectAttribute.addFlashAttribute("msg", "이메일 인증이 완료되었습니다.");
-				return "redirect:/login";
-			}
-
-			redirectAttribute.addFlashAttribute("msg", "이메일 인증을 실패했습니다.");
-			return "redirect:/";
-
-		} catch (Exception e) {
-			throw new RuntimeException();
-		}
-	}
-	
 	@RequestMapping("/find/password/view")
 	public String findPasswordView() {
 		return "home/findPassword";
 	}
 	
-	@ResponseBody
+	/*@ResponseBody
 	@RequestMapping("/find/password")
 	public String findPassword(String email) {
 		
@@ -226,6 +160,6 @@ public class HomeController {
 			return "fail";
 		}
 
-	}
+	}*/
 
 }

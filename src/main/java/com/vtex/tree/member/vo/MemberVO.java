@@ -50,7 +50,27 @@ public class MemberVO implements Serializable, UserDetails{
 	private String esntlId;
 	private String projectRole;
 	private String sessionId;
-	
+
+	public MemberVO() {
+	}
+
+	public MemberVO(String email, String name, String phone, String birth, String password, String department, String position, String emillKey, String frstRegisterId, String lastUpdusrId, String roleCode, String zipCode, String address, String detailAddress) {
+		this.email = email;
+		this.name = name;
+		this.phone = phone;
+		this.birth = birth;
+		this.password = password;
+		this.department = department;
+		this.position = position;
+		this.emillKey = emillKey;
+		this.frstRegisterId = frstRegisterId;
+		this.lastUpdusrId = lastUpdusrId;
+		this.roleCode = roleCode;
+		this.zipCode = zipCode;
+		this.address = address;
+		this.detailAddress = detailAddress;
+	}
+
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
