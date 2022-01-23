@@ -15,8 +15,6 @@ public interface MemberMapper {
 	List<String> getPositionList();
 
 	void updateMember(Map<String, Object> param);
-
-	void updatePassword(Map<String, String> param);
 	
 	int withdraw(Map<String, Object> param) throws Exception;
 }

@@ -51,18 +51,7 @@
 		WHERE
 			EMAIL = #{email}
 	</update>
-	
-	<update id="updatePassword">
-		/* MemberMapper.updatePassword */
-		
-		UPDATE
-			TB_MEMBER
-		SET
-			PASSWORD = #{password}
-		WHERE
-			EMAIL = #{email}
-	</update>
-	
+
 	<update id="withdraw">
 		/* MemberMapper.withdraw */
 		

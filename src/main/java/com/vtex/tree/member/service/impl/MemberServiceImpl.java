@@ -30,11 +30,6 @@ public class MemberServiceImpl implements MemberService {
 	public void updateMember(Map<String, Object> param) {
 		memberMapper.updateMember(param);
 	}
-
-	@Override
-	public void updatePassword(Map<String, String> param) {
-		memberMapper.updatePassword(param);
-	}
 	
 	@Override
 	public int withdraw(Map<String, Object> param) throws Exception {

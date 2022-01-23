@@ -26,18 +26,18 @@ class EmailVerifyMapperTest {
 
         //given
         Member member = new Member("test", "test", "01011112222", "20000101", "123456789", "000", "000", "000", "test", "test", "001", "000", "test", "test");
+
         Map<String, String> param = new HashMap<>();
+        param.put("email", member.getEmail());
 
         //when
         homeMapper.insertMember(member);
-
-        param.put("email", member.getEmail());
         param.put("key", member.getEmillKey());
-
         emailVerifyMapper.updateEmailVerify(param);
 
-        //then
         Member emailVerifyMember = homeMapper.selectOneMember(member.getEmail());
+
+        //then
         Assertions.assertThat(emailVerifyMember.getEmailVerifyPnttm()).isNotNull();
     }
 

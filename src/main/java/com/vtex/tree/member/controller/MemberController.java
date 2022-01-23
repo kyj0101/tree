@@ -110,10 +110,7 @@ public class MemberController {
 		return "redirect:/member/mypage/update/view";
 	}
 	
-	@RequestMapping("/mypage/update/password/view")
-	public String myPageUpdatePasswordView() {
-		return "mypage/updatePassword"; 
-	}
+
 	
 	@RequestMapping("/mypage/withdraw/view")
 	public String myPageWithdrawView(Model model) throws Exception {
@@ -127,33 +124,7 @@ public class MemberController {
 		return "mypage/withdraw"; 
 	}
 	
-	@RequestMapping("/mypage/update/password")
-	public String myPageUpdatePassword(String password, 
-										String newPassword, 
-										HttpServletRequest request,
-										RedirectAttributes redirectAttribute,
-										@LoginUser Member member) {
-		try {
-			
-			HttpSession session = request.getSession();
 
-			Map<String, String> param = new HashMap<>();
-			String encryptedPassword =  passwordEncoder.encode(newPassword);
-
-			param.put("password", encryptedPassword);
-			param.put("email", member.getEmail());
-			
-			memberService.updatePassword(param); 
-			member.setPassword(encryptedPassword);
-			session.setAttribute("loginMember", member);
-			redirectAttribute.addFlashAttribute("msg", "비밀번호가 변경되었습니다.");
-					
-			return "redirect:/member/mypage/update/password/view";
-			
-		} catch (Exception e) {
-			throw new RuntimeException();
-		}
-	}
 	
 	@ResponseBody
 	@RequestMapping("/mypage/withdraw")
